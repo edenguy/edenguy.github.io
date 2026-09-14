@@ -1,0 +1,301 @@
+<!doctype html>
+<title>The Cutting Room</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#F5F0E6; --surface:#FFFFFF; --surface-2:#EDE5D5;
+    --ink:#1E1A16; --ink-soft:#4A4237; --muted:#7A6F60; --line:#D8CDB8;
+    --accent:#C97C1F; --accent-ink:#3A2506; --accent-soft:#F1DBB4;
+    --teal:#1E8F86; --teal-soft:#D8EEEB;
+    --rust:#B14730; --rust-soft:#F3DAD1;
+    --shadow: 0 1px 0 rgba(30,26,22,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#14110F; --surface:#1E1A16; --surface-2:#262019;
+      --ink:#F2E9DC; --ink-soft:#D8CBB4; --muted:#9C8F7E; --line:#3A3227;
+      --accent:#E8A33D; --accent-ink:#2A1B04; --accent-soft:#3B2C13;
+      --teal:#4FD1C5; --teal-soft:#173330;
+      --rust:#E07456; --rust-soft:#3A211A;
+      --shadow: 0 1px 0 rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#14110F; --surface:#1E1A16; --surface-2:#262019;
+    --ink:#F2E9DC; --ink-soft:#D8CBB4; --muted:#9C8F7E; --line:#3A3227;
+    --accent:#E8A33D; --accent-ink:#2A1B04; --accent-soft:#3B2C13;
+    --teal:#4FD1C5; --teal-soft:#173330;
+    --rust:#E07456; --rust-soft:#3A211A;
+    --shadow: 0 1px 0 rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box}
+  html{color-scheme:light dark}
+  body{
+    margin:0; background:var(--ground); color:var(--ink);
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size:17px; line-height:1.6;
+    padding-inline: clamp(18px, 5vw, 56px);
+  }
+  h1,h2,h3,.display{
+    font-family:"Big Shoulders Display", "Arial Narrow", sans-serif;
+    font-weight:800; text-transform:uppercase; letter-spacing:.01em;
+    text-wrap:balance; color:var(--ink); margin:0;
+  }
+  .mono{ font-family:"IBM Plex Mono", ui-monospace, Consolas, monospace; font-variant-numeric:tabular-nums; }
+  .eyebrow{
+    font-family:"IBM Plex Mono", monospace; font-size:12.5px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--muted);
+  }
+  a{ color:var(--teal); }
+  img{max-width:100%}
+
+  /* ---------- sprocket rails ---------- */
+  .reel{
+    max-width:920px; margin:0 auto;
+    border-left:1px dashed var(--line); border-right:1px dashed var(--line);
+    padding-inline: clamp(20px, 4vw, 44px);
+    position:relative;
+  }
+  .reel::before, .reel::after{
+    content:""; position:absolute; top:0; bottom:0; width:20px;
+    background-image: radial-gradient(circle at 10px 16px, var(--surface-2) 5px, transparent 5.5px);
+    background-size: 20px 34px; background-repeat: repeat-y;
+    opacity:.9;
+  }
+  .reel::before{ left:-11px; }
+  .reel::after{ right:-11px; }
+  @media (max-width:560px){ .reel::before,.reel::after{ display:none; } .reel{ border:none; padding-inline:0; } }
+
+  section{ padding-block: clamp(40px, 7vw, 76px); border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+
+  /* ---------- hero ---------- */
+  .hero{ padding-block: clamp(30px, 6vw, 52px) clamp(40px,7vw,64px); }
+  .leader{
+    display:flex; align-items:center; gap:14px; margin-bottom:22px;
+    color:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:13px;
+  }
+  .leader .tick{ width:9px; height:9px; border-radius:50%; background:var(--accent); flex:none; }
+  .leader .count{ display:flex; gap:10px; font-size:15px; letter-spacing:.08em; }
+  .leader .count span{ opacity:.35; }
+  .leader .count span:last-child{ opacity:1; color:var(--ink); font-weight:600; }
+  .wordmark{ font-size: clamp(52px, 11vw, 108px); line-height:.86; }
+  .wordmark em{ font-style:normal; color:var(--accent); }
+  .thesis{
+    max-width:60ch; font-size:1.2rem; color:var(--ink-soft); margin-top:18px;
+  }
+  .status-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:26px; }
+  .pill{
+    font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.04em;
+    border:1px solid var(--line); border-radius:999px; padding:6px 14px;
+    color:var(--ink-soft); background:var(--surface); display:inline-flex; align-items:center; gap:7px;
+  }
+  .pill.on::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--teal); }
+
+  /* ---------- problem / solution timeline ---------- */
+  .track-row{ display:grid; grid-template-columns: 108px 1fr; gap:16px; align-items:stretch; margin-block:10px; }
+  .track-label{
+    font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); display:flex; align-items:center; padding-top:2px;
+  }
+  .track{ display:flex; gap:6px; flex-wrap:wrap; }
+  .clip{
+    border-radius:3px; padding:10px 12px; font-size:13.5px; line-height:1.3;
+    box-shadow:var(--shadow); flex: 1 1 auto; min-width:120px;
+  }
+  .clip .t{ display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.05em; opacity:.75; margin-bottom:4px; }
+  .track.messy .clip{ background:var(--rust-soft); color:var(--ink); border:1px solid var(--rust); }
+  .track.messy .clip:nth-child(3n){ transform:rotate(-0.6deg); }
+  .track.messy .clip:nth-child(3n+1){ transform:rotate(0.5deg); }
+  .track.clean .clip{ background:var(--teal-soft); border:1px solid var(--teal); color:var(--ink); flex-basis:100%; }
+  .split-caption{ font-size:13px; color:var(--muted); margin-top:6px; }
+
+  .pain-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin-top:28px; }
+  .pain{
+    background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--rust);
+    border-radius:4px; padding:16px 18px;
+  }
+  .pain .n{ font-family:"IBM Plex Mono",monospace; color:var(--rust); font-size:12px; letter-spacing:.06em; }
+  .pain p{ margin:6px 0 0; font-size:14.5px; color:var(--ink-soft); }
+
+  /* ---------- filmstrip / pipeline ---------- */
+  .filmstrip{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:0;
+    border:1px solid var(--line); border-radius:6px; overflow:hidden; margin-top:30px;
+  }
+  .frame{
+    background:var(--surface); padding:20px 18px 18px; border-right:1px dashed var(--line);
+    border-top: 4px solid var(--accent);
+    display:flex; flex-direction:column; gap:8px; min-height:100%;
+  }
+  .frame:last-child{ border-right:none; }
+  .frame .fn{ font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:12px; letter-spacing:.06em; }
+  .frame h3{ font-size:22px; }
+  .frame .script{ font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted); }
+  .frame p{ font-size:14px; color:var(--ink-soft); margin:0; }
+  @media (max-width:640px){ .frame{ border-right:none; border-bottom:1px dashed var(--line);} }
+
+  /* ---------- print check / status ---------- */
+  .slip{
+    background:var(--surface); border:1px solid var(--line); border-radius:6px;
+    padding: clamp(20px,4vw,32px); margin-top:26px;
+  }
+  .slip-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;
+    border-bottom:1px dashed var(--line); padding-bottom:14px; margin-bottom:14px; }
+  .slip-head h3{ font-size:24px; }
+  .slip-head .mono{ font-size:12px; color:var(--muted); }
+  .checklist{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px 24px; }
+  .check{ display:flex; gap:10px; align-items:flex-start; font-size:14.5px; }
+  .check .mark{ flex:none; width:20px; height:20px; border-radius:4px; background:var(--teal-soft); color:var(--teal);
+    display:flex; align-items:center; justify-content:center; font-family:"IBM Plex Mono",monospace; font-size:13px; margin-top:1px; }
+  .check b{ display:block; }
+  .check span.sub{ color:var(--muted); font-size:13px; }
+
+  /* ---------- run it ---------- */
+  .run{ background:var(--ink); color:var(--ground); border-radius:8px; padding: clamp(20px,4vw,30px); }
+  :root[data-theme="dark"] .run, @media (prefers-color-scheme:dark){ }
+  .run pre{
+    background: rgba(0,0,0,.28); border-radius:6px; padding:16px 18px; overflow-x:auto;
+    font-family:"IBM Plex Mono",monospace; font-size:13.5px; margin:14px 0 0; color:#F2E9DC;
+  }
+  .run h2{ color:var(--ground); }
+  .run p{ color:#D8CBB4; }
+
+  footer{ padding-block: 30px 60px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--muted); }
+</style>
+
+<div class="reel">
+
+  <section class="hero">
+    <div class="leader">
+      <span class="tick"></span>
+      <span class="count"><span>05</span><span>04</span><span>03</span><span>02</span><span>01</span></span>
+      <span>&nbsp;LEADER &middot; PROJECT REEL</span>
+    </div>
+    <h1 class="wordmark">Album<em>Astra</em></h1>
+    <p class="thesis">A manifest-driven pipeline that cuts a public Google Photos album into a scored, captioned, landscape-and-portrait travel film — deterministically, without a single model call.</p>
+    <div class="status-row">
+      <span class="pill on">zero-LLM &middot; audited</span>
+      <span class="pill on">deterministic re-runs</span>
+      <span class="pill on">86/86 tests passing</span>
+      <span class="pill">content-addressed render cache</span>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Reel 1 &middot; The Problem</span>
+    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Turning an album into a film is still a manual cutting-room job</h2>
+    <p style="max-width:62ch; color:var(--ink-soft);">Google Photos' only built-in movie is an auto-generated "Memories" clip — it can't take a specific album, can't choose which of your videos survive the cut, and can't carry a soundtrack you're allowed to publish. Everything past that is done by hand.</p>
+
+    <div class="track-row">
+      <div class="track-label">Without<br>AlbumAstra</div>
+      <div class="track messy">
+        <div class="clip"><span class="t">Manual &middot; hours</span>Scroll &amp; download 300+ photos one by one</div>
+        <div class="clip"><span class="t">Manual &middot; hours</span>Drag every clip into an NLE timeline</div>
+        <div class="clip"><span class="t">Manual</span>Guess which 90s phone clips to trim</div>
+        <div class="clip"><span class="t">Manual</span>Hunt for music you're legally allowed to use</div>
+        <div class="clip"><span class="t">Manual &middot; ×2</span>Re-cut separately for TV and phone</div>
+      </div>
+    </div>
+    <div class="track-row">
+      <div class="track-label">With<br>AlbumAstra</div>
+      <div class="track clean">
+        <div class="clip"><span class="t">00:00:00:00 &rarr; 00:00:00:07</span>Paste the album URL. The pipeline below runs unattended and hands back two finished cuts.</div>
+      </div>
+    </div>
+    <p class="split-caption">One track replaces five — same source album, same two exports, none of it by hand.</p>
+
+    <div class="pain-grid">
+      <div class="pain"><div class="n">PAIN 01</div><p>A real family album easily runs 200&ndash;400 photos and clips — sorting that by capture date and quality by hand is a multi-hour task before you've cut a single scene.</p></div>
+      <div class="pain"><div class="n">PAIN 02</div><p>Raw phone video routinely runs 30&ndash;90+ seconds per clip. Drop it in unedited and a five-minute film becomes an unwatchable half hour.</p></div>
+      <div class="pain"><div class="n">PAIN 03</div><p>Licensing a soundtrack you can actually publish — without a future takedown — is its own research project most people skip, then wonder why the clip's raw noise is all you hear.</p></div>
+      <div class="pain"><div class="n">PAIN 04</div><p>A cut for the living-room TV and one for a phone screen are two different aspect ratios, two exports, two rounds of manual timing.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Reel 2 &middot; The Cut</span>
+    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Six stages, one pass, fully reproducible</h2>
+    <p style="max-width:62ch; color:var(--ink-soft);">Each frame below is a real, separate stage in the pipeline — cacheable and independently re-runnable. Nothing in this reel calls an AI model; a dedicated test suite audits the runtime for exactly that.</p>
+
+    <div class="filmstrip">
+      <div class="frame">
+        <span class="fn">FRAME 01</span>
+        <h3>Ingest</h3>
+        <span class="script">download_album.py</span>
+        <p>Enumerates every item in the album's own Google Photos order and downloads concurrently — 12&ndash;25 workers, resumable from a content ledger.</p>
+      </div>
+      <div class="frame">
+        <span class="fn">FRAME 02</span>
+        <h3>Analyze</h3>
+        <span class="script">scan_media.py</span>
+        <p>Reads EXIF/GPS and FFprobe metadata, scores sharpness and exposure, and perceptual-hashes photos and video thumbnails alike for near-duplicates.</p>
+      </div>
+      <div class="frame">
+        <span class="fn">FRAME 03</span>
+        <h3>Story</h3>
+        <span class="script">build_story.py</span>
+        <p>Groups by capture day, keeps the strongest stills, caps videos to one or two per day (a stable per-day coin flip, not a fixed rule), and drops any clip that already appeared once.</p>
+      </div>
+      <div class="frame">
+        <span class="fn">FRAME 04</span>
+        <h3>Locate</h3>
+        <span class="script">fetch_album.py</span>
+        <p>Reverse-geocodes embedded GPS through OpenStreetMap Nominatim — rate-limited, cached, no API key — for the venue/city badge on each scene.</p>
+      </div>
+      <div class="frame">
+        <span class="fn">FRAME 05</span>
+        <h3>Score</h3>
+        <span class="script">fetch_music.py</span>
+        <p>Finds a CC0 / YouTube-safe instrumental on Wikimedia Commons, verifies its license, then mutes every clip's own noise for one continuous cue underneath.</p>
+      </div>
+      <div class="frame">
+        <span class="fn">FRAME 06</span>
+        <h3>Render</h3>
+        <span class="script">render.py</span>
+        <p>FFmpeg composites every card, still and clip through a content-addressed cache — an interrupted run resumes for free — into landscape and portrait finals.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <span class="eyebrow">Print Check</span>
+    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Current status</h2>
+    <div class="slip">
+      <div class="slip-head">
+        <h3>Quality control &middot; before release</h3>
+        <span class="mono">86 / 86 checks &middot; 4 suites</span>
+      </div>
+      <div class="checklist">
+        <div class="check"><span class="mark">✓</span><div><b>Zero-model runtime</b><span class="sub">audited on every file — no SDK, CLI, or endpoint</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Deterministic selection</b><span class="sub">same album, same story — no run-to-run drift</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Duplicate-clip guard</b><span class="sub">a clip is enforced to appear once, film-wide</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Motion-scored highlights</b><span class="sub">long clips trimmed to their most active window, capped at 20s</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Continuous soundtrack</b><span class="sub">clip audio muted; licensed music plays end to end</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Hebrew / RTL captions</b><span class="sub">bidi-shaped card text where the source language calls for it</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Content-addressed render cache</b><span class="sub">interrupted or re-run jobs skip completed shots</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Live progress readout</b><span class="sub">percent and ETA in the terminal in place of raw log noise</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="border-bottom:none;">
+    <div class="run">
+      <span class="eyebrow" style="color:#B9AC93;">Roll Camera</span>
+      <h2 style="margin-top:8px;">Run it on one album</h2>
+      <p>One public Google Photos link in, two finished cuts out.</p>
+      <pre>python from_url.py "https://photos.app.goo.gl/&lt;your-album&gt;" --selection reduced</pre>
+    </div>
+  </section>
+
+  <footer>
+    <span>ALBUMASTRA &middot; MANIFEST-DRIVEN FILM PIPELINE</span>
+    <span>NO MODEL CALLS &middot; SEE README.md</span>
+  </footer>
+
+</div>
