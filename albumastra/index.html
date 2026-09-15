@@ -135,7 +135,6 @@
   .frame:last-child{ border-right:none; }
   .frame .fn{ font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:12px; letter-spacing:.06em; }
   .frame h3{ font-size:22px; }
-  .frame .script{ font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--muted); }
   .frame p{ font-size:14px; color:var(--ink-soft); margin:0; }
   @media (max-width:640px){ .frame{ border-right:none; border-bottom:1px dashed var(--line);} }
 
@@ -157,11 +156,6 @@
 
   /* ---------- run it ---------- */
   .run{ background:var(--ink); color:var(--ground); border-radius:8px; padding: clamp(20px,4vw,30px); }
-  :root[data-theme="dark"] .run, @media (prefers-color-scheme:dark){ }
-  .run pre{
-    background: rgba(0,0,0,.28); border-radius:6px; padding:16px 18px; overflow-x:auto;
-    font-family:"IBM Plex Mono",monospace; font-size:13.5px; margin:14px 0 0; color:#F2E9DC;
-  }
   .run h2{ color:var(--ground); }
   .run p{ color:#D8CBB4; }
 
@@ -178,12 +172,12 @@
       <span>&nbsp;LEADER &middot; PROJECT REEL</span>
     </div>
     <h1 class="wordmark">Album<em>Astra</em></h1>
-    <p class="thesis">A manifest-driven pipeline that cuts a public Google Photos album into a scored, captioned, landscape-and-portrait travel film — deterministically, without a single model call.</p>
+    <p class="thesis">Turn a shared Google Photos album into a polished travel film — captioned, scored to your best moments, and cut for both the TV and your phone. No editing required.</p>
     <div class="status-row">
-      <span class="pill on">zero-LLM &middot; audited</span>
-      <span class="pill on">deterministic re-runs</span>
-      <span class="pill on">269/269 tests passing</span>
-      <span class="pill">content-addressed render cache</span>
+      <span class="pill on">Two ready-to-share cuts</span>
+      <span class="pill on">Royalty-free soundtrack included</span>
+      <span class="pill on">Your originals stay untouched</span>
+      <span class="pill">Picks up where it left off</span>
     </div>
   </section>
 
@@ -196,7 +190,7 @@
       <div class="track-label">Without<br>AlbumAstra</div>
       <div class="track messy">
         <div class="clip"><span class="t">Manual &middot; hours</span>Scroll &amp; download 300+ photos one by one</div>
-        <div class="clip"><span class="t">Manual &middot; hours</span>Drag every clip into an NLE timeline</div>
+        <div class="clip"><span class="t">Manual &middot; hours</span>Drag every clip into a video editor</div>
         <div class="clip"><span class="t">Manual</span>Guess which 90s phone clips to trim</div>
         <div class="clip"><span class="t">Manual</span>Hunt for music you're legally allowed to use</div>
         <div class="clip"><span class="t">Manual &middot; ×2</span>Re-cut separately for TV and phone</div>
@@ -205,7 +199,7 @@
     <div class="track-row">
       <div class="track-label">With<br>AlbumAstra</div>
       <div class="track clean">
-        <div class="clip"><span class="t">00:00:00:00 &rarr; 00:00:00:07</span>Paste the album URL. The pipeline below runs unattended and hands back two finished cuts.</div>
+        <div class="clip"><span class="t">00:00:00:00 &rarr; 00:00:00:07</span>Share the album link. The steps below happen on their own and hand back two finished films.</div>
       </div>
     </div>
     <p class="split-caption">One track replaces five — same source album, same two exports, none of it by hand.</p>
@@ -220,45 +214,39 @@
 
   <section>
     <span class="eyebrow">Reel 2 &middot; The Cut</span>
-    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Six stages, one pass, fully reproducible</h2>
-    <p style="max-width:62ch; color:var(--ink-soft);">Each frame below is a real, separate stage in the pipeline — cacheable and independently re-runnable. Nothing in this reel calls an AI model; a dedicated test suite audits the runtime for exactly that.</p>
+    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">From album link to finished film</h2>
+    <p style="max-width:62ch; color:var(--ink-soft);">Six steps happen automatically once you share the album — no timeline to touch, no software to learn.</p>
 
     <div class="filmstrip">
       <div class="frame">
-        <span class="fn">FRAME 01</span>
-        <h3>Ingest</h3>
-        <span class="script">download_album.py</span>
-        <p>Enumerates every item in the album's own Google Photos order and downloads concurrently — 12&ndash;25 workers, resumable from a content ledger.</p>
+        <span class="fn">STEP 01</span>
+        <h3>Gather</h3>
+        <p>Downloads every photo and video in the album, in the order you took them — and picks up right where it left off if a connection drops.</p>
       </div>
       <div class="frame">
-        <span class="fn">FRAME 02</span>
-        <h3>Analyze</h3>
-        <span class="script">scan_media.py</span>
-        <p>Reads EXIF/GPS and FFprobe metadata, scores sharpness and exposure, and perceptual-hashes photos and video thumbnails alike for near-duplicates.</p>
+        <span class="fn">STEP 02</span>
+        <h3>Curate</h3>
+        <p>Checks focus and exposure on every shot and quietly drops the blurry, near-duplicate, and repeated ones.</p>
       </div>
       <div class="frame">
-        <span class="fn">FRAME 03</span>
-        <h3>Story</h3>
-        <span class="script">build_story.py</span>
-        <p>Groups by capture day, keeps the strongest stills, caps videos to one or two per day (a stable per-day coin flip, not a fixed rule), and drops any clip that already appeared once.</p>
+        <span class="fn">STEP 03</span>
+        <h3>Shape</h3>
+        <p>Groups the trip by day, keeps your strongest photos, limits how many clips appear per day, and never shows the same clip twice.</p>
       </div>
       <div class="frame">
-        <span class="fn">FRAME 04</span>
+        <span class="fn">STEP 04</span>
         <h3>Locate</h3>
-        <span class="script">fetch_album.py</span>
-        <p>Reverse-geocodes embedded GPS through OpenStreetMap Nominatim — rate-limited, cached, no API key — for the venue/city badge on each scene.</p>
+        <p>Reads the location tagged on each photo and labels every scene with the city or place it was taken.</p>
       </div>
       <div class="frame">
-        <span class="fn">FRAME 05</span>
+        <span class="fn">STEP 05</span>
         <h3>Score</h3>
-        <span class="script">fetch_music.py</span>
-        <p>Finds a CC0 / YouTube-safe instrumental on Wikimedia Commons, verifies its license, then mutes every clip's own noise for one continuous cue underneath.</p>
+        <p>Adds a royalty-free instrumental soundtrack that plays continuously underneath, so your clips' own background noise doesn't take over.</p>
       </div>
       <div class="frame">
-        <span class="fn">FRAME 06</span>
+        <span class="fn">STEP 06</span>
         <h3>Render</h3>
-        <span class="script">render.py</span>
-        <p>FFmpeg composites every card, still and clip through a content-addressed cache — an interrupted run resumes for free — into landscape and portrait finals.</p>
+        <p>Puts it all together into two finished films — one widescreen cut for the TV, one vertical cut for your phone.</p>
       </div>
     </div>
   </section>
@@ -271,28 +259,24 @@
     <div class="pain-grid">
       <div class="pain"><div class="n">EVERY DAY</div><p>A day-title card becomes a small map instead of plain text: yesterday's route already drawn, today's crawling in fresh — framed tight to that day's own area so an early day doesn't vanish in a map sized for the last one.</p></div>
       <div class="pain"><div class="n">THE FINALE</div><p>A closing recap animates the whole trip's route across a real map, opening on the headline numbers rather than saving them as an end payoff.</p></div>
-      <div class="pain"><div class="n">REAL GEOGRAPHY</div><p>Real OpenStreetMap tiles, darkened and kept vivid — not an abstract line on a blank canvas — labelled with the same reverse-geocoded place names already used for on-screen location badges.</p></div>
+      <div class="pain"><div class="n">REAL GEOGRAPHY</div><p>Real OpenStreetMap tiles, darkened and kept vivid — not an abstract line on a blank canvas — labelled with the same place names already used for on-screen location badges.</p></div>
       <div class="pain"><div class="n">FLIGHT DETECTION</div><p>A leg too long for a single day's drive draws as a dashed arc, the familiar flight-path convention, instead of a straight line.</p></div>
     </div>
   </section>
 
   <section>
     <span class="eyebrow">Print Check</span>
-    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Current status</h2>
+    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Every film includes</h2>
     <div class="slip">
       <div class="slip-head">
-        <h3>Quality control &middot; before release</h3>
-        <span class="mono">269 / 269 checks</span>
+        <h3>What you get, every time</h3>
       </div>
       <div class="checklist">
-        <div class="check"><span class="mark">✓</span><div><b>Zero-model runtime</b><span class="sub">audited on every file — no SDK, CLI, or endpoint</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Deterministic selection</b><span class="sub">same album, same story — no run-to-run drift</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Duplicate-clip guard</b><span class="sub">a clip is enforced to appear once, film-wide</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Motion-scored highlights</b><span class="sub">long clips trimmed to their most active window, capped at 20s</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Continuous soundtrack</b><span class="sub">clip audio muted; licensed music plays end to end</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Hebrew / RTL captions</b><span class="sub">bidi-shaped card text where the source language calls for it</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Content-addressed render cache</b><span class="sub">interrupted or re-run jobs skip completed shots</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Live progress readout</b><span class="sub">percent and ETA in the terminal in place of raw log noise</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>No repeated clips</b><span class="sub">every moment appears once, film-wide</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Highlight-trimmed video</b><span class="sub">long clips cut down to their best moment, capped at 20s</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Continuous soundtrack</b><span class="sub">your clips' own noise is muted; music plays end to end</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Hebrew / RTL captions</b><span class="sub">right-to-left text rendered correctly where it's needed</span></div></div>
+        <div class="check"><span class="mark">✓</span><div><b>Progress you can watch</b><span class="sub">a live percent-complete readout while your film is made</span></div></div>
         <div class="check"><span class="mark">✓</span><div><b>Spatial roadmap</b><span class="sub">real-map route recap, day by day and at the close</span></div></div>
       </div>
     </div>
@@ -301,15 +285,14 @@
   <section style="border-bottom:none;">
     <div class="run">
       <span class="eyebrow" style="color:#B9AC93;">Roll Camera</span>
-      <h2 style="margin-top:8px;">Run it on one album</h2>
-      <p>One public Google Photos link in, two finished cuts out.</p>
-      <pre>python from_url.py "https://photos.app.goo.gl/&lt;your-album&gt;" --selection reduced</pre>
+      <h2 style="margin-top:8px;">Share one album, get two finished films</h2>
+      <p>Share a public Google Photos album link. Come back to a widescreen cut for the TV and a vertical cut for your phone — both ready to watch or send.</p>
     </div>
   </section>
 
   <footer>
-    <span>ALBUMASTRA &middot; MANIFEST-DRIVEN FILM PIPELINE</span>
-    <span>NO MODEL CALLS &middot; SEE README.md</span>
+    <span>ALBUMASTRA &middot; AUTOMATIC TRAVEL FILMS</span>
+    <span>YOUR ORIGINAL PHOTOS AND VIDEOS ARE NEVER CHANGED</span>
   </footer>
 
 </div>
