@@ -1,5 +1,21 @@
 <!doctype html>
-<title>The Cutting Room</title>
+<title>TaleMontage | Turn a Google Photos album into a travel film</title>
+<meta name="description" content="TaleMontage turns a shared Google Photos album into a captioned, scored, map-illustrated travel film -- one widescreen cut for the TV and one vertical cut for your phone.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TaleMontage">
+<meta property="og:title" content="TaleMontage | Your trip, now a movie">
+<meta property="og:description" content="Share a Google Photos album, review the selection, and get a captioned, scored travel film -- widescreen and vertical.">
+<meta property="og:url" content="https://edenguy.github.io/talemontage/">
+<meta property="og:image" content="https://edenguy.github.io/talemontage/og-talemontage-v1.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="1200">
+<meta property="og:image:alt" content="TaleMontage -- your trip, now a movie">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="TaleMontage | Your trip, now a movie">
+<meta name="twitter:image" content="https://edenguy.github.io/talemontage/og-talemontage-v1.png">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,6 +101,7 @@
   .leader .count span:last-child{ opacity:1; color:var(--ink); font-weight:600; }
   .wordmark{ font-size: clamp(52px, 11vw, 108px); line-height:.86; }
   .wordmark em{ font-style:normal; color:var(--accent); }
+  .logo{ display:block; width:64px; height:64px; border-radius:14px; margin:6px 0 18px; box-shadow:0 6px 18px -8px rgba(30,26,22,.5); }
   .thesis{
     max-width:60ch; font-size:1.2rem; color:var(--ink-soft); margin-top:18px;
   }
@@ -171,7 +188,8 @@
       <span class="count"><span>05</span><span>04</span><span>03</span><span>02</span><span>01</span></span>
       <span>&nbsp;LEADER &middot; PROJECT REEL</span>
     </div>
-    <h1 class="wordmark">Album<em>Astra</em></h1>
+    <img class="logo" src="favicon.svg" alt="" width="64" height="64">
+    <h1 class="wordmark">Tale<em>Montage</em></h1>
     <p class="thesis">Turn a shared Google Photos album into a polished travel film — captioned, scored to your best moments, and cut for both the TV and your phone. No editing required.</p>
     <div class="status-row">
       <span class="pill on">Two ready-to-share cuts</span>
@@ -187,7 +205,7 @@
     <p style="max-width:62ch; color:var(--ink-soft);">Google Photos' only built-in movie is an auto-generated "Memories" clip — it can't take a specific album, can't choose which of your videos survive the cut, and can't carry a soundtrack you're allowed to publish. Everything past that is done by hand.</p>
 
     <div class="track-row">
-      <div class="track-label">Without<br>AlbumAstra</div>
+      <div class="track-label">Without<br>TaleMontage</div>
       <div class="track messy">
         <div class="clip"><span class="t">Manual &middot; hours</span>Scroll &amp; download 300+ photos one by one</div>
         <div class="clip"><span class="t">Manual &middot; hours</span>Drag every clip into a video editor</div>
@@ -197,7 +215,7 @@
       </div>
     </div>
     <div class="track-row">
-      <div class="track-label">With<br>AlbumAstra</div>
+      <div class="track-label">With<br>TaleMontage</div>
       <div class="track clean">
         <div class="clip"><span class="t">00:00:00:00 &rarr; 00:00:00:07</span>Share the album link. The steps below happen on their own and hand back two finished films.</div>
       </div>
@@ -265,6 +283,21 @@
   </section>
 
   <section>
+    <span class="eyebrow">Reel 4 &middot; The Director's Chair</span>
+    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">You stay in charge of the story</h2>
+    <p style="max-width:62ch; color:var(--ink-soft);">TaleMontage makes the first cut automatically, then hands you the chair. Review what it picked before a single frame renders, and steer the result with a few plain choices.</p>
+
+    <div class="pain-grid">
+      <div class="pain"><div class="n">REVIEW FIRST</div><p>A contact sheet of the selected photos and clips, with running time, lets you drop or restore moments before the film is rendered. Your own album captions carry into the film.</p></div>
+      <div class="pain"><div class="n">SHAPE THE FILM</div><p>Pick a target length from three to twelve minutes, a calm, balanced or energetic pace, a reduced highlights reel or the full album in order, and short highlights or full videos.</p></div>
+      <div class="pain"><div class="n">PEOPLE VS. SCENERY</div><p>Tilt the selection toward fewer or more faces. Sharp scenery can still beat a mediocre portrait, and the reverse holds too.</p></div>
+      <div class="pain"><div class="n">YOUR SOUNDTRACK</div><p>Choose a music style: classical and acoustic, rock, metal, electronic, or any. Every track is royalty-free and carries its license in the film's credits. Don't like the pick? Swap the style and re-score.</p></div>
+      <div class="pain"><div class="n">EVERY SCREEN</div><p>Widescreen for the TV, vertical for the phone, or both from the same run. Preview renders come back fast before you commit to the final quality.</p></div>
+      <div class="pain"><div class="n">NO AI GUESSWORK</div><p>Selection, sequencing and rendering follow fixed, published rules. There are no model calls anywhere in the pipeline, so the same album gives the same film every time.</p></div>
+    </div>
+  </section>
+
+  <section>
     <span class="eyebrow">Print Check</span>
     <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Every film includes</h2>
     <div class="slip">
@@ -291,7 +324,7 @@
   </section>
 
   <footer>
-    <span>ALBUMASTRA &middot; AUTOMATIC TRAVEL FILMS</span>
+    <span>TALEMONTAGE &middot; AUTOMATIC TRAVEL FILMS</span>
     <span>YOUR ORIGINAL PHOTOS AND VIDEOS ARE NEVER CHANGED</span>
   </footer>
 

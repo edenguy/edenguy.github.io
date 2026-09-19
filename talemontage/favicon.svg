@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>TaleMontage</title>
+  <rect width="64" height="64" rx="14" fill="#10151c"/>
+  <rect x="7" y="12" width="14" height="18" rx="2.5" fill="#f3efe6"/>
+  <rect x="25" y="12" width="14" height="18" rx="2.5" fill="#f0b153"/>
+  <rect x="43" y="12" width="14" height="18" rx="2.5" fill="#f3efe6"/>
+  <rect x="25" y="34" width="14" height="20" rx="2.5" fill="#f0b153"/>
+</svg>
