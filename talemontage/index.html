@@ -1,5 +1,11 @@
 <!doctype html>
-<title>TaleMontage | Turn a Google Photos album into a travel film</title>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#07070a">
+<meta name="color-scheme" content="dark">
+<title>TaleMontage | Your trip, now a movie</title>
 <meta name="description" content="TaleMontage turns a shared Google Photos album into a captioned, scored, map-illustrated travel film -- one widescreen cut for the TV and one vertical cut for your phone.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
@@ -16,330 +22,244 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="TaleMontage | Your trip, now a movie">
 <meta name="twitter:image" content="https://edenguy.github.io/talemontage/og-talemontage-v1.png">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@500;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
-  :root{
-    --ground:#F5F0E6; --surface:#FFFFFF; --surface-2:#EDE5D5;
-    --ink:#1E1A16; --ink-soft:#4A4237; --muted:#7A6F60; --line:#D8CDB8;
-    --accent:#C97C1F; --accent-ink:#3A2506; --accent-soft:#F1DBB4;
-    --teal:#1E8F86; --teal-soft:#D8EEEB;
-    --rust:#B14730; --rust-soft:#F3DAD1;
-    --shadow: 0 1px 0 rgba(30,26,22,.06);
+  :root {
+    --bg:#07070a; --bg-2:#0c0c12; --surface:#131318; --surface-2:#191922;
+    --ink:#f4f1ea; --ink-dim:#c9c5bd; --muted:#8d8a95;
+    --gold:#f0b155; --gold-deep:#c98a2e; --violet:#8d7bf5; --violet-deep:#5b4bd6;
+    --line:rgba(255,255,255,.09); --line-strong:rgba(255,255,255,.17);
+    --r-lg:22px; --r-md:14px; --r-pill:999px;
   }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --ground:#14110F; --surface:#1E1A16; --surface-2:#262019;
-      --ink:#F2E9DC; --ink-soft:#D8CBB4; --muted:#9C8F7E; --line:#3A3227;
-      --accent:#E8A33D; --accent-ink:#2A1B04; --accent-soft:#3B2C13;
-      --teal:#4FD1C5; --teal-soft:#173330;
-      --rust:#E07456; --rust-soft:#3A211A;
-      --shadow: 0 1px 0 rgba(0,0,0,.4);
-    }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; min-height:100vh; color:var(--ink); font-family:"Manrope","Segoe UI",system-ui,sans-serif;
+    font-feature-settings:"ss01" 1; -webkit-font-smoothing:antialiased; line-height:1.6;
+    background:
+      radial-gradient(1100px 640px at 10% -8%, rgba(240,177,85,.16), transparent 60%),
+      radial-gradient(900px 680px at 102% 8%, rgba(141,123,245,.16), transparent 55%),
+      radial-gradient(1100px 800px at 50% 115%, rgba(141,123,245,.09), transparent 60%),
+      var(--bg);
+    background-attachment:fixed;
   }
-  :root[data-theme="dark"]{
-    --ground:#14110F; --surface:#1E1A16; --surface-2:#262019;
-    --ink:#F2E9DC; --ink-soft:#D8CBB4; --muted:#9C8F7E; --line:#3A3227;
-    --accent:#E8A33D; --accent-ink:#2A1B04; --accent-soft:#3B2C13;
-    --teal:#4FD1C5; --teal-soft:#173330;
-    --rust:#E07456; --rust-soft:#3A211A;
-    --shadow: 0 1px 0 rgba(0,0,0,.4);
-  }
+  ::selection { background:var(--gold); color:#0b0b0f; }
+  a { color:var(--gold); }
+  .shell { width:min(1120px, calc(100% - 32px)); margin:auto; }
+  h1, h2 { font-family:"Fraunces",Georgia,serif; font-weight:500; }
 
-  *{box-sizing:border-box}
-  html{color-scheme:light dark}
-  body{
-    margin:0; background:var(--ground); color:var(--ink);
-    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
-    font-size:17px; line-height:1.6;
-    padding-inline: clamp(18px, 5vw, 56px);
-  }
-  h1,h2,h3,.display{
-    font-family:"Big Shoulders Display", "Arial Narrow", sans-serif;
-    font-weight:800; text-transform:uppercase; letter-spacing:.01em;
-    text-wrap:balance; color:var(--ink); margin:0;
-  }
-  .mono{ font-family:"IBM Plex Mono", ui-monospace, Consolas, monospace; font-variant-numeric:tabular-nums; }
-  .eyebrow{
-    font-family:"IBM Plex Mono", monospace; font-size:12.5px; letter-spacing:.14em;
-    text-transform:uppercase; color:var(--muted);
-  }
-  a{ color:var(--teal); }
-  .cta{
-    display:inline-block; margin-top:22px; padding:14px 30px; border-radius:999px; text-decoration:none;
-    background:var(--accent); color:var(--accent-ink); font-family:"IBM Plex Mono", monospace; font-weight:600;
-    font-size:15px; letter-spacing:.06em; text-transform:uppercase;
-  }
-  .cta:hover{ filter:brightness(1.08); }
-  img{max-width:100%}
+  .bar { display:flex; align-items:center; justify-content:space-between; padding:22px 0; }
+  .brand { display:flex; align-items:center; gap:10px; font-family:"Fraunces",Georgia,serif; font-size:1.4rem; text-decoration:none; color:var(--ink); }
+  .brand img { width:30px; height:30px; }
+  .brand em { color:var(--gold); font-style:normal; }
+  .bar nav { display:flex; align-items:center; gap:22px; }
+  .bar nav a.link { color:var(--ink-dim); text-decoration:none; font-weight:600; font-size:.92rem; }
+  .bar nav a.link:hover { color:var(--ink); }
+  @media (max-width:640px) { .bar nav a.link { display:none; } }
 
-  /* ---------- sprocket rails ---------- */
-  .reel{
-    max-width:920px; margin:0 auto;
-    border-left:1px dashed var(--line); border-right:1px dashed var(--line);
-    padding-inline: clamp(20px, 4vw, 44px);
-    position:relative;
+  .btn {
+    display:inline-block; padding:14px 30px; border-radius:var(--r-pill); font-weight:800; text-decoration:none;
+    color:#0b0b0f; background:linear-gradient(135deg,var(--gold),var(--gold-deep));
+    box-shadow:0 10px 30px -10px rgba(240,177,85,.55); transition:transform .15s, box-shadow .15s;
   }
-  .reel::before, .reel::after{
-    content:""; position:absolute; top:0; bottom:0; width:20px;
-    background-image: radial-gradient(circle at 10px 16px, var(--surface-2) 5px, transparent 5.5px);
-    background-size: 20px 34px; background-repeat: repeat-y;
-    opacity:.9;
-  }
-  .reel::before{ left:-11px; }
-  .reel::after{ right:-11px; }
-  @media (max-width:560px){ .reel::before,.reel::after{ display:none; } .reel{ border:none; padding-inline:0; } }
+  .btn:hover { transform:translateY(-2px); box-shadow:0 14px 34px -10px rgba(240,177,85,.7); }
+  .btn.sm { padding:9px 20px; font-size:.9rem; box-shadow:none; }
+  .btn.ghost { background:none; color:var(--ink); border:1px solid var(--line-strong); box-shadow:none; }
+  .btn.ghost:hover { border-color:var(--gold); }
 
-  section{ padding-block: clamp(40px, 7vw, 76px); border-bottom:1px solid var(--line); }
-  section:last-of-type{ border-bottom:none; }
+  .hero { text-align:center; padding:70px 0 40px; }
+  .eyebrow { display:inline-block; color:var(--gold); font-weight:800; font-size:.78rem; letter-spacing:.18em; text-transform:uppercase; margin-bottom:16px; }
+  h1 { font-size:clamp(2.6rem,8vw,5rem); line-height:1.02; margin:0 0 20px; }
+  h1 em { color:var(--gold); font-style:italic; }
+  .lede { max-width:660px; margin:0 auto 32px; color:var(--ink-dim); font-size:1.15rem; }
+  .cta-row { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; }
+  .pills { display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-top:34px; }
+  .pill { border:1px solid var(--line-strong); border-radius:var(--r-pill); padding:7px 16px; color:var(--ink-dim); font-size:.84rem; font-weight:600; background:rgba(255,255,255,.03); }
+  .pill::before { content:"\2713"; color:var(--gold); margin-right:8px; font-weight:800; }
 
-  /* ---------- hero ---------- */
-  .hero{ padding-block: clamp(30px, 6vw, 52px) clamp(40px,7vw,64px); }
-  .leader{
-    display:flex; align-items:center; gap:14px; margin-bottom:22px;
-    color:var(--muted); font-family:"IBM Plex Mono",monospace; font-size:13px;
+  section { padding:56px 0; }
+  .head { text-align:center; margin-bottom:34px; }
+  h2 { font-size:clamp(1.9rem,4.5vw,2.8rem); line-height:1.1; margin:0 0 12px; }
+  .sub { color:var(--ink-dim); max-width:640px; margin:0 auto; }
+  .grid { display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
+  .card {
+    background:linear-gradient(180deg,var(--surface),var(--bg-2)); border:1px solid var(--line);
+    border-radius:var(--r-lg); padding:26px;
   }
-  .leader .tick{ width:9px; height:9px; border-radius:50%; background:var(--accent); flex:none; }
-  .leader .count{ display:flex; gap:10px; font-size:15px; letter-spacing:.08em; }
-  .leader .count span{ opacity:.35; }
-  .leader .count span:last-child{ opacity:1; color:var(--ink); font-weight:600; }
-  .wordmark{ font-size: clamp(52px, 11vw, 108px); line-height:.86; }
-  .wordmark em{ font-style:normal; color:var(--accent); }
-  .logo{ display:block; width:64px; height:64px; border-radius:14px; margin:6px 0 18px; box-shadow:0 6px 18px -8px rgba(30,26,22,.5); }
-  .thesis{
-    max-width:60ch; font-size:1.2rem; color:var(--ink-soft); margin-top:18px;
-  }
-  .status-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:26px; }
-  .pill{
-    font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:.04em;
-    border:1px solid var(--line); border-radius:999px; padding:6px 14px;
-    color:var(--ink-soft); background:var(--surface); display:inline-flex; align-items:center; gap:7px;
-  }
-  .pill.on::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--teal); }
+  .card .k { color:var(--gold); font-weight:800; font-size:.74rem; letter-spacing:.16em; text-transform:uppercase; }
+  .card h3 { margin:8px 0 8px; font-size:1.12rem; }
+  .card p { margin:8px 0 0; color:var(--ink-dim); font-size:.97rem; }
+  .steps .card .k { font-family:"Fraunces",Georgia,serif; font-size:2rem; letter-spacing:0; color:var(--violet); line-height:1; }
 
-  /* ---------- problem / solution timeline ---------- */
-  .track-row{ display:grid; grid-template-columns: 108px 1fr; gap:16px; align-items:stretch; margin-block:10px; }
-  .track-label{
-    font-family:"IBM Plex Mono",monospace; font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
-    color:var(--muted); display:flex; align-items:center; padding-top:2px;
-  }
-  .track{ display:flex; gap:6px; flex-wrap:wrap; }
-  .clip{
-    border-radius:3px; padding:10px 12px; font-size:13.5px; line-height:1.3;
-    box-shadow:var(--shadow); flex: 1 1 auto; min-width:120px;
-  }
-  .clip .t{ display:block; font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.05em; opacity:.75; margin-bottom:4px; }
-  .track.messy .clip{ background:var(--rust-soft); color:var(--ink); border:1px solid var(--rust); }
-  .track.messy .clip:nth-child(3n){ transform:rotate(-0.6deg); }
-  .track.messy .clip:nth-child(3n+1){ transform:rotate(0.5deg); }
-  .track.clean .clip{ background:var(--teal-soft); border:1px solid var(--teal); color:var(--ink); flex-basis:100%; }
-  .split-caption{ font-size:13px; color:var(--muted); margin-top:6px; }
+  .compare { display:grid; gap:16px; grid-template-columns:1fr 1fr; }
+  @media (max-width:720px) { .compare { grid-template-columns:1fr; } }
+  .compare .card ul { list-style:none; margin:14px 0 0; padding:0; }
+  .compare li { padding:9px 0; border-top:1px solid var(--line); color:var(--ink-dim); font-size:.96rem; }
+  .compare .without h3 { color:var(--muted); }
+  .compare .with { border-color:rgba(240,177,85,.4); box-shadow:0 0 0 1px rgba(240,177,85,.15) inset; }
+  .compare .with li::before { content:"\2713  "; color:var(--gold); font-weight:800; }
 
-  .pain-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px; margin-top:28px; }
-  .pain{
-    background:var(--surface); border:1px solid var(--line); border-left:3px solid var(--rust);
-    border-radius:4px; padding:16px 18px;
+  .band {
+    border:1px solid var(--line); border-radius:28px; padding:clamp(24px,5vw,54px);
+    background:
+      radial-gradient(600px 300px at 90% 0%, rgba(141,123,245,.22), transparent 70%),
+      radial-gradient(500px 300px at 0% 100%, rgba(240,177,85,.14), transparent 70%), var(--surface);
   }
-  .pain .n{ font-family:"IBM Plex Mono",monospace; color:var(--rust); font-size:12px; letter-spacing:.06em; }
-  .pain p{ margin:6px 0 0; font-size:14.5px; color:var(--ink-soft); }
+  .band p.intro { margin:0; max-width:720px; color:var(--ink-dim); }
+  .band .grid { margin-top:26px; }
+  .band .card { background:rgba(7,7,10,.55); }
 
-  /* ---------- filmstrip / pipeline ---------- */
-  .filmstrip{
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:0;
-    border:1px solid var(--line); border-radius:6px; overflow:hidden; margin-top:30px;
-  }
-  .frame{
-    background:var(--surface); padding:20px 18px 18px; border-right:1px dashed var(--line);
-    border-top: 4px solid var(--accent);
-    display:flex; flex-direction:column; gap:8px; min-height:100%;
-  }
-  .frame:last-child{ border-right:none; }
-  .frame .fn{ font-family:"IBM Plex Mono",monospace; color:var(--accent); font-size:12px; letter-spacing:.06em; }
-  .frame h3{ font-size:22px; }
-  .frame p{ font-size:14px; color:var(--ink-soft); margin:0; }
-  @media (max-width:640px){ .frame{ border-right:none; border-bottom:1px dashed var(--line);} }
+  .checks { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); }
+  .check { display:flex; gap:14px; padding:16px 18px; border:1px solid var(--line); border-radius:var(--r-md); background:var(--surface); }
+  .check .m { color:var(--gold); font-weight:800; }
+  .check b { display:block; }
+  .check span.d { color:var(--muted); font-size:.9rem; }
 
-  /* ---------- print check / status ---------- */
-  .slip{
-    background:var(--surface); border:1px solid var(--line); border-radius:6px;
-    padding: clamp(20px,4vw,32px); margin-top:26px;
-  }
-  .slip-head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;
-    border-bottom:1px dashed var(--line); padding-bottom:14px; margin-bottom:14px; }
-  .slip-head h3{ font-size:24px; }
-  .slip-head .mono{ font-size:12px; color:var(--muted); }
-  .checklist{ display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:10px 24px; }
-  .check{ display:flex; gap:10px; align-items:flex-start; font-size:14.5px; }
-  .check .mark{ flex:none; width:20px; height:20px; border-radius:4px; background:var(--teal-soft); color:var(--teal);
-    display:flex; align-items:center; justify-content:center; font-family:"IBM Plex Mono",monospace; font-size:13px; margin-top:1px; }
-  .check b{ display:block; }
-  .check span.sub{ color:var(--muted); font-size:13px; }
-
-  /* ---------- run it ---------- */
-  .run{ background:var(--ink); color:var(--ground); border-radius:8px; padding: clamp(20px,4vw,30px); }
-  .run h2{ color:var(--ground); }
-  .run p{ color:#D8CBB4; }
-
-  footer{ padding-block: 30px 60px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
-    font-family:"IBM Plex Mono",monospace; font-size:12px; color:var(--muted); }
+  .final { text-align:center; padding:80px 0 90px; }
+  .final .lede { margin-bottom:28px; }
+  footer { border-top:1px solid var(--line); padding:26px 0 44px; color:var(--muted); font-size:.82rem; display:flex; gap:14px; flex-wrap:wrap; justify-content:space-between; }
+  footer a { color:var(--ink-dim); }
 </style>
+</head>
+<body>
+<div class="shell">
 
-<div class="reel">
+  <header class="bar">
+    <a class="brand" href="./"><img src="favicon.svg" alt="">Tale<em>Montage</em></a>
+    <nav>
+      <a class="link" href="#how">How it works</a>
+      <a class="link" href="#map">The map</a>
+      <a class="link" href="#control">Your control</a>
+      <a class="btn sm" href="https://app.talemontage.com">Open the app</a>
+    </nav>
+  </header>
 
   <section class="hero">
-    <div class="leader">
-      <span class="tick"></span>
-      <span class="count"><span>05</span><span>04</span><span>03</span><span>02</span><span>01</span></span>
-      <span>&nbsp;LEADER &middot; PROJECT REEL</span>
+    <span class="eyebrow">Automatic travel films</span>
+    <h1>Your trip,<br><em>now a movie.</em></h1>
+    <p class="lede">Turn a shared Google Photos album into a polished travel film &mdash; captioned, scored to your best moments, illustrated with your real route, and cut for both the TV and your phone. No editing required.</p>
+    <div class="cta-row">
+      <a class="btn" href="https://app.talemontage.com">Make my film</a>
+      <a class="btn ghost" href="#how">See how it works</a>
     </div>
-    <img class="logo" src="favicon.svg" alt="" width="64" height="64">
-    <h1 class="wordmark">Tale<em>Montage</em></h1>
-    <p class="thesis">Turn a shared Google Photos album into a polished travel film — captioned, scored to your best moments, and cut for both the TV and your phone. No editing required.</p>
-    <div class="status-row">
-      <span class="pill on">Two ready-to-share cuts</span>
-      <span class="pill on">Royalty-free soundtrack included</span>
-      <span class="pill on">Your originals stay untouched</span>
+    <div class="pills">
+      <span class="pill">Two ready-to-share cuts</span>
+      <span class="pill">Royalty-free soundtrack included</span>
+      <span class="pill">Your originals stay untouched</span>
       <span class="pill">Picks up where it left off</span>
     </div>
-    <a class="cta" href="https://app.talemontage.com">Make my film</a>
   </section>
 
   <section>
-    <span class="eyebrow">Reel 1 &middot; The Problem</span>
-    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Turning an album into a film is still a manual cutting-room job</h2>
-    <p style="max-width:62ch; color:var(--ink-soft);">Google Photos' only built-in movie is an auto-generated "Memories" clip — it can't take a specific album, can't choose which of your videos survive the cut, and can't carry a soundtrack you're allowed to publish. Everything past that is done by hand.</p>
-
-    <div class="track-row">
-      <div class="track-label">Without<br>TaleMontage</div>
-      <div class="track messy">
-        <div class="clip"><span class="t">Manual &middot; hours</span>Scroll &amp; download 300+ photos one by one</div>
-        <div class="clip"><span class="t">Manual &middot; hours</span>Drag every clip into a video editor</div>
-        <div class="clip"><span class="t">Manual</span>Guess which 90s phone clips to trim</div>
-        <div class="clip"><span class="t">Manual</span>Hunt for music you're legally allowed to use</div>
-        <div class="clip"><span class="t">Manual &middot; ×2</span>Re-cut separately for TV and phone</div>
-      </div>
+    <div class="head">
+      <span class="eyebrow">The problem</span>
+      <h2>Turning an album into a film is still a manual cutting-room job</h2>
+      <p class="sub">Google Photos&rsquo; only built-in movie is an auto-generated &ldquo;Memories&rdquo; clip &mdash; it can&rsquo;t take a specific album, can&rsquo;t choose which of your videos survive the cut, and can&rsquo;t carry a soundtrack you&rsquo;re allowed to publish.</p>
     </div>
-    <div class="track-row">
-      <div class="track-label">With<br>TaleMontage</div>
-      <div class="track clean">
-        <div class="clip"><span class="t">00:00:00:00 &rarr; 00:00:00:07</span>Share the album link. The steps below happen on their own and hand back two finished films.</div>
+    <div class="compare">
+      <div class="card without">
+        <span class="k">Without TaleMontage</span>
+        <h3>Hours of it, by hand</h3>
+        <ul>
+          <li>Scroll and download 300+ photos one by one</li>
+          <li>Drag every clip into a video editor</li>
+          <li>Guess which 90-second phone clips to trim</li>
+          <li>Hunt for music you&rsquo;re legally allowed to use</li>
+          <li>Re-cut separately for the TV and for your phone</li>
+        </ul>
       </div>
-    </div>
-    <p class="split-caption">One track replaces five — same source album, same two exports, none of it by hand.</p>
-
-    <div class="pain-grid">
-      <div class="pain"><div class="n">PAIN 01</div><p>A real family album easily runs 200&ndash;400 photos and clips — sorting that by capture date and quality by hand is a multi-hour task before you've cut a single scene.</p></div>
-      <div class="pain"><div class="n">PAIN 02</div><p>Raw phone video routinely runs 30&ndash;90+ seconds per clip. Drop it in unedited and a five-minute film becomes an unwatchable half hour.</p></div>
-      <div class="pain"><div class="n">PAIN 03</div><p>Licensing a soundtrack you can actually publish — without a future takedown — is its own research project most people skip, then wonder why the clip's raw noise is all you hear.</p></div>
-      <div class="pain"><div class="n">PAIN 04</div><p>A cut for the living-room TV and one for a phone screen are two different aspect ratios, two exports, two rounds of manual timing.</p></div>
-    </div>
-  </section>
-
-  <section>
-    <span class="eyebrow">Reel 2 &middot; The Cut</span>
-    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">From album link to finished film</h2>
-    <p style="max-width:62ch; color:var(--ink-soft);">Six steps happen automatically once you share the album — no timeline to touch, no software to learn.</p>
-
-    <div class="filmstrip">
-      <div class="frame">
-        <span class="fn">STEP 01</span>
-        <h3>Gather</h3>
-        <p>Downloads every photo and video in the album, in the order you took them — and picks up right where it left off if a connection drops.</p>
-      </div>
-      <div class="frame">
-        <span class="fn">STEP 02</span>
-        <h3>Curate</h3>
-        <p>Checks focus and exposure on every shot and quietly drops the blurry, near-duplicate, and repeated ones.</p>
-      </div>
-      <div class="frame">
-        <span class="fn">STEP 03</span>
-        <h3>Shape</h3>
-        <p>Groups the trip by day, keeps your strongest photos, limits how many clips appear per day, and never shows the same clip twice.</p>
-      </div>
-      <div class="frame">
-        <span class="fn">STEP 04</span>
-        <h3>Locate</h3>
-        <p>Reads the location tagged on each photo and labels every scene with the city or place it was taken.</p>
-      </div>
-      <div class="frame">
-        <span class="fn">STEP 05</span>
-        <h3>Score</h3>
-        <p>Adds a royalty-free instrumental soundtrack that plays continuously underneath, so your clips' own background noise doesn't take over.</p>
-      </div>
-      <div class="frame">
-        <span class="fn">STEP 06</span>
-        <h3>Render</h3>
-        <p>Puts it all together into two finished films — one widescreen cut for the TV, one vertical cut for your phone.</p>
+      <div class="card with">
+        <span class="k">With TaleMontage</span>
+        <h3>Share the album link</h3>
+        <ul>
+          <li>Every step below happens on its own</li>
+          <li>You review and steer the selection</li>
+          <li>Two finished films come back, ready to send</li>
+          <li>Same album, same films, none of it by hand</li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <section>
-    <span class="eyebrow">Reel 3 &middot; The Map</span>
-    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">A spatial roadmap, not just a slideshow</h2>
-    <p style="max-width:62ch; color:var(--ink-soft);">Every GPS-tagged photo and clip in the album — not just the ones that made the cut — plots onto a real map in capture order. Each day's own travel crawls in as the film reaches it, building on every day already shown; the film closes on the complete route animating end to end, with the total kilometers, days, stops, and countries covered.</p>
+  <section id="how">
+    <div class="head">
+      <span class="eyebrow">The cut</span>
+      <h2>From album link to finished film</h2>
+      <p class="sub">Six steps happen automatically once you share the album &mdash; no timeline to touch, no software to learn.</p>
+    </div>
+    <div class="grid steps">
+      <div class="card"><span class="k">01</span><h3>Gather</h3><p>Downloads every photo and video in the album, in the order you took them &mdash; and picks up right where it left off if a connection drops.</p></div>
+      <div class="card"><span class="k">02</span><h3>Curate</h3><p>Checks focus and exposure on every shot and quietly drops the blurry, near-duplicate and repeated ones.</p></div>
+      <div class="card"><span class="k">03</span><h3>Shape</h3><p>Groups the trip by day, keeps your strongest photos, limits how many clips appear per day, and never shows the same clip twice.</p></div>
+      <div class="card"><span class="k">04</span><h3>Locate</h3><p>Reads the location tagged on each photo and labels every scene with the city or place it was taken.</p></div>
+      <div class="card"><span class="k">05</span><h3>Score</h3><p>Adds a royalty-free instrumental soundtrack that plays continuously, so your clips&rsquo; own background noise doesn&rsquo;t take over.</p></div>
+      <div class="card"><span class="k">06</span><h3>Render</h3><p>Puts it all together into two finished films &mdash; one widescreen cut for the TV, one vertical cut for your phone.</p></div>
+    </div>
+  </section>
 
-    <div class="pain-grid">
-      <div class="pain"><div class="n">EVERY DAY</div><p>A day-title card becomes a small map instead of plain text: yesterday's route already drawn, today's crawling in fresh — framed tight to that day's own area so an early day doesn't vanish in a map sized for the last one.</p></div>
-      <div class="pain"><div class="n">THE FINALE</div><p>A closing recap animates the whole trip's route across a real map, opening on the headline numbers rather than saving them as an end payoff.</p></div>
-      <div class="pain"><div class="n">REAL GEOGRAPHY</div><p>Real OpenStreetMap tiles, darkened and kept vivid — not an abstract line on a blank canvas — labelled with the same place names already used for on-screen location badges.</p></div>
-      <div class="pain"><div class="n">FLIGHT DETECTION</div><p>A leg too long for a single day's drive draws as a dashed arc, the familiar flight-path convention, instead of a straight line.</p></div>
+  <section id="map">
+    <div class="band">
+      <span class="eyebrow">The map</span>
+      <h2>A spatial roadmap, not just a slideshow</h2>
+      <p class="intro">Every GPS-tagged photo and clip in the album &mdash; not just the ones that made the cut &mdash; plots onto a real map in capture order. Each day&rsquo;s own travel crawls in as the film reaches it; the film closes on the complete route, with the total kilometers, days, stops and countries covered.</p>
+      <div class="grid">
+        <div class="card"><span class="k">Every day</span><h3>A map card, not plain text</h3><p>Yesterday&rsquo;s route already drawn, today&rsquo;s crawling in fresh &mdash; framed tight to that day&rsquo;s own area.</p></div>
+        <div class="card"><span class="k">The finale</span><h3>The whole trip, animated</h3><p>A closing recap draws the complete route across a real map, opening on the headline numbers.</p></div>
+        <div class="card"><span class="k">Real geography</span><h3>OpenStreetMap, your style</h3><p>Real tiles in a look you choose, labelled with the same place names used on the scene badges.</p></div>
+        <div class="card"><span class="k">Flights</span><h3>Dashed arcs for long legs</h3><p>A leg too long for a day&rsquo;s drive draws as a dashed arc, the familiar flight-path convention.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="control">
+    <div class="head">
+      <span class="eyebrow">The director&rsquo;s chair</span>
+      <h2>You stay in charge of the story</h2>
+      <p class="sub">TaleMontage makes the first cut automatically, then hands you the chair. Paste the album link, confirm it&rsquo;s the right one, and steer the result in a few short steps.</p>
+    </div>
+    <div class="grid">
+      <div class="card"><span class="k">Confirm your album</span><p>Paste a share link and see the album&rsquo;s real cover, name and item count before anything starts. A link can carry the album inside it, so you can send someone a ready-to-go page.</p></div>
+      <div class="card"><span class="k">Review first</span><p>A thumbnail grid of every photo and clip, grouped by day, shows what was picked and the running time. Untick to drop a moment, or clear every shot with faces in one click. On a phone, press and hold, then drag to select a whole block. Every tick is saved as you go.</p></div>
+      <div class="card"><span class="k">Length &amp; pace</span><p>Pick a target length from three to twelve minutes and how long each photo stays. A slider re-fills the selection toward the running time, best shots first, while your hand-picked choices stay put.</p></div>
+      <div class="card"><span class="k">People vs. scenery</span><p>Tilt the selection toward fewer or more faces. Sharp scenery can still beat a mediocre portrait, and the reverse holds too.</p></div>
+      <div class="card"><span class="k">Your soundtrack</span><p>Choose a style: classical and acoustic, rock, metal, electronic, or any. Every track is royalty-free and credited. Don&rsquo;t like the pick? Swap the style on the finished film and it re-scores.</p></div>
+      <div class="card"><span class="k">Every screen</span><p>Widescreen for the TV, vertical for the phone, or both from the same run. Turn on a soft crossfade between photos, or keep straight cuts.</p></div>
+      <div class="card"><span class="k">Picks up where you left</span><p>Refresh or reopen the link and you land back on your build&rsquo;s progress, review or finished films. Closing a tab doesn&rsquo;t cancel it on the spot.</p></div>
+      <div class="card"><span class="k">No AI guesswork</span><p>Selection, sequencing and rendering follow fixed, published rules. No model calls anywhere in the pipeline, so the same album gives the same film every time.</p></div>
     </div>
   </section>
 
   <section>
-    <span class="eyebrow">Reel 4 &middot; The Director's Chair</span>
-    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">You stay in charge of the story</h2>
-    <p style="max-width:62ch; color:var(--ink-soft);">TaleMontage makes the first cut automatically, then hands you the chair. Paste the album link, confirm it's the right one, and steer the result with a few plain choices in three short steps: Album, Screens, Story.</p>
-
-    <div class="pain-grid">
-      <div class="pain"><div class="n">CONFIRM YOUR ALBUM</div><p>Paste a Google Photos share link and see the album's real cover photo, name and item count before anything starts. A link can also carry the album inside it, so you can send someone a ready-to-go page.</p></div>
-      <div class="pain"><div class="n">REVIEW FIRST</div><p>Once the album is analysed, a thumbnail grid of every photo and clip, grouped by day, shows what was picked and its running time. Uncheck to drop a moment, check to bring one back, or deselect every shot with faces in one click. Your own album captions show alongside. On a phone, press and hold a photo, then drag to select or clear a whole block at once. Every tick is saved as you go, so a refresh never costs you your selection.</p></div>
-      <div class="pain"><div class="n">A LENGTH SLIDER</div><p>Drag between fewer and more photos and the selection re-fills toward that running time, best shots first, while your hand-picked choices stay put. No waiting on a server for each nudge.</p></div>
-      <div class="pain"><div class="n">SHAPE THE FILM</div><p>Name your film and pick a target length from three to twelve minutes, a calm, balanced or energetic pace, a reduced highlights reel or the full album in order, and short highlights or full videos. Choose how much of your album's own captions appear, whether place labels show, and cap the scene count if you want.</p></div>
-      <div class="pain"><div class="n">PEOPLE VS. SCENERY</div><p>Tilt the selection toward fewer or more faces. Sharp scenery can still beat a mediocre portrait, and the reverse holds too.</p></div>
-      <div class="pain"><div class="n">YOUR SOUNDTRACK</div><p>Choose a music style: classical and acoustic, rock, metal, electronic, or any. Every track is royalty-free and carries its license in the film's credits. Don't like the pick? Swap the style on the finished film and it re-scores without re-downloading or re-analysing your album.</p></div>
-      <div class="pain"><div class="n">EVERY SCREEN</div><p>Widescreen for the TV, vertical for the phone, or both from the same run. Preview renders come back fast before you commit to the final quality.</p></div>
-      <div class="pain"><div class="n">PICKS UP WHERE YOU LEFT</div><p>Refresh the page or reopen the link and you land back on your build's progress, review or finished films. Closing a tab doesn't cancel it on the spot, and if something fails, a Try again button restarts it. Your photo selection is remembered too.</p></div>
-      <div class="pain"><div class="n">NO AI GUESSWORK</div><p>Selection, sequencing and rendering follow fixed, published rules. There are no model calls anywhere in the pipeline, so the same album gives the same film every time.</p></div>
+    <div class="head">
+      <span class="eyebrow">Print check</span>
+      <h2>Every film includes</h2>
+    </div>
+    <div class="checks">
+      <div class="check"><span class="m">&#10003;</span><div><b>No repeated clips</b><span class="d">every moment appears once, film-wide</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Highlight-trimmed video</b><span class="d">long clips cut down to their best moment, capped at 20s</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Continuous soundtrack</b><span class="d">your clips&rsquo; own noise is muted; music plays end to end</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Hebrew / RTL captions</b><span class="d">right-to-left text rendered correctly where it&rsquo;s needed</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Soft crossfades</b><span class="d">a barely-there quarter-second dissolve, never a fade to black</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>A title card that names the trip</b><span class="d">your album&rsquo;s real name and cover photo</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Licensed music, credited</b><span class="d">royalty-free tracks, each license listed in the credits</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Spatial roadmap</b><span class="d">real-map route recap, day by day and at the close</span></div></div>
     </div>
   </section>
 
-  <section>
-    <span class="eyebrow">Print Check</span>
-    <h2 style="font-size:clamp(30px,5vw,44px); margin-top:8px;">Every film includes</h2>
-    <div class="slip">
-      <div class="slip-head">
-        <h3>What you get, every time</h3>
-      </div>
-      <div class="checklist">
-        <div class="check"><span class="mark">✓</span><div><b>No repeated clips</b><span class="sub">every moment appears once, film-wide</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Highlight-trimmed video</b><span class="sub">long clips cut down to their best moment, capped at 20s</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Continuous soundtrack</b><span class="sub">your clips' own noise is muted; music plays end to end</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Hebrew / RTL captions</b><span class="sub">right-to-left text rendered correctly where it's needed</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Progress you can watch</b><span class="sub">a live percent-complete readout while your film is made</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>A title card that names the trip</b><span class="sub">your album's real name and cover photo, so the film is recognisable anywhere</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Licensed music, credited</b><span class="sub">royalty-free tracks, each license listed in the film's credits</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Soft crossfades</b><span class="sub">a barely-there quarter-second dissolve between photos, never a fade to black — switch it off for straight cuts</span></div></div>
-        <div class="check"><span class="mark">✓</span><div><b>Spatial roadmap</b><span class="sub">real-map route recap, day by day and at the close</span></div></div>
-      </div>
-    </div>
-  </section>
-
-  <section style="border-bottom:none;">
-    <div class="run">
-      <span class="eyebrow" style="color:#B9AC93;">Roll Camera</span>
-      <h2 style="margin-top:8px;">Share one album, get two finished films</h2>
-      <p>Share a public Google Photos album link. Come back to a widescreen cut for the TV and a vertical cut for your phone — both ready to watch or send.</p>
-      <a class="cta" href="https://app.talemontage.com">Make my film</a>
-    </div>
+  <section class="final">
+    <span class="eyebrow">Roll camera</span>
+    <h2>Share one album, get two finished films</h2>
+    <p class="lede">Share a public Google Photos album link. Come back to a widescreen cut for the TV and a vertical cut for your phone &mdash; both ready to watch or send.</p>
+    <a class="btn" href="https://app.talemontage.com">Make my film</a>
   </section>
 
   <footer>
-    <span>TALEMONTAGE &middot; AUTOMATIC TRAVEL FILMS</span>
-    <span>YOUR ORIGINAL PHOTOS AND VIDEOS ARE NEVER CHANGED</span>
+    <span>TaleMontage &middot; Automatic travel films</span>
+    <span>Your original photos and videos are never changed &middot; <a href="https://app.talemontage.com">app.talemontage.com</a></span>
   </footer>
 
 </div>
+</body>
+</html>
