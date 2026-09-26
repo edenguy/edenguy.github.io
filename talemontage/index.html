@@ -6,14 +6,14 @@
 <meta name="theme-color" content="#07070a">
 <meta name="color-scheme" content="dark">
 <title>TaleMontage | Your trip, now a movie</title>
-<meta name="description" content="TaleMontage turns a shared Google Photos album into a captioned, scored, map-illustrated travel film -- one widescreen cut for the TV and one vertical cut for your phone.">
+<meta name="description" content="TaleMontage turns a shared photo album into a polished travel film, with captions, music, maps, and your real route. No editing required.">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TaleMontage">
 <meta property="og:title" content="TaleMontage | Your trip, now a movie">
-<meta property="og:description" content="Share a Google Photos album, review the selection, and get a captioned, scored travel film -- widescreen and vertical.">
+<meta property="og:description" content="Share a photo album, review the photos, and get a travel film with captions, music, and your real route.">
 <meta property="og:url" content="https://edenguy.github.io/talemontage/">
 <meta property="og:image" content="https://edenguy.github.io/talemontage/og-talemontage-v1.png">
 <meta property="og:image:width" content="1200">
@@ -93,14 +93,6 @@
   .card p { margin:8px 0 0; color:var(--ink-dim); font-size:.97rem; }
   .steps .card .k { font-family:"Fraunces",Georgia,serif; font-size:2rem; letter-spacing:0; color:var(--violet); line-height:1; }
 
-  .compare { display:grid; gap:16px; grid-template-columns:1fr 1fr; }
-  @media (max-width:720px) { .compare { grid-template-columns:1fr; } }
-  .compare .card ul { list-style:none; margin:14px 0 0; padding:0; }
-  .compare li { padding:9px 0; border-top:1px solid var(--line); color:var(--ink-dim); font-size:.96rem; }
-  .compare .without h3 { color:var(--muted); }
-  .compare .with { border-color:rgba(240,177,85,.4); box-shadow:0 0 0 1px rgba(240,177,85,.15) inset; }
-  .compare .with li::before { content:"\2713  "; color:var(--gold); font-weight:800; }
-
   .band {
     border:1px solid var(--line); border-radius:28px; padding:clamp(24px,5vw,54px);
     background:
@@ -116,6 +108,9 @@
   .check .m { color:var(--gold); font-weight:800; }
   .check b { display:block; }
   .check span.d { color:var(--muted); font-size:.9rem; }
+
+  .privacy { text-align:center; }
+  .privacy p.intro { margin:0 auto; max-width:620px; }
 
   .final { text-align:center; padding:80px 0 90px; }
   .final .lede { margin-bottom:28px; }
@@ -139,120 +134,92 @@
   <section class="hero">
     <span class="eyebrow">Automatic travel films</span>
     <h1>Your trip,<br><em>now a movie.</em></h1>
-    <p class="lede">Turn a shared Google Photos album into a polished travel film &mdash; captioned, scored to your best moments, illustrated with your real route, and cut for both the TV and your phone. No editing required.</p>
+    <p class="lede">Turn a shared photo album into a polished travel film &mdash; with captions, music, maps, and your real route. No editing required.</p>
     <div class="cta-row">
-      <a class="btn" href="https://app.talemontage.com">Make my film</a>
+      <a class="btn" href="https://app.talemontage.com">Create my film</a>
       <a class="btn ghost" href="#how">See how it works</a>
     </div>
     <div class="pills">
-      <span class="pill">Two ready-to-share cuts</span>
-      <span class="pill">Royalty-free soundtrack included</span>
+      <span class="pill">For the TV or your phone</span>
+      <span class="pill">Royalty-free music included</span>
       <span class="pill">Your originals stay untouched</span>
-      <span class="pill">Picks up where it left off</span>
     </div>
   </section>
 
   <section>
-    <div class="head">
-      <span class="eyebrow">The problem</span>
-      <h2>Turning an album into a film is still a manual cutting-room job</h2>
-      <p class="sub">Google Photos&rsquo; only built-in movie is an auto-generated &ldquo;Memories&rdquo; clip &mdash; it can&rsquo;t take a specific album, can&rsquo;t choose which of your videos survive the cut, and can&rsquo;t carry a soundtrack you&rsquo;re allowed to publish.</p>
-    </div>
-    <div class="compare">
-      <div class="card without">
-        <span class="k">Without TaleMontage</span>
-        <h3>Hours of it, by hand</h3>
-        <ul>
-          <li>Scroll and download 300+ photos one by one</li>
-          <li>Drag every clip into a video editor</li>
-          <li>Guess which 90-second phone clips to trim</li>
-          <li>Hunt for music you&rsquo;re legally allowed to use</li>
-          <li>Re-cut separately for the TV and for your phone</li>
-        </ul>
-      </div>
-      <div class="card with">
-        <span class="k">With TaleMontage</span>
-        <h3>Share the album link</h3>
-        <ul>
-          <li>Every step below happens on its own</li>
-          <li>You review and steer the selection</li>
-          <li>Two finished films come back, ready to send</li>
-          <li>Same album, same films, none of it by hand</li>
-        </ul>
-      </div>
+    <div class="grid">
+      <div class="card"><span class="k">Your best moments</span><p>The sharpest photos and the best part of each video, day by day. Blurry shots and near-duplicates stay out.</p></div>
+      <div class="card"><span class="k">Your story, told</span><p>Your album&rsquo;s own notes become captions, and every scene shows where it was taken.</p></div>
+      <div class="card"><span class="k">Music that fits</span><p>A royalty-free soundtrack from start to finish, or your own music.</p></div>
+      <div class="card"><span class="k">Film or photo dump</span><p>A full travel film, a fast 20-second reel cut to the beat, or a film that opens with that reel.</p></div>
     </div>
   </section>
 
   <section id="how">
     <div class="head">
-      <span class="eyebrow">The cut</span>
+      <span class="eyebrow">How it works</span>
       <h2>From album link to finished film</h2>
-      <p class="sub">Six steps happen automatically once you share the album &mdash; no timeline to touch, no software to learn.</p>
     </div>
     <div class="grid steps">
-      <div class="card"><span class="k">01</span><h3>Gather</h3><p>Downloads every photo and video in the album, in the order you took them &mdash; and picks up right where it left off if a connection drops.</p></div>
-      <div class="card"><span class="k">02</span><h3>Curate</h3><p>Checks focus and exposure on every shot and quietly drops the blurry, near-duplicate and repeated ones.</p></div>
-      <div class="card"><span class="k">03</span><h3>Shape</h3><p>Groups the trip by day, keeps your strongest photos, limits how many clips appear per day, and never shows the same clip twice.</p></div>
-      <div class="card"><span class="k">04</span><h3>Locate</h3><p>Reads the location tagged on each photo and labels every scene with the city or place it was taken.</p></div>
-      <div class="card"><span class="k">05</span><h3>Score</h3><p>Adds a royalty-free instrumental soundtrack that plays continuously, so your clips&rsquo; own background noise doesn&rsquo;t take over.</p></div>
-      <div class="card"><span class="k">06</span><h3>Render</h3><p>Puts it all together into two finished films &mdash; one widescreen cut for the TV, one vertical cut for your phone.</p></div>
+      <div class="card"><span class="k">1</span><h3>Share your album</h3><p>Paste a shared album link from Google Photos, iCloud, Google Drive, OneDrive, Dropbox, or Amazon Photos.</p></div>
+      <div class="card"><span class="k">2</span><h3>Review your film</h3><p>TaleMontage chooses the strongest moments. You decide what stays.</p></div>
+      <div class="card"><span class="k">3</span><h3>Get your film</h3><p>A finished travel film, ready to watch or share.</p></div>
     </div>
   </section>
 
   <section id="map">
     <div class="band">
       <span class="eyebrow">The map</span>
-      <h2>A spatial roadmap, not just a slideshow</h2>
-      <p class="intro">Every GPS-tagged photo and clip in the album &mdash; not just the ones that made the cut &mdash; plots onto a real map in capture order. Each day&rsquo;s own travel crawls in as the film reaches it; the film closes on the complete route, with the total kilometers, days, stops and countries covered.</p>
+      <h2>Your real route, not just a slideshow</h2>
+      <p class="intro">Every day opens on a map of where you went. The film ends on your whole trip, drawn across a real map with the kilometers, days, and countries covered.</p>
       <div class="grid">
-        <div class="card"><span class="k">Every day</span><h3>A map card, not plain text</h3><p>Yesterday&rsquo;s route already drawn, today&rsquo;s crawling in fresh &mdash; framed tight to that day&rsquo;s own area.</p></div>
-        <div class="card"><span class="k">The finale</span><h3>The whole trip, animated</h3><p>A closing recap draws the complete route across a real map, opening on the headline numbers.</p></div>
-        <div class="card"><span class="k">Real geography</span><h3>OpenStreetMap, your style</h3><p>Real tiles in a look you choose, labelled with the same place names used on the scene badges.</p></div>
-        <div class="card"><span class="k">Flights</span><h3>Dashed arcs for long legs</h3><p>A leg too long for a day&rsquo;s drive draws as a dashed arc, the familiar flight-path convention.</p></div>
+        <div class="card"><span class="k">Every day</span><h3>A map, not a title card</h3><p>Yesterday&rsquo;s route already drawn, today&rsquo;s drawn in fresh.</p></div>
+        <div class="card"><span class="k">The finale</span><h3>The whole trip</h3><p>Your complete route, animated from start to finish.</p></div>
+        <div class="card"><span class="k">Your style</span><h3>Maps that fit your film</h3><p>Choose the look of your maps, previewed on your own trip.</p></div>
       </div>
     </div>
   </section>
 
   <section id="control">
     <div class="head">
-      <span class="eyebrow">The director&rsquo;s chair</span>
-      <h2>You stay in charge of the story</h2>
-      <p class="sub">TaleMontage makes the first cut automatically, then hands you the chair. Paste the album link, confirm it&rsquo;s the right one, and steer the result in a few short steps.</p>
+      <span class="eyebrow">Your control</span>
+      <h2>You&rsquo;re in control</h2>
+      <p class="sub">TaleMontage makes the first cut. You review the photos and decide what stays.</p>
     </div>
     <div class="grid">
-      <div class="card"><span class="k">Confirm your album</span><p>Paste a share link and see the album&rsquo;s real cover, name and item count before anything starts. A link can carry the album inside it, so you can send someone a ready-to-go page.</p></div>
-      <div class="card"><span class="k">Review first</span><p>A thumbnail grid of every photo and clip, grouped by day, shows what was picked and the running time. Untick to drop a moment, or clear every shot with faces in one click. On a phone, press and hold, then drag to select a whole block. Every tick is saved as you go.</p></div>
-      <div class="card"><span class="k">Length &amp; pace</span><p>Pick a target length from three to twelve minutes and how long each photo stays. A slider re-fills the selection toward the running time, best shots first, while your hand-picked choices stay put.</p></div>
-      <div class="card"><span class="k">People vs. scenery</span><p>Tilt the selection toward fewer or more faces. Sharp scenery can still beat a mediocre portrait, and the reverse holds too.</p></div>
-      <div class="card"><span class="k">Your soundtrack</span><p>Choose a style: classical and acoustic, rock, metal, electronic, or any. Every track is royalty-free and credited. Don&rsquo;t like the pick? Swap the style on the finished film and it re-scores.</p></div>
-      <div class="card"><span class="k">Every screen</span><p>Widescreen for the TV, vertical for the phone, or both from the same run. Turn on a soft crossfade between photos, or keep straight cuts.</p></div>
-      <div class="card"><span class="k">Picks up where you left</span><p>Refresh or reopen the link and you land back on your build&rsquo;s progress, review or finished films. Closing a tab doesn&rsquo;t cancel it on the spot.</p></div>
-      <div class="card"><span class="k">No AI guesswork</span><p>Selection, sequencing and rendering follow fixed, published rules. No model calls anywhere in the pipeline, so the same album gives the same film every time.</p></div>
+      <div class="card"><span class="k">Review your photos</span><p>See every photo and video, grouped by day. Select one to include or remove it.</p></div>
+      <div class="card"><span class="k">Length and pace</span><p>Choose how many photos to include and how long each one stays on screen.</p></div>
+      <div class="card"><span class="k">Style and music</span><p>Soft crossfades and gentle motion, the soundtrack you like, or your own music.</p></div>
+      <div class="card"><span class="k">Change it later</span><p>Not happy with the finished film? Change the photos or swap the music and create it again.</p></div>
     </div>
   </section>
 
   <section>
     <div class="head">
-      <span class="eyebrow">Print check</span>
       <h2>Every film includes</h2>
     </div>
     <div class="checks">
-      <div class="check"><span class="m">&#10003;</span><div><b>No repeated clips</b><span class="d">every moment appears once, film-wide</span></div></div>
-      <div class="check"><span class="m">&#10003;</span><div><b>Highlight-trimmed video</b><span class="d">long clips cut down to their best moment, capped at 20s</span></div></div>
-      <div class="check"><span class="m">&#10003;</span><div><b>Continuous soundtrack</b><span class="d">your clips&rsquo; own noise is muted; music plays end to end</span></div></div>
-      <div class="check"><span class="m">&#10003;</span><div><b>Hebrew / RTL captions</b><span class="d">right-to-left text rendered correctly where it&rsquo;s needed</span></div></div>
-      <div class="check"><span class="m">&#10003;</span><div><b>Soft crossfades</b><span class="d">a barely-there quarter-second dissolve, never a fade to black</span></div></div>
-      <div class="check"><span class="m">&#10003;</span><div><b>A title card that names the trip</b><span class="d">your album&rsquo;s real name and cover photo</span></div></div>
-      <div class="check"><span class="m">&#10003;</span><div><b>Licensed music, credited</b><span class="d">royalty-free tracks, each license listed in the credits</span></div></div>
-      <div class="check"><span class="m">&#10003;</span><div><b>Spatial roadmap</b><span class="d">real-map route recap, day by day and at the close</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Every moment once</b><span class="d">no photo or clip is repeated</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>The best part of each video</b><span class="d">long clips trimmed to their highlight</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Music from start to finish</b><span class="d">royalty-free, credited at the end</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>A title card for your trip</b><span class="d">your album&rsquo;s name and cover photo</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Places on every scene</b><span class="d">where each moment was taken</span></div></div>
+      <div class="check"><span class="m">&#10003;</span><div><b>Your route on a real map</b><span class="d">day by day, and the whole trip at the end</span></div></div>
+    </div>
+  </section>
+
+  <section class="privacy">
+    <div class="band">
+      <span class="eyebrow">Privacy</span>
+      <h2>Your photos stay yours.</h2>
+      <p class="intro">Your original album is never changed. Your photos, videos, and finished film are automatically deleted from our servers within 24 hours after your film is ready.</p>
     </div>
   </section>
 
   <section class="final">
-    <span class="eyebrow">Roll camera</span>
-    <h2>Share one album, get two finished films</h2>
-    <p class="lede">Share a public Google Photos album link. Come back to a widescreen cut for the TV and a vertical cut for your phone &mdash; both ready to watch or send.</p>
-    <a class="btn" href="https://app.talemontage.com">Make my film</a>
+    <h2>Share one album, get your film</h2>
+    <p class="lede">Paste a shared album link. We&rsquo;ll do the editing.</p>
+    <a class="btn" href="https://app.talemontage.com">Create my film</a>
   </section>
 
   <footer>
