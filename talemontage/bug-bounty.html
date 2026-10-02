@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TaleMontage Bug Bounty</title>
+<meta name="author" content="Guy Eden">
 <meta name="description" content="Seven AI agents, one queue: how TaleMontage finds, proves, plans, fixes and verifies its bugs, and which model does each part.">
 <link rel="icon" href="favicon-32.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +46,8 @@
   .rule { margin:30px auto 0; display:inline-block; padding:12px 20px; border-radius:var(--r-md);
           background:var(--surface); border:1px solid var(--line-strong); font-weight:700; }
   .rule b { color:var(--red); }
+  .byline { margin:22px 0 0; color:var(--muted); font-size:.95rem; }
+  .byline strong { color:var(--ink); font-weight:700; }
 
   section { padding:48px 0; }
   .kicker { color:var(--violet); font-weight:800; font-size:.74rem; letter-spacing:.18em; text-transform:uppercase; }
@@ -169,6 +172,7 @@
     <p class="lede">How TaleMontage hunts its own bugs: two AI agents go looking, one turns what they find into a test,
       and four more judge it, plan the fix, make it and check it. Each part has its own agent and model, and each runs in the background.</p>
     <div class="rule">No bug is fixed until a test proves it <b>red</b>.</div>
+    <p class="byline">Created by <strong>Guy Eden</strong>, developer and owner of TaleMontage</p>
   </header>
 
   <section>
@@ -176,7 +180,7 @@
     <h2>Every part, one hub</h2>
     <p class="sub">No agent talks to another. Each one takes bugs in one state from the queue and hands them back in the next,
       through one tested script. Only the script moves a bug on, and it does so only after the run the agent's step relies on.
-      You answer only the product questions, and the main session merges only what was verified.</p>
+      The owner answers only the product questions, and the main session merges only what was verified.</p>
     <div class="hub-wrap">
 <svg class="hub" viewBox="0 0 900 1060" role="img" aria-labelledby="hub-title hub-desc">
 <title id="hub-title">The bug queue and everything around it</title>
@@ -212,10 +216,10 @@
 <circle cx="450" cy="520" r="158" fill="none" stroke="url(#hubstroke)" stroke-opacity=".35" stroke-width="2" stroke-dasharray="4 10"/>
 <g class="spin"><text font-size="16" font-weight="800" fill="#c9c5bd"><textPath href="#ring" textLength="886" lengthAdjust="spacing">SCENARIO · SUBMITTED · PROVEN · PLANNED · FIXED · VERIFIED · MERGED ·</textPath></text></g>
 <circle cx="450" cy="520" r="118" fill="url(#hubfill)" stroke="url(#hubstroke)" stroke-width="5" filter="url(#glow)"/>
-<text x="450" y="480" text-anchor="middle" font-size="16" font-weight="800" letter-spacing="4" fill="#f0b155">THE QUEUE</text>
-<text x="450" y="524" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="34" fill="#f4f1ea">bug_queue.py</text>
-<text x="450" y="554" text-anchor="middle" font-size="15" fill="#c9c5bd">moves · hashes · runs</text>
-<text x="450" y="576" text-anchor="middle" font-size="15" fill="#c9c5bd">tests · merges</text>
+<text x="450" y="472" text-anchor="middle" font-size="16" font-weight="800" letter-spacing="4" fill="#f0b155">THE QUEUE</text>
+<text x="450" y="514" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="34" fill="#f4f1ea">bug_queue.py</text>
+<text x="450" y="542" text-anchor="middle" font-size="15" fill="#c9c5bd">moves · hashes · runs</text>
+<text x="450" y="562" text-anchor="middle" font-size="15" fill="#c9c5bd">tests · merges</text>
 <g class="node"><rect x="50.2" y="266.0" width="228" height="128" rx="20" fill="#16161f" stroke="#f0b155" stroke-opacity=".55" stroke-width="2"/>
 <rect x="64.2" y="266.0" width="200" height="5" rx="2.5" fill="#f0b155" filter="url(#glow)"/>
 <text x="66.2" y="310.0" font-size="24">🐒</text>
@@ -254,8 +258,8 @@
 <g class="node"><rect x="548.1" y="747.1" width="228" height="128" rx="20" fill="#16161f" stroke="#35d0d0" stroke-opacity=".55" stroke-width="2"/>
 <rect x="562.1" y="747.1" width="200" height="5" rx="2.5" fill="#35d0d0" filter="url(#glow)"/>
 <text x="564.1" y="791.1" font-size="24">🙋</text>
-<text x="600.1" y="790.1" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">You, the owner</text>
-<rect x="600.1" y="801.1" width="102.5" height="26" rx="13" fill="#35d0d0"/><text x="651.4" y="819.1" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">decides</text>
+<text x="600.1" y="790.1" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Guy Eden</text>
+<rect x="600.1" y="801.1" width="79.5" height="26" rx="13" fill="#35d0d0"/><text x="639.9" y="819.1" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">owner</text>
 <line x1="564.1" y1="839.1" x2="760.1" y2="839.1" stroke="#35d0d0" stroke-opacity=".25"/>
 <text x="662.1" y="862.1" text-anchor="middle" font-size="16" font-weight="800" fill="#35d0d0">needs-owner → answer</text></g>
 <g class="node"><rect x="336.0" y="911.0" width="228" height="128" rx="20" fill="#16161f" stroke="#f0b155" stroke-opacity=".55" stroke-width="2"/>
@@ -445,7 +449,8 @@
   </section>
 
   <footer>
-    TaleMontage turns a photo album into a film · <a href="./">talemontage</a> · built with Claude Code
+    TaleMontage turns a photo album into a film · <a href="./">talemontage</a> · built with Claude Code<br>
+    © 2026 Guy Eden, developer and owner
   </footer>
 </div>
 </body>
