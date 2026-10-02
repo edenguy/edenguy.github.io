@@ -134,6 +134,15 @@
   .bar.opus { --accent:var(--gold); }
   .note { color:var(--muted); font-size:.88rem; margin-top:14px; }
 
+  /* the queue at the centre */
+  .hub-wrap { margin:8px auto 0; max-width:900px; padding:clamp(6px,2vw,20px); border-radius:28px;
+              background:radial-gradient(closest-side, rgba(141,123,245,.14), transparent), var(--bg-2); border:1px solid var(--line); }
+  .hub { display:block; width:100%; height:auto; font-family:"Manrope","Segoe UI",system-ui,sans-serif; }
+  .hub .flow { stroke-dasharray:10 14; animation:flow 1.6s linear infinite; }
+  .hub .spin { transform-origin:450px 520px; animation:spin 60s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset:-48; } }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) { .hub .flow, .hub .spin { animation:none; } }
   footer { padding:40px 0 70px; color:var(--muted); font-size:.88rem; text-align:center; border-top:1px solid var(--line); margin-top:30px; }
 
   @media (max-width: 900px) {
@@ -161,6 +170,120 @@
       and four more judge it, plan the fix, make it and check it. Each part has its own agent and model, and each runs in the background.</p>
     <div class="rule">No bug is fixed until a test proves it <b>red</b>.</div>
   </header>
+
+  <section>
+    <div class="kicker">The queue at the centre</div>
+    <h2>Every part, one hub</h2>
+    <p class="sub">No agent talks to another. Each one takes bugs in one state from the queue and hands them back in the next,
+      through one tested script. Only the script moves a bug on, and it does so only after the run the agent's step relies on.
+      You answer only the product questions, and the main session merges only what was verified.</p>
+    <div class="hub-wrap">
+<svg class="hub" viewBox="0 0 900 1060" role="img" aria-labelledby="hub-title hub-desc">
+<title id="hub-title">The bug queue and everything around it</title>
+<desc id="hub-desc">The queue, run by bug_queue.py, sits at the centre. Around it: chaos monkey, test writer, bug prover, triage, architect, the owner, mitigator, verifier and the main session, each moving bugs from one state to the next.</desc>
+<defs>
+  <radialGradient id="hubfill" cx="50%" cy="40%" r="65%"><stop offset="0" stop-color="#2b2350"/><stop offset=".7" stop-color="#15121f"/><stop offset="1" stop-color="#0d0d14"/></radialGradient>
+  <linearGradient id="hubstroke" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f0b155"/><stop offset=".5" stop-color="#ff6fae"/><stop offset="1" stop-color="#8d7bf5"/></linearGradient>
+  <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <marker id="head-gold" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#f0b155"/></marker>
+  <marker id="head-violet" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8d7bf5"/></marker>
+  <marker id="head-cyan" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#35d0d0"/></marker>
+  <marker id="head-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#4cd48a"/></marker>
+  <path id="ring" d="M 450,378 a 142,142 0 1,1 -0.01,0"/>
+</defs>
+<line x1="269.5" y1="400.0" x2="313.4" y2="429.2" stroke="#f0b155" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="269.5" y1="400.0" x2="313.4" y2="429.2" stroke="#f0b155" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-gold)"/>
+<line x1="359.3" y1="232.9" x2="400.6" y2="363.6" stroke="#f0b155" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="359.3" y1="232.9" x2="400.6" y2="363.6" stroke="#f0b155" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-gold)"/>
+<line x1="540.7" y1="232.9" x2="499.4" y2="363.6" stroke="#8d7bf5" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="540.7" y1="232.9" x2="499.4" y2="363.6" stroke="#8d7bf5" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-violet)"/>
+<line x1="630.5" y1="400.0" x2="586.6" y2="429.2" stroke="#f0b155" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="630.5" y1="400.0" x2="586.6" y2="429.2" stroke="#f0b155" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-gold)"/>
+<line x1="655.0" y1="561.6" x2="610.7" y2="552.6" stroke="#f0b155" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="655.0" y1="561.6" x2="610.7" y2="552.6" stroke="#f0b155" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-gold)"/>
+<line x1="611.1" y1="741.1" x2="546.6" y2="652.5" stroke="#35d0d0" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="611.1" y1="741.1" x2="546.6" y2="652.5" stroke="#35d0d0" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-cyan)"/>
+<line x1="450.0" y1="905.0" x2="450.0" y2="684.0" stroke="#f0b155" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="450.0" y1="905.0" x2="450.0" y2="684.0" stroke="#f0b155" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-gold)"/>
+<line x1="288.9" y1="741.1" x2="353.4" y2="652.5" stroke="#8d7bf5" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="288.9" y1="741.1" x2="353.4" y2="652.5" stroke="#8d7bf5" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-violet)"/>
+<line x1="245.0" y1="561.6" x2="289.3" y2="552.6" stroke="#4cd48a" stroke-opacity=".28" stroke-width="10" stroke-linecap="round"/>
+<line class="flow" x1="245.0" y1="561.6" x2="289.3" y2="552.6" stroke="#4cd48a" stroke-width="3.5" stroke-linecap="round" marker-end="url(#head-green)"/>
+<circle cx="450" cy="520" r="158" fill="none" stroke="url(#hubstroke)" stroke-opacity=".35" stroke-width="2" stroke-dasharray="4 10"/>
+<g class="spin"><text font-size="16" font-weight="800" fill="#c9c5bd"><textPath href="#ring" textLength="886" lengthAdjust="spacing">SCENARIO · SUBMITTED · PROVEN · PLANNED · FIXED · VERIFIED · MERGED ·</textPath></text></g>
+<circle cx="450" cy="520" r="118" fill="url(#hubfill)" stroke="url(#hubstroke)" stroke-width="5" filter="url(#glow)"/>
+<text x="450" y="480" text-anchor="middle" font-size="16" font-weight="800" letter-spacing="4" fill="#f0b155">THE QUEUE</text>
+<text x="450" y="524" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="34" fill="#f4f1ea">bug_queue.py</text>
+<text x="450" y="554" text-anchor="middle" font-size="15" fill="#c9c5bd">moves · hashes · runs</text>
+<text x="450" y="576" text-anchor="middle" font-size="15" fill="#c9c5bd">tests · merges</text>
+<g class="node"><rect x="50.2" y="266.0" width="228" height="128" rx="20" fill="#16161f" stroke="#f0b155" stroke-opacity=".55" stroke-width="2"/>
+<rect x="64.2" y="266.0" width="200" height="5" rx="2.5" fill="#f0b155" filter="url(#glow)"/>
+<text x="66.2" y="310.0" font-size="24">🐒</text>
+<text x="102.2" y="309.0" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Chaos monkey</text>
+<rect x="102.2" y="320.0" width="68.0" height="26" rx="13" fill="#f0b155"/><text x="136.2" y="338.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">Opus</text>
+<line x1="66.2" y1="358.0" x2="262.2" y2="358.0" stroke="#f0b155" stroke-opacity=".25"/>
+<text x="164.2" y="381.0" text-anchor="middle" font-size="16" font-weight="800" fill="#f0b155">scenario</text></g>
+<g class="node"><rect x="223.1" y="98.9" width="228" height="128" rx="20" fill="#16161f" stroke="#f0b155" stroke-opacity=".55" stroke-width="2"/>
+<rect x="237.1" y="98.9" width="200" height="5" rx="2.5" fill="#f0b155" filter="url(#glow)"/>
+<text x="239.1" y="142.9" font-size="24">🧪</text>
+<text x="275.1" y="141.9" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Test writer</text>
+<rect x="275.1" y="152.9" width="68.0" height="26" rx="13" fill="#f0b155"/><text x="309.1" y="170.9" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">Opus</text>
+<line x1="239.1" y1="190.9" x2="435.1" y2="190.9" stroke="#f0b155" stroke-opacity=".25"/>
+<text x="337.1" y="213.9" text-anchor="middle" font-size="16" font-weight="800" fill="#f0b155">scenario → proof</text></g>
+<g class="node"><rect x="448.9" y="98.9" width="228" height="128" rx="20" fill="#16161f" stroke="#8d7bf5" stroke-opacity=".55" stroke-width="2"/>
+<rect x="462.9" y="98.9" width="200" height="5" rx="2.5" fill="#8d7bf5" filter="url(#glow)"/>
+<text x="464.9" y="142.9" font-size="24">🔎</text>
+<text x="500.9" y="141.9" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Bug prover</text>
+<rect x="500.9" y="152.9" width="79.5" height="26" rx="13" fill="#8d7bf5"/><text x="540.6" y="170.9" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">Fable</text>
+<line x1="464.9" y1="190.9" x2="660.9" y2="190.9" stroke="#8d7bf5" stroke-opacity=".25"/>
+<text x="562.9" y="213.9" text-anchor="middle" font-size="16" font-weight="800" fill="#8d7bf5">proof</text></g>
+<g class="node"><rect x="621.8" y="266.0" width="228" height="128" rx="20" fill="#16161f" stroke="#f0b155" stroke-opacity=".55" stroke-width="2"/>
+<rect x="635.8" y="266.0" width="200" height="5" rx="2.5" fill="#f0b155" filter="url(#glow)"/>
+<text x="637.8" y="310.0" font-size="24">⚖️</text>
+<text x="673.8" y="309.0" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Triage</text>
+<rect x="673.8" y="320.0" width="68.0" height="26" rx="13" fill="#f0b155"/><text x="707.8" y="338.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">Opus</text>
+<line x1="637.8" y1="358.0" x2="833.8" y2="358.0" stroke="#f0b155" stroke-opacity=".25"/>
+<text x="735.8" y="381.0" text-anchor="middle" font-size="16" font-weight="800" fill="#f0b155">submitted → proven</text></g>
+<g class="node"><rect x="661.0" y="522.0" width="228" height="128" rx="20" fill="#16161f" stroke="#f0b155" stroke-opacity=".55" stroke-width="2"/>
+<rect x="675.0" y="522.0" width="200" height="5" rx="2.5" fill="#f0b155" filter="url(#glow)"/>
+<text x="677.0" y="566.0" font-size="24">📐</text>
+<text x="713.0" y="565.0" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Architect</text>
+<rect x="713.0" y="576.0" width="68.0" height="26" rx="13" fill="#f0b155"/><text x="747.0" y="594.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">Opus</text>
+<line x1="677.0" y1="614.0" x2="873.0" y2="614.0" stroke="#f0b155" stroke-opacity=".25"/>
+<text x="775.0" y="637.0" text-anchor="middle" font-size="16" font-weight="800" fill="#f0b155">proven → planned</text></g>
+<g class="node"><rect x="548.1" y="747.1" width="228" height="128" rx="20" fill="#16161f" stroke="#35d0d0" stroke-opacity=".55" stroke-width="2"/>
+<rect x="562.1" y="747.1" width="200" height="5" rx="2.5" fill="#35d0d0" filter="url(#glow)"/>
+<text x="564.1" y="791.1" font-size="24">🙋</text>
+<text x="600.1" y="790.1" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">You, the owner</text>
+<rect x="600.1" y="801.1" width="102.5" height="26" rx="13" fill="#35d0d0"/><text x="651.4" y="819.1" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">decides</text>
+<line x1="564.1" y1="839.1" x2="760.1" y2="839.1" stroke="#35d0d0" stroke-opacity=".25"/>
+<text x="662.1" y="862.1" text-anchor="middle" font-size="16" font-weight="800" fill="#35d0d0">needs-owner → answer</text></g>
+<g class="node"><rect x="336.0" y="911.0" width="228" height="128" rx="20" fill="#16161f" stroke="#f0b155" stroke-opacity=".55" stroke-width="2"/>
+<rect x="350.0" y="911.0" width="200" height="5" rx="2.5" fill="#f0b155" filter="url(#glow)"/>
+<text x="352.0" y="955.0" font-size="24">🔧</text>
+<text x="388.0" y="954.0" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Mitigator</text>
+<rect x="388.0" y="965.0" width="68.0" height="26" rx="13" fill="#f0b155"/><text x="422.0" y="983.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">Opus</text>
+<text x="465.0" y="983.0" font-size="13.5" font-weight="700" fill="#8d8a95">own worktree</text>
+<line x1="352.0" y1="1003.0" x2="548.0" y2="1003.0" stroke="#f0b155" stroke-opacity=".25"/>
+<text x="450.0" y="1026.0" text-anchor="middle" font-size="16" font-weight="800" fill="#f0b155">planned → fixed</text></g>
+<g class="node"><rect x="123.9" y="747.1" width="228" height="128" rx="20" fill="#16161f" stroke="#8d7bf5" stroke-opacity=".55" stroke-width="2"/>
+<rect x="137.9" y="747.1" width="200" height="5" rx="2.5" fill="#8d7bf5" filter="url(#glow)"/>
+<text x="139.9" y="791.1" font-size="24">🛡️</text>
+<text x="175.9" y="790.1" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Verifier</text>
+<rect x="175.9" y="801.1" width="79.5" height="26" rx="13" fill="#8d7bf5"/><text x="215.6" y="819.1" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">Fable</text>
+<line x1="139.9" y1="839.1" x2="335.9" y2="839.1" stroke="#8d7bf5" stroke-opacity=".25"/>
+<text x="237.9" y="862.1" text-anchor="middle" font-size="16" font-weight="800" fill="#8d7bf5">fixed → verified</text></g>
+<g class="node"><rect x="11.0" y="522.0" width="228" height="128" rx="20" fill="#16161f" stroke="#4cd48a" stroke-opacity=".55" stroke-width="2"/>
+<rect x="25.0" y="522.0" width="200" height="5" rx="2.5" fill="#4cd48a" filter="url(#glow)"/>
+<text x="27.0" y="566.0" font-size="24">🚀</text>
+<text x="63.0" y="565.0" font-family="Fraunces, Georgia, serif" font-size="21" fill="#f4f1ea">Main session</text>
+<rect x="63.0" y="576.0" width="91.0" height="26" rx="13" fill="#4cd48a"/><text x="108.5" y="594.0" text-anchor="middle" font-size="14.5" font-weight="800" fill="#07070a">merges</text>
+<text x="163.0" y="594.0" font-size="13.5" font-weight="700" fill="#4cd48a">→ main ✓</text>
+<line x1="27.0" y1="614.0" x2="223.0" y2="614.0" stroke="#4cd48a" stroke-opacity=".25"/>
+<text x="125.0" y="637.0" text-anchor="middle" font-size="16" font-weight="800" fill="#4cd48a">verified → merged</text></g>
+</svg>
+    </div>
+  </section>
 
   <section>
     <div class="kicker">The pipeline</div>
@@ -249,6 +372,7 @@
       <span>tries each fix on the latest main in a scratch copy first, and only then moves main forward.</span>
     </div>
   </section>
+
 
   <section>
     <div class="kicker">States</div>
