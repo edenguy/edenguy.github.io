@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TaleMontage Bug Bounty</title>
+<meta name="description" content="Seven AI agents, one queue: how TaleMontage finds, proves, plans, fixes and verifies its bugs, and which model does each part.">
+<link rel="icon" href="favicon-32.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,500&family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+  :root {
+    --bg:#07070a; --bg-2:#0d0d14; --surface:#14141c; --surface-2:#1b1b26;
+    --ink:#f4f1ea; --ink-dim:#c9c5bd; --muted:#8d8a95;
+    --gold:#f0b155; --gold-deep:#c98a2e; --violet:#8d7bf5; --violet-deep:#5b4bd6;
+    --red:#ff6b6b; --green:#4cd48a; --cyan:#35d0d0; --pink:#ff6fae;
+    --line:rgba(255,255,255,.09); --line-strong:rgba(255,255,255,.18);
+    --r-lg:22px; --r-md:14px; --r-pill:999px;
+  }
+  * { box-sizing:border-box; }
+  html { color-scheme:dark; }
+  body {
+    margin:0; background:var(--bg); color:var(--ink); line-height:1.6;
+    font-family:"Manrope","Segoe UI",system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(900px 500px at 85% -10%, rgba(141,123,245,.22), transparent 60%),
+      radial-gradient(800px 500px at -10% 20%, rgba(240,177,85,.16), transparent 60%);
+    background-attachment:fixed;
+  }
+  .wrap { width:min(1120px, calc(100% - 32px)); margin:0 auto; }
+  h1, h2, h3 { font-family:"Fraunces",Georgia,serif; font-weight:500; margin:0; }
+  code, .mono { font-family:"JetBrains Mono",ui-monospace,monospace; font-size:.86em; }
+  a { color:var(--gold); }
+
+  /* hero */
+  header { padding:clamp(48px,9vw,110px) 0 36px; text-align:center; }
+  .eyebrow { display:inline-block; color:var(--gold); font-weight:800; font-size:.76rem; letter-spacing:.2em;
+             text-transform:uppercase; padding:7px 16px; border:1px solid rgba(240,177,85,.35); border-radius:var(--r-pill);
+             background:rgba(240,177,85,.07); }
+  h1 { font-size:clamp(2.6rem,8.5vw,5.4rem); line-height:1; margin:22px 0 18px; }
+  h1 em { font-style:italic; background:linear-gradient(100deg,var(--gold),#ffd89a 40%,var(--violet)); -webkit-background-clip:text;
+          background-clip:text; color:transparent; }
+  .lede { max-width:680px; margin:0 auto; color:var(--ink-dim); font-size:clamp(1.02rem,2.4vw,1.2rem); }
+  .rule { margin:30px auto 0; display:inline-block; padding:12px 20px; border-radius:var(--r-md);
+          background:var(--surface); border:1px solid var(--line-strong); font-weight:700; }
+  .rule b { color:var(--red); }
+
+  section { padding:48px 0; }
+  .kicker { color:var(--violet); font-weight:800; font-size:.74rem; letter-spacing:.18em; text-transform:uppercase; }
+  h2 { font-size:clamp(1.8rem,4.6vw,2.7rem); line-height:1.1; margin:8px 0 10px; }
+  .sub { color:var(--ink-dim); max-width:720px; margin:0 0 28px; }
+
+  /* legend */
+  .legend { display:flex; flex-wrap:wrap; gap:10px; margin:0 0 22px; }
+  .chip { display:inline-flex; align-items:center; gap:8px; padding:6px 14px; border-radius:var(--r-pill); font-weight:700;
+          font-size:.84rem; border:1px solid var(--line-strong); background:var(--surface); }
+  .dot { width:10px; height:10px; border-radius:50%; flex:none; }
+  .dot.fable { background:var(--violet); box-shadow:0 0 12px var(--violet); }
+  .dot.opus { background:var(--gold); box-shadow:0 0 12px var(--gold); }
+
+  /* the pipeline */
+  .pipe { display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:14px; align-items:stretch; position:relative; }
+  .stage { position:relative; display:flex; flex-direction:column; gap:12px; }
+  .stage-name { text-align:center; font-weight:800; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:var(--muted); }
+  .agent { position:relative; padding:18px 16px 16px; border-radius:var(--r-lg); background:linear-gradient(180deg,var(--surface-2),var(--surface));
+           border:1px solid var(--line-strong); overflow:hidden; flex:1; min-width:0; }
+  .agent::before { content:""; position:absolute; inset:0 0 auto 0; height:4px; background:var(--accent); box-shadow:0 0 18px var(--accent); }
+  .agent.fable { --accent:var(--violet); }
+  .agent.opus { --accent:var(--gold); }
+  .agent .icon { font-size:1.7rem; line-height:1; }
+  .agent h3 { font-size:1.18rem; margin:8px 0 4px; overflow-wrap:anywhere; }
+  .agent p { margin:0; color:var(--ink-dim); font-size:.9rem; }
+  .model { display:inline-flex; align-items:center; gap:6px; margin-top:12px; padding:4px 11px; border-radius:var(--r-pill);
+           font-size:.76rem; font-weight:800; color:var(--bg); background:var(--accent); }
+  .effort { display:inline-block; margin-left:6px; font-size:.72rem; color:var(--muted); font-weight:700; }
+  .arrow { position:absolute; top:50%; right:-14px; width:14px; height:2px; background:linear-gradient(90deg,var(--line-strong),var(--gold));
+           z-index:2; }
+  .arrow::after { content:""; position:absolute; right:-2px; top:-4px; border:5px solid transparent; border-left-color:var(--gold); }
+  .stage:last-child .arrow { display:none; }
+  .flowtag { position:absolute; top:calc(50% - 26px); right:-34px; z-index:3; font-size:.62rem; font-weight:800; letter-spacing:.06em;
+             text-transform:uppercase; color:var(--gold); background:var(--bg); padding:1px 6px; border-radius:6px; border:1px solid rgba(240,177,85,.35); }
+  .stage:last-child .flowtag { display:none; }
+  @media (min-width: 901px) { .flowtag { display:none; } }   /* the columns' gap is too narrow for a label */
+  .pair { display:flex; flex-direction:column; gap:12px; flex:1; }
+  .pair .agent { flex:1; }
+
+  /* the merge band */
+  .merge { margin-top:16px; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:14px; padding:18px 22px;
+           border-radius:var(--r-lg); border:1px dashed rgba(76,212,138,.5); background:rgba(76,212,138,.06); text-align:center; }
+  .merge strong { color:var(--green); }
+  .merge .mono { color:var(--ink-dim); }
+
+  /* states */
+  .states { display:flex; flex-wrap:wrap; gap:8px; align-items:center; }
+  .st { padding:8px 14px; border-radius:var(--r-pill); font-weight:800; font-size:.84rem; background:var(--surface-2);
+        border:1px solid var(--line-strong); white-space:nowrap; }
+  .st.go { border-color:rgba(240,177,85,.55); color:#ffd89a; }
+  .st.done { border-color:rgba(76,212,138,.6); color:var(--green); }
+  .st.off { border-color:rgba(255,107,107,.45); color:#ff9c9c; }
+  .st.ask { border-color:rgba(53,208,208,.55); color:var(--cyan); }
+  .to { color:var(--muted); font-weight:800; }
+  .exits { margin-top:16px; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+  .exit { padding:14px 16px; border-radius:var(--r-md); background:var(--surface); border:1px solid var(--line); color:var(--ink-dim); font-size:.92rem; }
+  .exit .st { display:inline-block; margin-bottom:8px; }
+
+  /* invariants */
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr)); gap:14px; }
+  .card { padding:20px; border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--line); }
+  .card .n { font-family:"Fraunces",Georgia,serif; font-size:2.2rem; line-height:1; color:var(--gold); }
+  .card h3 { font-size:1.1rem; margin:10px 0 6px; }
+  .card p { margin:0; color:var(--ink-dim); font-size:.93rem; }
+
+  /* proof strip: red, green, red */
+  .proof { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:18px; }
+  .lamp { padding:16px 12px; border-radius:var(--r-md); text-align:center; font-weight:800; border:1px solid var(--line-strong); background:var(--surface); }
+  .lamp .bulb { width:34px; height:34px; border-radius:50%; margin:0 auto 10px; }
+  .lamp.red .bulb { background:var(--red); box-shadow:0 0 22px var(--red); }
+  .lamp.green .bulb { background:var(--green); box-shadow:0 0 22px var(--green); }
+  .lamp span { display:block; color:var(--muted); font-weight:600; font-size:.82rem; margin-top:4px; }
+
+  /* numbers */
+  .stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); gap:12px; }
+  .stat { padding:20px 16px; border-radius:var(--r-lg); background:var(--surface); border:1px solid var(--line); text-align:center; }
+  .stat .big { font-family:"Fraunces",Georgia,serif; font-size:clamp(2.2rem,6vw,3rem); line-height:1; }
+  .stat .lbl { color:var(--muted); font-weight:700; font-size:.82rem; margin-top:8px; }
+  .bars { margin-top:22px; display:flex; flex-direction:column; gap:10px; }
+  .bar { display:grid; grid-template-columns:120px minmax(0,1fr) 64px; gap:12px; align-items:center; font-size:.9rem; }
+  .bar .name { font-weight:700; overflow-wrap:anywhere; }
+  .bar .track { height:14px; border-radius:var(--r-pill); background:var(--surface-2); overflow:hidden; }
+  .bar .fill { height:100%; border-radius:var(--r-pill); background:var(--accent); box-shadow:0 0 12px var(--accent); }
+  .bar .val { text-align:right; color:var(--ink-dim); font-weight:700; }
+  .bar.fable { --accent:var(--violet); }
+  .bar.opus { --accent:var(--gold); }
+  .note { color:var(--muted); font-size:.88rem; margin-top:14px; }
+
+  footer { padding:40px 0 70px; color:var(--muted); font-size:.88rem; text-align:center; border-top:1px solid var(--line); margin-top:30px; }
+
+  @media (max-width: 900px) {
+    .pipe { grid-template-columns:minmax(0,1fr); gap:30px; }
+    .arrow { top:auto; bottom:-24px; right:auto; left:50%; width:2px; height:18px; background:linear-gradient(180deg,var(--line-strong),var(--gold)); }
+    .arrow::after { right:auto; left:-4px; top:auto; bottom:-8px; border-left-color:transparent; border-top-color:var(--gold); }
+    .flowtag { top:auto; bottom:-24px; right:auto; left:calc(50% + 12px); }
+    .pair { flex-direction:row; }
+    .pair .agent { flex:1 1 0; }
+  }
+  @media (max-width: 520px) {
+    .pair { flex-direction:column; }
+    .pair .agent { flex:none; }   /* stacked, each is as tall as its words */
+    .bar { grid-template-columns:92px minmax(0,1fr) 52px; gap:8px; font-size:.84rem; }
+    .proof { grid-template-columns:minmax(0,1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">TaleMontage · Bug Bounty</span>
+    <h1>Seven agents.<br><em>One queue.</em></h1>
+    <p class="lede">How TaleMontage hunts its own bugs: two AI agents go looking, one turns what they find into a test,
+      and four more judge it, plan the fix, make it and check it. Each part has its own agent and model, and each runs in the background.</p>
+    <div class="rule">No bug is fixed until a test proves it <b>red</b>.</div>
+  </header>
+
+  <section>
+    <div class="kicker">The pipeline</div>
+    <h2>Find, prove, plan, fix, verify</h2>
+    <p class="sub">Every hand-off goes through one queue, run by a tested script. The script moves each bug from state to
+      state, fingerprints its proof, and runs every test the agents rely on. The agents make the judgement calls.</p>
+    <div class="legend">
+      <span class="chip"><span class="dot fable"></span>Claude Fable 5.1</span>
+      <span class="chip"><span class="dot opus"></span>Claude Opus 5.5</span>
+    </div>
+
+    <div class="pipe">
+      <div class="stage">
+        <div class="stage-name">1 · Find</div>
+        <div class="pair">
+          <div class="agent opus">
+            <div class="icon">🐒</div>
+            <h3>Chaos monkey</h3>
+            <p>Uses the app the way a hurried phone user would: fast taps, pinches, rotations, reloads, the Back button. It queues every break as a scenario it can replay.</p>
+            <span class="model">Opus</span>
+          </div>
+          <div class="agent fable">
+            <div class="icon">🔎</div>
+            <h3>Bug prover</h3>
+            <p>Reads the code and the last two days of commits. It writes a failing test for each suspicion and grades the bug's severity and how much work it would take.</p>
+            <span class="model">Fable</span><span class="effort">30 min or 3 bugs</span>
+          </div>
+        </div>
+        <i class="arrow"></i><span class="flowtag">submit</span>
+      </div>
+
+      <div class="stage">
+        <div class="stage-name">2 · Prove</div>
+        <div class="agent opus">
+          <div class="icon">🧪</div>
+          <h3>Test writer</h3>
+          <p>Turns each scenario into the smallest failing test that always fails the same way. It enters the queue only after the queue's script has run it red twice.</p>
+          <span class="model">Opus</span>
+        </div>
+        <div class="agent opus">
+          <div class="icon">⚖️</div>
+          <h3>Triage</h3>
+          <p>Rejects a test that proves no bug, and marks duplicates by their root cause, not by how they're worded. It accepts the rest and locks each proof's fingerprint.</p>
+          <span class="model">Opus</span><span class="effort">medium effort</span>
+        </div>
+        <i class="arrow"></i><span class="flowtag">proven</span>
+      </div>
+
+      <div class="stage">
+        <div class="stage-name">3 · Plan</div>
+        <div class="agent opus">
+          <div class="icon">📐</div>
+          <h3>Architect</h3>
+          <p>Writes the contract each fix is held to: the root cause, the change, what it may touch, what it must not break, and the tests. When the right behaviour is a product decision, it asks the owner rather than guessing.</p>
+          <span class="model">Opus</span>
+        </div>
+        <i class="arrow"></i><span class="flowtag">planned</span>
+      </div>
+
+      <div class="stage">
+        <div class="stage-name">4 · Fix</div>
+        <div class="agent opus">
+          <div class="icon">🔧</div>
+          <h3>Mitigator</h3>
+          <p>Works in its own copy of the code. It makes the smallest safe change that turns the proof green, one commit per bug, most severe first. It never touches a proof.</p>
+          <span class="model">Opus</span>
+        </div>
+        <i class="arrow"></i><span class="flowtag">fixed</span>
+      </div>
+
+      <div class="stage">
+        <div class="stage-name">5 · Verify</div>
+        <div class="agent fable">
+          <div class="icon">🛡️</div>
+          <h3>Verifier</h3>
+          <p>Checks every fix on its own, without the mitigator. It replays the proof red before the fix, green after, and red again with the fix taken out, then reviews the fix against its contract.</p>
+          <span class="model">Fable</span><span class="effort">medium effort</span>
+        </div>
+        <i class="arrow"></i>
+      </div>
+    </div>
+
+    <div class="merge">
+      <span>✅ <strong>Merge</strong>, verified bugs only:</span>
+      <span class="mono">bug_queue.py merge</span>
+      <span>tries each fix on the latest main in a scratch copy first, and only then moves main forward.</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">States</div>
+    <h2>The life of a bug</h2>
+    <p class="sub">Only the queue's script moves a bug from one state to the next, and only when that agent's
+      step is done. A bug's state changes nowhere else.</p>
+    <div class="states">
+      <span class="st go">scenario</span><span class="to">→</span>
+      <span class="st go">submitted</span><span class="to">→</span>
+      <span class="st go">proven</span><span class="to">→</span>
+      <span class="st go">planned</span><span class="to">→</span>
+      <span class="st go">fixed</span><span class="to">→</span>
+      <span class="st go">verified</span><span class="to">→</span>
+      <span class="st done">merged</span>
+    </div>
+    <div class="exits">
+      <div class="exit"><span class="st off">invalid-proof</span><br>The test proved no bug, or proved the wrong one.</div>
+      <div class="exit"><span class="st off">duplicate</span><br>Same root cause as a bug already in the queue.</div>
+      <div class="exit"><span class="st ask">needs-owner</span><br>A product decision. The owner picks from the architect's options, and the bug carries on with that answer.</div>
+      <div class="exit"><span class="st off">returned</span><br>The verifier sends the fix back, with its reasons.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Causality</div>
+    <h2>Red, green, red</h2>
+    <p class="sub">A test that just passes after a change proves nothing: maybe the test was weak. So the verifier
+      replays the proof three times.</p>
+    <div class="proof">
+      <div class="lamp red"><div class="bulb"></div>Before the fix<span>the proof fails</span></div>
+      <div class="lamp green"><div class="bulb"></div>With the fix<span>the proof passes</span></div>
+      <div class="lamp red"><div class="bulb"></div>Fix taken back<span>it fails again: the fix is the cause</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">Rules that can't be broken</div>
+    <h2>Guarantees</h2>
+    <div class="grid">
+      <div class="card"><div class="n">#</div><h3>A proof can't change</h3><p>Every proof is fingerprinted when it's accepted. If any of it changes, the bug stops where it is, so nobody can bend a test to make it pass.</p></div>
+      <div class="card"><div class="n">1:1</div><h3>One bug, one commit</h3><p>Each fix stays inside the files its contract allows. Any change beyond that is caught at verification.</p></div>
+      <div class="card"><div class="n">≠</div><h3>Nobody grades their own work</h3><p>The agent that fixes a bug never verifies it, and the agent that finds a bug never decides whether it's real.</p></div>
+      <div class="card"><div class="n">?</div><h3>Product questions go to the owner</h3><p>When a fix depends on what the product should do, the agent stops and asks instead of guessing.</p></div>
+      <div class="card"><div class="n">∞</div><h3>Every fix stays tested</h3><p>A merged proof becomes an ordinary regression test, and an audit checks it's still the same test that was accepted.</p></div>
+      <div class="card"><div class="n">⏱</div><h3>Time limits, not quotas</h3><p>Each hunter works to a time limit. A turn costs the agent's whole context again, so a session's last findings cost the most, and each hunt starts fresh.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="kicker">The first hunt · 2 October 2026</div>
+    <h2>By the numbers</h2>
+    <div class="stats">
+      <div class="stat"><div class="big" style="color:var(--gold)">15</div><div class="lbl">bugs found</div></div>
+      <div class="stat"><div class="big" style="color:var(--violet)">13</div><div class="lbl">accepted as real</div></div>
+      <div class="stat"><div class="big" style="color:var(--red)">2</div><div class="lbl">rejected by triage</div></div>
+      <div class="stat"><div class="big" style="color:var(--cyan)">1</div><div class="lbl">decided by the owner</div></div>
+      <div class="stat"><div class="big" style="color:var(--green)">17</div><div class="lbl">probes the monkey wrote</div></div>
+    </div>
+    <h3 style="margin-top:34px">Input tokens per agent (millions)</h3>
+    <div class="bars">
+      <div class="bar fable"><span class="name">bug prover</span><span class="track"><span class="fill" style="width:100%; display:block"></span></span><span class="val">11.7</span></div>
+      <div class="bar fable"><span class="name">triage</span><span class="track"><span class="fill" style="width:37%; display:block"></span></span><span class="val">4.3</span></div>
+      <div class="bar opus"><span class="name">test writer</span><span class="track"><span class="fill" style="width:31%; display:block"></span></span><span class="val">3.7</span></div>
+      <div class="bar fable"><span class="name">architect</span><span class="track"><span class="fill" style="width:18%; display:block"></span></span><span class="val">2.1</span></div>
+      <div class="bar opus"><span class="name">mitigator</span><span class="track"><span class="fill" style="width:17%; display:block"></span></span><span class="val">2.0</span></div>
+      <div class="bar fable"><span class="name">verifier</span><span class="track"><span class="fill" style="width:3%; display:block"></span></span><span class="val">0.3</span></div>
+    </div>
+    <p class="note">Bar colours show the model each agent ran on in that hunt. It used up the Fable allowance, so triage and the architect
+      have since moved to Opus, triage and the verifier dropped to medium effort, and the bug prover got its 30-minute cap.</p>
+  </section>
+
+  <footer>
+    TaleMontage turns a photo album into a film · <a href="./">talemontage</a> · built with Claude Code
+  </footer>
+</div>
+</body>
+</html>
