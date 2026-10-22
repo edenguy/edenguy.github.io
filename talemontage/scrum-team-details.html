@@ -259,25 +259,30 @@
     <li><code>tools/commit_cost.py</code> prices each commit from its <code>Session-Token-Delta</code> trailer and
       sets queue work against direct work per commit and per merged item. First read follows.</li>
   </ul>
-  <p><strong>Queue against agents spawned directly: preliminary, read at 10:20 on 2026-10-22.</strong> Direct
-    window: from 08:44, three agents at a time in their own worktrees, no queue, no personas. Queue: 10-21 and
-    10-22. List-price dollars, not a bill.</p>
+  <p><strong>Pilot on 2026-10-22, not a benchmark: the same five items, direct agents against the scrum queue.</strong> Five items show nothing about cost or speed in general; a benchmark needs at least 15 matched items, both modes, with quality reviewed.
+    Both started from one commit. The scrum planner picked and specced the items (13:03, in a fresh clone);
+    the direct agents then did the same five from the same briefs (15:34). List-price dollars; the Fable
+    cache-write price is an assumption.</p>
   <div class="table-wrap"><table>
-    <thead><tr><th></th><th class="num">queue</th><th class="num">direct agents</th></tr></thead>
+    <thead><tr><th></th><th class="num">direct agents</th><th class="num">scrum queue</th></tr></thead>
     <tbody>
-      <tr><td>commits measured</td><td class="num">41</td><td class="num">20 (of about 28; the rest not settled)</td></tr>
-      <tr><td>cost per commit</td><td class="num">$1.90</td><td class="num">$0.67</td></tr>
-      <tr><td>cost per merged item</td><td class="num">$2.89 (27 items)</td><td class="num">about $1.35 (about 10 items)</td></tr>
-      <tr><td>commits per hour</td><td class="num">about 5</td><td class="num">about 16</td></tr>
-      <tr><td>minutes per commit</td><td class="num">about 12</td><td class="num">about 3.7</td></tr>
-      <tr><td>orchestrating session</td><td class="num">in the run's share</td><td class="num">about $5 to 10:20, not in the line above</td></tr>
+      <tr><td>items, commits</td><td class="num">5, 5</td><td class="num">5, 5 (2 more planned items were wasted)</td></tr>
+      <tr><td>agent and persona cost</td><td class="num">$1.47</td><td class="num">$7.70 (planner, workers, reviewer, idle sessions)</td></tr>
+      <tr><td>orchestrating session</td><td class="num">about $1</td><td class="num">about $0.60</td></tr>
+      <tr><td>total</td><td class="num">about $2.50</td><td class="num">about $8.30</td></tr>
+      <tr><td>cost per commit</td><td class="num">about $0.50</td><td class="num">about $1.65</td></tr>
+      <tr><td>wall time to the last commit</td><td class="num">about 5 minutes</td><td class="num">about 7 minutes</td></tr>
     </tbody>
   </table></div>
   <ul>
-    <li>Not like for like: the queue's items were the later, harder ones; its hours count only hours with a
-      commit, not waiting; the direct agents had no reviewer, and one merge-check regression slipped past them.</li>
-    <li>Not yet measured: bugs found after merge in each mode, and a two-hour scrum window of similar-size items.
-      A gap under about 30% would be inside the noise.</li>
+    <li>On small independent items the queue cost about three times as much for the same commits and the same
+      wall time. Direct work also got the planner's briefs for free; counting that would widen the gap.</li>
+    <li>Not tested: large or entangled items, where the file-ownership rules and the reviewer should earn
+      their cost, and the long run. Quality is not compared: five small commits are too few to rank.</li>
+    <li>The earlier two-hour windows (26 commits direct, 6 scrum, $25 each) were not comparable: the scrum one
+      spent $18.60 on idle sessions restarted on stale items, and the review found one medium and four low
+      issues in the direct range and one conditional medium in the scrum range. The queue cannot retire stale
+      items (BACKLOG.md); the planner stocked too few items to fill two hours and once stocked a finished one.</li>
   </ul>
   <details><summary>The trailer, and what it is honest about</summary>
     <p>Written by <code>~/.claude/scripts/token_trailer.py</code> through <code>prepare-commit-msg</code>; the
