@@ -256,10 +256,28 @@
     <li>The dollars are a scale, not a bill: weighted tokens priced per model from the harness's own cost records
       (Sonnet 5.5 $1.69/M, Fable 5.1 $5.91/M, with a wide spread); the harness's own figure for the two sessions,
       $1,481, is 31% above the weighted $1,020.</li>
-    <li>What is still missing is the comparison: <code>tools/commit_cost.py</code> (merged at 08:03) prices each
-      commit from its <code>Session-Token-Delta</code> trailer and sets queue work against direct work per commit
-      and per merged item; it has not yet been run over a direct-work window of the same kind, so no claim either
-      way is made here.</li>
+    <li><code>tools/commit_cost.py</code> prices each commit from its <code>Session-Token-Delta</code> trailer and
+      sets queue work against direct work per commit and per merged item. First read follows.</li>
+  </ul>
+  <p><strong>Queue against agents spawned directly: preliminary, read at 10:20 on 2026-10-22.</strong> Direct
+    window: from 08:44, three agents at a time in their own worktrees, no queue, no personas. Queue: 10-21 and
+    10-22. List-price dollars, not a bill.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th></th><th class="num">queue</th><th class="num">direct agents</th></tr></thead>
+    <tbody>
+      <tr><td>commits measured</td><td class="num">41</td><td class="num">20 (of about 28; the rest not settled)</td></tr>
+      <tr><td>cost per commit</td><td class="num">$1.90</td><td class="num">$0.67</td></tr>
+      <tr><td>cost per merged item</td><td class="num">$2.89 (27 items)</td><td class="num">about $1.35 (about 10 items)</td></tr>
+      <tr><td>commits per hour</td><td class="num">about 5</td><td class="num">about 16</td></tr>
+      <tr><td>minutes per commit</td><td class="num">about 12</td><td class="num">about 3.7</td></tr>
+      <tr><td>orchestrating session</td><td class="num">in the run's share</td><td class="num">about $5 to 10:20, not in the line above</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>Not like for like: the queue's items were the later, harder ones; its hours count only hours with a
+      commit, not waiting; the direct agents had no reviewer, and one merge-check regression slipped past them.</li>
+    <li>Not yet measured: bugs found after merge in each mode, and a two-hour scrum window of similar-size items.
+      A gap under about 30% would be inside the noise.</li>
   </ul>
   <details><summary>The trailer, and what it is honest about</summary>
     <p>Written by <code>~/.claude/scripts/token_trailer.py</code> through <code>prepare-commit-msg</code>; the
