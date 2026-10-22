@@ -4,785 +4,179 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="author" content="Guy Eden">
-<title>The Scrum Team, 2026-10-22</title>
+<title>The Scrum Team</title>
 <style>
-  /* Tokens: one accent per role group (a: the queue and the planner, b: the workers, c: the reviewer and the
-     measurements, d: the defects and the guards), each with a soft tint; light first, then dark twice (the system's
-     choice, and a page that sets data-theme). The palette is docs/hosting/gcp-hosting-map.html's, so the
-     repository's HTML pages read as one set. */
+  /* Tokens shared with docs/team/details.html and docs/hosting/gcp-hosting-map.html, so the pages read as one set.
+     Kinds: a = an LLM persona, b = a Python script, c = state on disk (the queue, git), d = the owner. */
   :root {
     --bg: #f6f4fb; --ink: #17151f; --muted: #625d72; --card: #ffffff; --line: #e4e0ef; --code-bg: #f0edf7;
     --a: #6d3fe0; --a-soft: #ece4ff; --b: #c9356a; --b-soft: #ffe3ee; --c: #0b7f70; --c-soft: #dcf5f1;
     --d: #b46605; --d-soft: #ffefd9;
-    --hero-1: #5b2fd0; --hero-2: #d93d78; --hero-3: #f2a03d; --on-hero: #ffffff;
+    --hero-1: #5b2fd0; --hero-2: #d93d78; --on-hero: #ffffff;
     --shadow: 0 1px 2px rgba(23, 21, 31, .06), 0 8px 24px rgba(23, 21, 31, .08);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --bg: #121018; --ink: #eeeaf7; --muted: #a59fb8; --card: #1c1925; --line: #2f2a3d; --code-bg: #26222f;
       --a: #a98bff; --a-soft: #2a2140; --b: #ff7aa6; --b-soft: #3a1d2a; --c: #4fd6c3; --c-soft: #14302c;
-      --d: #ffb35c; --d-soft: #35281a;
-      --hero-1: #3d1f99; --hero-2: #9c2a57; --hero-3: #b06a1a; --on-hero: #ffffff;
+      --d: #ffb35c; --d-soft: #35281a; --hero-1: #3d1f99; --hero-2: #9c2a57;
       --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
     }
   }
   :root[data-theme="dark"] {
     --bg: #121018; --ink: #eeeaf7; --muted: #a59fb8; --card: #1c1925; --line: #2f2a3d; --code-bg: #26222f;
     --a: #a98bff; --a-soft: #2a2140; --b: #ff7aa6; --b-soft: #3a1d2a; --c: #4fd6c3; --c-soft: #14302c;
-    --d: #ffb35c; --d-soft: #35281a;
-    --hero-1: #3d1f99; --hero-2: #9c2a57; --hero-3: #b06a1a; --on-hero: #ffffff;
+    --d: #ffb35c; --d-soft: #35281a; --hero-1: #3d1f99; --hero-2: #9c2a57;
     --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--ink);
-    font: 16px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 1120px; margin: 0 auto; padding: 0 16px 64px; }
-  h2 { font-size: 1.4rem; margin: 40px 0 6px; letter-spacing: -.01em; }
-  h3.plain { font-size: 1.05rem; margin: 24px 0 6px; }
-  .sub { color: var(--muted); margin: 0 0 16px; max-width: 70ch; }
-  p { max-width: 70ch; }
-  code { font: .86em/1.4 ui-monospace, "Cascadia Code", Consolas, monospace; background: var(--code-bg);
-    padding: 1px 6px; border-radius: 6px; overflow-wrap: anywhere; }
+    font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 0 16px 48px; }
+  h1 { font-size: clamp(1.7rem, 6vw, 2.4rem); line-height: 1.1; margin: 24px 0 6px; letter-spacing: -.02em; }
+  h2 { font-size: 1.15rem; margin: 28px 0 8px; }
+  p { margin: 0 0 10px; }
+  .sub { color: var(--muted); }
+  code { font: .86em/1.4 ui-monospace, Consolas, monospace; background: var(--code-bg); padding: 1px 5px; border-radius: 5px; }
+  ul { margin: 0; padding-left: 20px; }
+  li { margin: 0 0 8px; }
 
-  .hero { margin: 16px 0 0; padding: 32px 24px 28px; border-radius: 22px; color: var(--on-hero); position: relative;
-    overflow: hidden; background: linear-gradient(125deg, var(--hero-1), var(--hero-2) 60%, var(--hero-3)); box-shadow: var(--shadow); }
-  .hero::after { content: ""; position: absolute; inset: auto -60px -80px auto; width: 260px; height: 260px;
-    border-radius: 50%; background: rgba(255, 255, 255, .12); }
-  .eyebrow { font: 700 .74rem/1 system-ui, sans-serif; letter-spacing: .14em; text-transform: uppercase; opacity: .85; }
-  .hero h1 { font-size: clamp(2rem, 6vw, 3rem); line-height: 1.05; margin: 10px 0 8px; letter-spacing: -.02em; position: relative; }
-  .hero p { margin: 0; max-width: 60ch; font-size: 1.05rem; opacity: .95; position: relative; }
-  .byline { margin-top: 10px !important; font-size: .85rem !important; opacity: .8 !important; }
-  .hero .pills { margin-top: 18px; position: relative; }
-  .hero .pill { background: rgba(255, 255, 255, .18); color: var(--on-hero); border-color: rgba(255, 255, 255, .3); }
-  .hero code { background: rgba(255, 255, 255, .18); color: var(--on-hero); }
+  figure { margin: 14px 0 0; background: var(--card); border-radius: 18px; padding: 12px; box-shadow: var(--shadow); }
+  svg { display: block; width: 100%; max-width: 100%; height: auto; }
+  .node { stroke-width: 2; rx: 10; }
+  .k-a { fill: var(--a-soft); stroke: var(--a); } .k-b { fill: var(--b-soft); stroke: var(--b); }
+  .k-c { fill: var(--c-soft); stroke: var(--c); } .k-d { fill: var(--d-soft); stroke: var(--d); }
+  .t { font: 600 15px system-ui, sans-serif; fill: var(--ink); text-anchor: middle; }
+  .s { font: 13px system-ui, sans-serif; fill: var(--muted); text-anchor: middle; }
+  .e { font: 12.5px system-ui, sans-serif; fill: var(--muted); }
+  .arrow { fill: none; stroke: var(--muted); stroke-width: 1.8; marker-end: url(#m); }
+  .arrow.llm { stroke-dasharray: 6 4; }
+  figcaption { font-size: .85rem; color: var(--muted); margin-top: 8px; display: flex; gap: 14px; flex-wrap: wrap; }
+  figcaption i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 2px solid; vertical-align: -1px; margin-right: 5px; }
 
-  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
-  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px;
-    border: 1px solid var(--line); background: var(--card); font: 600 .8rem/1.2 system-ui, sans-serif; white-space: nowrap; }
-  .pill b { font-size: 1rem; }
-  .pill.a { background: var(--a-soft); color: var(--a); border-color: transparent; }
-  .pill.b { background: var(--b-soft); color: var(--b); border-color: transparent; }
-  .pill.c { background: var(--c-soft); color: var(--c); border-color: transparent; }
-  .pill.d { background: var(--d-soft); color: var(--d); border-color: transparent; }
-
-  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 14px; margin-top: 18px; }
-  .stat { background: var(--card); border-radius: 16px; padding: 18px; box-shadow: var(--shadow); min-width: 0;
-    border-left: 6px solid var(--accent, var(--a)); }
-  .stat .n { font-size: 2.3rem; font-weight: 800; line-height: 1; color: var(--accent, var(--a)); letter-spacing: -.02em; }
-  .stat .what { color: var(--muted); margin-top: 6px; font-size: .92rem; }
-
-  .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 14px;
-    counter-reset: step; padding: 0; margin: 0; }
-  .flow li { list-style: none; position: relative; background: var(--card); border-radius: 16px; padding: 16px 16px 16px 58px;
-    box-shadow: var(--shadow); min-width: 0; }
-  .flow li::before { counter-increment: step; content: counter(step); position: absolute; left: 14px; top: 14px;
-    width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; color: #fff;
-    background: linear-gradient(135deg, var(--hero-1), var(--hero-2)); }
-  .flow b { display: block; }
-  .flow span { color: var(--muted); font-size: .9rem; }
-
-  .share { display: flex; height: 22px; border-radius: 999px; overflow: hidden; box-shadow: var(--shadow); }
-  .share i { display: block; min-width: 6px; }
-  .share .a { background: var(--a); } .share .b { background: var(--b); } .share .c { background: var(--c); } .share .d { background: var(--d); }
-  .legend { margin-top: 10px; }
-
-  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 16px; }
-  .card { background: var(--card); border-radius: 18px; padding: 20px; box-shadow: var(--shadow); min-width: 0;
-    border-top: 6px solid var(--accent, var(--a)); }
-  .card h3 { margin: 0 0 4px; font-size: 1.2rem; color: var(--accent, var(--a)); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-  .card .what { color: var(--muted); margin: 0 0 12px; max-width: none; }
-  .card dl { margin: 0; display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; font-size: .92rem; }
-  .card dt { font: 700 .72rem/1.7 system-ui, sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
-  .card dd { margin: 0; min-width: 0; }
-  .card ul { margin: 10px 0 0; padding-left: 18px; font-size: .93rem; }
-  .card li + li { margin-top: 4px; }
-  .accent-a { --accent: var(--a); } .accent-b { --accent: var(--b); } .accent-c { --accent: var(--c); } .accent-d { --accent: var(--d); }
-
-  .cmds { display: grid; gap: 10px; }
-  .cmd { background: var(--card); border-radius: 14px; padding: 12px 14px; box-shadow: var(--shadow); min-width: 0; }
-  /* pre-wrap, not overflow-x: the trailer below is wrapped by hand to fit, and a phone should read it without
-     scrolling sideways inside the block. */
-  .cmd pre { margin: 0 0 6px; padding: 10px 12px; border-radius: 10px; background: var(--code-bg);
-    white-space: pre-wrap; overflow-wrap: anywhere;
-    font: .86rem/1.5 ui-monospace, "Cascadia Code", Consolas, monospace; }
-  .cmd span { color: var(--muted); font-size: .9rem; }
-
-  .callout { border-radius: 14px; padding: 14px 16px; background: var(--a-soft); border-left: 5px solid var(--a); margin: 10px 0; }
-  .callout.warn { background: var(--d-soft); border-left-color: var(--d); }
-  .callout p { margin: 0; max-width: none; }
-  .callout p + p { margin-top: 8px; }
-
-  /* The wrapper scrolls so a narrow screen does not squash a column until its words break mid-letter: a table keeps
-     a floor width and the reader slides it instead. */
-  .table-wrap { overflow-x: auto; background: var(--card); border-radius: 14px; box-shadow: var(--shadow); }
-  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: .92rem; }
-  td code { overflow-wrap: normal; }
-  th, td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
-  th { font: 700 .74rem/1.3 system-ui, sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
-  tr:last-child td { border-bottom: 0; }
-  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-
-  /* The ownership picture: two items side by side, their file lists, and what the claim did. */
-  .own { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; }
-  .own .box { background: var(--card); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); min-width: 0;
-    border-top: 6px solid var(--accent, var(--a)); }
-  .own .box h4 { margin: 0 0 8px; font-size: .95rem; color: var(--accent, var(--a)); }
-  .own .files { margin: 0; padding: 0; list-style: none; font: .82rem/1.7 ui-monospace, Consolas, monospace; }
-  .own .files li { overflow-wrap: anywhere; padding: 2px 8px; border-radius: 6px; }
-  .own .files li.clash { background: var(--d-soft); color: var(--d); font-weight: 700; }
-  .own .verdict { margin-top: 12px; font: 700 .8rem/1.3 system-ui, sans-serif; letter-spacing: .04em;
-    text-transform: uppercase; }
-  .own .verdict.ok { color: var(--c); } .own .verdict.no { color: var(--d); }
-
-  footer { margin-top: 48px; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 16px; }
-  footer p { max-width: none; }
-  @media (prefers-reduced-motion: no-preference) { .card, .stat { transition: transform .2s ease; } .card:hover { transform: translateY(-2px); } }
+  .nums { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 110px), 1fr)); gap: 10px; margin-top: 10px; }
+  .num { background: var(--card); border-radius: 14px; padding: 12px 10px; box-shadow: var(--shadow); min-width: 0;
+    border-top: 5px solid var(--accent, var(--a)); }
+  .num b { display: block; font-size: 1.5rem; line-height: 1.1; color: var(--accent, var(--a)); letter-spacing: -.02em; }
+  .num span { color: var(--muted); font-size: .8rem; }
+  .n-a { --accent: var(--a); } .n-b { --accent: var(--b); } .n-c { --accent: var(--c); } .n-d { --accent: var(--d); }
+  footer { margin-top: 32px; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 12px; }
 </style>
 </head>
 <body>
 <main>
-  <header class="hero">
-    <div class="eyebrow">TaleMontage &middot; how the work is done</div>
-    <h1>The scrum team, and the day it stopped waiting</h1>
-    <p>A record of 2026-10-21, the day the queue first ran, brought up to 2026-10-22, the day the waiting left the
-      personas: the roles, the queue they pull from, what the work costs, and what is still broken or in flight.</p>
-    <p class="byline">By Guy Eden &middot; first read at 12:08 on 2026-10-21, read again at 07:57 on 2026-10-22 &middot;
-      <code>docs/team/index.html</code></p>
-    <div class="pills">
-      <span class="pill"><b>5</b> roles + a Python supervisor</span>
-      <span class="pill"><b>2</b> models</span>
-      <span class="pill"><b>99</b> items</span>
-      <span class="pill"><b>83</b> merged</span>
-      <span class="pill">no session while <b>nothing</b> waits</span>
-    </div>
-  </header>
+  <h1>The scrum team</h1>
+  <p class="sub">One owner, one session he talks to, a work queue on disk, and short-lived AI personas that pull items
+    out of it and do them each in its own git worktree &mdash; with Python, not a model, doing all the waiting.
+    Read at 08:24 on 2026-10-22; <a href="scrum-team-details.html">the details</a> are a page of their own.</p>
 
-  <h2>What this is</h2>
-  <p class="sub">A memory of a moment, kept because the shape of the team changes and a shape nobody wrote down
-    teaches nothing. This page keeps both days: how it first ran, and what the second day changed.</p>
-  <p>For months TaleMontage was built by one session talking to its owner. The standing rule was already that the
-    main session should plan, disperse and merge while background agents write the code &mdash; and the rule kept
-    failing, not because anyone forgot it, but because every single step looked too small to be worth handing out,
-    and a chain of small steps became the whole job.</p>
-  <p>On 2026-10-21 that rule stopped being a rule and became a machine: a queue on disk, four agent personas that
-    <em>pull</em> work out of it rather than being handed it, a main session that only stocks the queue and merges
-    what comes back, and two hooks that refuse the main session's own edits so it cannot quietly do the work itself.</p>
-  <p>On 2026-10-22 the machine was redesigned around two measurements from its first day. <strong>The worktree is now
-    the item's state</strong>: <code>claim</code> makes it, a dead agent's uncommitted work is committed and the next
-    claimant continues from it, and the merge removes it. <strong>Waiting is now Python, not a model</strong>: a
-    supervisor polls the queue on disk and starts a headless persona only when an item needs its judgment, so an idle
-    reviewer costs nothing. Every number on this page was read from the repository and the queue's own accounting at
-    the time of writing; where a figure is an estimate, it says so, and where something is still broken or still in
-    flight, it says that too.</p>
+  <figure>
+    <svg viewBox="0 0 480 700" role="img" aria-label="Block diagram: the owner talks to the main session; the main session adds items to the work queue and starts the supervisor; the supervisor polls the queue and starts a planner, a worker or a reviewer only when an item waits for one; the worker commits in the item's own worktree; wq merge brings it into main and removes the tree; the bug pipeline runs beside it with its own queue and merge; every commit carries a token trailer.">
+      <defs><marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
 
-  <h2>At a glance</h2>
-  <div class="stats">
-    <div class="stat accent-a"><div class="n">83</div><div class="what">items merged, of 99 in the queue, over two days</div></div>
-    <div class="stat accent-b"><div class="n">115</div><div class="what">commits on those merged items</div></div>
-    <div class="stat accent-c"><div class="n">13.4M</div><div class="what">direct tokens per merged item (27.1M counting the run's share)</div></div>
-    <div class="stat accent-d"><div class="n">23.2%</div><div class="what">of items went backwards at least once (23 of 99)</div></div>
-  </div>
+      <rect class="node k-d" x="12" y="12" width="130" height="50"/>
+      <text class="t" x="77" y="33">owner</text><text class="s" x="77" y="51">asks, decides</text>
+      <rect class="node k-a" x="200" y="12" width="268" height="50"/>
+      <text class="t" x="334" y="33">main session</text><text class="s" x="334" y="51">answers, stocks the queue, merges, builds</text>
+      <path class="arrow llm" d="M142 37 H198"/>
 
-  <h2>The one invariant that makes it safe</h2>
-  <p class="sub">A merge conflict becomes a refusal at claim time.</p>
-  <p>The owner's instruction for parallel agents was always &ldquo;disperse by file, not by topic&rdquo;: two agents
-    in one module is a merge conflict he pays for twice. Every other part of this design exists to serve one
-    mechanical consequence of that sentence.</p>
-  <div class="callout">
-    <p><strong>A specced item carries the exact files it owns, and a claim whose files intersect a live claim's is
-      refused.</strong> Not warned about &mdash; refused, by <code>workpipe/store.py</code>'s
-      <code>claim</code>, which tells the starved worker which file and which item held it back so it waits instead
-      of inventing something to do.</p>
-    <p>A claim lasts until the merge. An item's files stay owned through <em>claimed</em>, <em>submitted</em>,
-      <em>reviewing</em>, <em>returned</em> and <em>verified</em>, because a verified branch that has not been
-      merged yet still conflicts with anyone editing those lines.</p>
-  </div>
-  <div class="own">
-    <div class="box accent-c">
-      <h4>Item A &mdash; claimed by worker <code>s3</code></h4>
-      <ul class="files">
-        <li>scripts/story_build/build_story.py</li>
-        <li class="clash">scripts/story_build/caption_schedule.py</li>
-        <li>tests/&hellip;/test_caption_schedule.py</li>
-      </ul>
-      <div class="verdict ok">claim granted &mdash; nothing else owns these</div>
-    </div>
-    <div class="box accent-d">
-      <h4>Item B &mdash; worker <code>s4</code> tries to claim</h4>
-      <ul class="files">
-        <li class="clash">scripts/story_build/caption_schedule.py</li>
-        <li>tests/&hellip;/test_caption_hold_reserve.py</li>
-      </ul>
-      <div class="verdict no">claim refused &mdash; worker <code>s3</code> holds that file</div>
-    </div>
-    <div class="box accent-a">
-      <h4>What happens next</h4>
-      <p class="what"><code>claim</code> exits 6 &mdash; &ldquo;items wait but another worker owns a file each of them
-        needs&rdquo; &mdash; naming the file and the item. Under the supervisor this is asked <em>before</em> any
-        worker is started (<code>ready --role worker</code> is the same check with no model behind it), so a worker
-        is only ever started for an item it can actually claim.</p>
-    </div>
-  </div>
-  <p>The side effect is a discipline on the planner: it <em>refuses to spec an item it cannot give a
-    non-intersecting file list</em>. Work that cannot be separated by file has to be decomposed until it can, or
-    given to one item. That is the whole of the merge-conflict problem, solved before any code is written.</p>
+      <rect class="node k-b" x="12" y="124" width="200" height="56"/>
+      <text class="t" x="112" y="147">supervisor</text><text class="s" x="112" y="166">wq supervise, a Python loop</text>
+      <rect class="node k-c" x="252" y="124" width="216" height="56"/>
+      <text class="t" x="360" y="147">work queue</text><text class="s" x="360" y="166">.claude/work-queue, on disk</text>
+      <path class="arrow" d="M250 62 L140 122"/><text class="e" x="150" y="98">starts</text>
+      <path class="arrow" d="M360 62 V122"/><text class="e" x="368" y="98">wq add</text>
+      <path class="arrow" d="M212 146 H250"/><path class="arrow" d="M250 160 H212"/>
+      <text class="e" x="214" y="200">polls, sweeps dead claims</text>
 
-  <h2>The team</h2>
-  <p class="sub">Four agent personas in <code>~/.claude/agents/work-*.md</code>, a Python supervisor, and the main
-    session. The model and the effort below are each file's own front matter, not a guess.</p>
-  <div class="cards">
-    <section class="card accent-a">
-      <h3>planner <span class="pill a">Sonnet</span><span class="pill a">high effort</span></h3>
-      <p class="what">Turns a line of open work into a brief a worker can finish without asking anything.</p>
-      <dl>
-        <dt>File</dt><dd><code>~/.claude/agents/work-planner.md</code></dd>
-        <dt>Also</dt><dd>this queue's scrum master, and there is no second persona for it</dd>
-      </dl>
-      <ul>
-        <li>Reads the code &mdash; most of its work. A brief whose file list is a guess costs more than it saves.</li>
-        <li>Each brief carries the goal, the exact files the item owns, the measurements already taken, the rules it
-          must not break, a risk grade with its reason, the item's prerequisites, which tests to run and what to
-          report.</li>
-        <li>Keeps the queue stocked and prioritised so workers pull rather than wait, and reports stalled work.</li>
-        <li><strong>Writes no product code.</strong></li>
-      </ul>
-    </section>
-    <section class="card accent-a">
-      <h3>architect <span class="pill a">Sonnet</span><span class="pill a">high effort</span></h3>
-      <p class="what">Decides, once, what shape a piece of work takes &mdash; before any worker starts.</p>
-      <dl>
-        <dt>File</dt><dd><code>~/.claude/agents/work-architect.md</code></dd>
-        <dt>When</dt><dd>only for an item carrying <code>needs_contract</code></dd>
-      </dl>
-      <ul>
-        <li><strong>Not in the ordinary path, by design.</strong> The default is that nothing asks for a contract: a
-          contract for a one-file fix buys nothing and costs a whole stage.</li>
-        <li>Writes a versioned, <strong>hashed</strong> contract &mdash; the decision, the shapes other work depends
-          on, who owns which boundary, the invariants, the order items land in.</li>
-        <li>A worker cannot edit that contract to describe what it built: the hashes are compared.</li>
-        <li><strong>Writes no product code and no test.</strong> Two items have used it, of 99.</li>
-      </ul>
-    </section>
-    <section class="card accent-b">
-      <h3>worker <span class="pill b">Sonnet</span><span class="pill b">medium effort</span></h3>
-      <p class="what">Claims one item no other claim blocks and does it, in the item's own worktree.</p>
-      <dl>
-        <dt>File</dt><dd><code>~/.claude/agents/work-worker.md</code></dd>
-        <dt>Where</dt><dd>the <em>item's</em> worktree, <code>C:\dev\tm-&lt;item id&gt;</code> on <code>wq/&lt;item id&gt;</code>, made by <code>claim</code></dd>
-      </dl>
-      <ul>
-        <li>Is not handed work: it pulls. Under the supervisor it is started only when an item is claimable, does
-          that one item and ends.</li>
-        <li><strong>Never makes a worktree.</strong> <code>claim</code> makes it, or reattaches the one a previous
-          holder left &mdash; commits and all &mdash; and records both on the item.</li>
-        <li>Works from the brief alone, implements <strong>and tests</strong> its own item, commits there and
-          submits. <code>submit</code> takes the commit from the item's tree and refuses a dirty tree, another tree
-          or branch, and any file the item does not own.</li>
-        <li><strong>Never merges, never touches the main branch, never edits a file outside its claim.</strong></li>
-      </ul>
-    </section>
-    <section class="card accent-c">
-      <h3>reviewer <span class="pill c">Fable</span><span class="pill c">medium effort</span></h3>
-      <p class="what">Reads each submitted commit against its own brief, and decides.</p>
-      <dl>
-        <dt>File</dt><dd><code>~/.claude/agents/work-reviewer.md</code></dd>
-        <dt>Verdicts</dt><dd><code>verified</code> &middot; <code>returned</code> &middot; <code>blocked</code></dd>
-      </dl>
-      <ul>
-        <li>A worker does not grade its own work: a verified item is one the reviewer verified.</li>
-        <li><strong>Risk-based, not mandatory.</strong> It is never handed an item the planner graded low risk that
-          touches nothing the project always reviews and has never been returned; those merge straight from
-          <em>submitted</em>, and the item records why.</li>
-        <li>Asks three questions: does the diff do what the item asked, does it keep the project's rules and the
-          guarantees the brief names, is anything in it nobody asked for.</li>
-        <li><strong>Changes nothing. Never repairs a fix itself</strong> &mdash; <code>returned</code> carries the
-          reasons and the item is claimed again.</li>
-        <li><strong>Costs nothing while idle.</strong> On the first day 36% of its turns only asked whether there was
-          work; it is now started per submitted item and ends with it.</li>
-      </ul>
-    </section>
-    <section class="card accent-b">
-      <h3>the supervisor <span class="pill b">Python</span><span class="pill b">no model</span></h3>
-      <p class="what">The loop that waits, so no persona has to.</p>
-      <dl>
-        <dt>File</dt><dd><code>~/.claude/scripts/workpipe/supervise.py</code></dd>
-        <dt>Run as</dt><dd><code>wq supervise --workers 3 --merge</code>, one background command</dd>
-      </dl>
-      <ul>
-        <li>Polls the queue on disk, takes back claims whose holders are evidenced gone, and starts a persona
-          <strong>only for an item that needs its judgment</strong>: a worker per claimable item up to
-          <code>--workers</code>, one planner, architect and reviewer at a time.</li>
-        <li>Each persona is a headless session <em>run as the persona</em>: <code>claude --agent work-reviewer -p
-          "&lt;take one item, judge it, end&gt;"</code>, with the project's cwd, <code>--output-format json</code>,
-          <code>CLAUDE_CODE_PRINT_BG_WAIT_CEILING_MS=0</code> and <code>--dangerously-skip-permissions</code>: a
-          headless session has nobody at the keyboard to answer a permission prompt, so one would hang the spawn; the
-          nightly review (<code>tools/cr_night.cmd</code>) starts its session the same way for the same reason.</li>
-        <li><code>--merge</code> runs <code>merge --all</code>'s every gate as items become mergeable and reports a
-          refusal rather than guessing at it. <strong>It decides nothing about any item.</strong></li>
-        <li>Runs until nothing more can move without a person and exits with a summary: 0 settled, 7 a person is
-          needed, 5 a bound was reached. Its exit is the main session's notification.</li>
-      </ul>
-    </section>
-    <section class="card accent-d">
-      <h3>the main session <span class="pill d">the owner's session</span></h3>
-      <p class="what">The owner's counterpart, and the only part of the team he talks to.</p>
-      <dl>
-        <dt>Does</dt><dd>stocks the queue, starts the supervisor, launches builds in a visible console, answers the owner</dd>
-        <dt>Guarded by</dt><dd><code>.claude/hooks/delegate_guard.py</code></dd>
-      </dl>
-      <ul>
-        <li>Puts work into the queue; it does not allocate it. Nobody hands work out &mdash; the personas pull.</li>
-        <li>Keeps what the hard rules reserve for it: launching a build, a pipeline stage or a journey in a console
-          the owner watches; the checkpoint and the heavy suites; judging a refused merge; judging a film's
-          artifacts.</li>
-        <li>Resolves what waits for a person: <em>needs-owner</em>, <em>blocked</em>, a claim the queue cannot
-          check.</li>
-        <li><strong>Does not write product code</strong> &mdash; and on this machine is refused if it tries.</li>
-        <li>Runs on whatever model the owner's session has (Opus 5 on the first day, Sonnet 5.5 on the second,
-          read from the commits' trailers).</li>
-      </ul>
-    </section>
-  </div>
-  <div class="callout">
-    <p><strong>Why these models.</strong> The split follows the cost rule already written down for the bug pipeline:
-      <strong>Fable for the roles that read and judge, Sonnet for the roles that write.</strong> So the reviewer is
-      Fable and the planner, architect and workers are Sonnet. The bug pipeline's files say the same: bug-prover,
-      verifier and code-reviewer on Fable; architect, triage, mitigator, test-writer and chaos-monkey on Sonnet.
-      Nothing about the team's shape is more consequential than this line, and nothing in it is a preference: it is
-      the measured cost of a day like the first one. The supervisor has no model at all, which is the second day's
-      whole point.</p>
+      <rect class="node k-a" x="12" y="236" width="140" height="56"/>
+      <text class="t" x="82" y="259">planner</text><text class="s" x="82" y="278">writes the brief</text>
+      <rect class="node k-a" x="170" y="236" width="140" height="56"/>
+      <text class="t" x="240" y="259">worker</text><text class="s" x="240" y="278">does one item</text>
+      <rect class="node k-a" x="328" y="236" width="140" height="56"/>
+      <text class="t" x="398" y="259">reviewer</text><text class="s" x="398" y="278">judges the diff</text>
+      <path class="arrow" d="M82 180 V234"/><path class="arrow" d="M150 180 L220 234"/><path class="arrow" d="M200 180 L380 234"/>
+      <text class="e" x="20" y="222">one fresh session per waiting item</text>
+      <path class="arrow llm" d="M152 250 L252 180"/><path class="arrow llm" d="M300 234 L350 182"/><path class="arrow llm" d="M398 234 V182"/>
+
+      <rect class="node k-c" x="12" y="356" width="220" height="56"/>
+      <text class="t" x="122" y="379">worktree tm-&lt;item&gt;</text><text class="s" x="122" y="398">branch wq/&lt;item&gt;, made by claim</text>
+      <rect class="node k-c" x="268" y="356" width="200" height="56"/>
+      <text class="t" x="368" y="379">main</text><text class="s" x="368" y="398">the main branch</text>
+      <path class="arrow" d="M240 292 L160 354"/><text class="e" x="160" y="332">commits</text>
+      <path class="arrow llm" d="M398 292 L240 354"/><text class="e" x="300" y="332">reads</text>
+      <path class="arrow" d="M232 384 H266"/><text class="e" x="190" y="434">wq merge, then the tree is removed</text>
+      <path class="arrow" d="M60 354 L60 180" stroke-dasharray="2 4"/><text class="e" x="20" y="318" transform="rotate(-90 20 318)">--merge</text>
+
+      <rect class="node k-b" x="12" y="468" width="456" height="70"/>
+      <text class="t" x="240" y="492">bug pipeline, beside it</text>
+      <text class="s" x="240" y="511">finders &rarr; proof &rarr; architect &rarr; mitigator &rarr; verifier &rarr; merge</text>
+      <text class="s" x="240" y="528">bug_queue.py, its own queue, own fix/&lt;id&gt; trees, hashed proofs</text>
+      <path class="arrow" d="M368 466 V414"/><text class="e" x="376" y="444">merge</text>
+      <path class="arrow llm" d="M40 466 C 0 400, 0 120, 77 64" stroke-dasharray="6 4"/><text class="e" x="4" y="110" transform="rotate(-90 4 110)">needs-owner</text>
+
+      <rect class="node k-c" x="12" y="598" width="456" height="56"/>
+      <text class="t" x="240" y="621">every commit carries Session-Token-Delta</text>
+      <text class="s" x="240" y="640">read back by wq cost and tools/commit_cost.py</text>
+      <path class="arrow" d="M122 414 V596"/><path class="arrow" d="M368 540 V596"/>
+      <text class="e" x="130" y="580">the hooks write it</text>
+      <text class="s" x="240" y="684">solid arrow: a script moves it &middot; dashed arrow: a model reads or decides</text>
+    </svg>
+    <figcaption>
+      <span><i style="border-color: var(--a); background: var(--a-soft)"></i>AI persona (a model)</span>
+      <span><i style="border-color: var(--b); background: var(--b-soft)"></i>Python script, no model</span>
+      <span><i style="border-color: var(--c); background: var(--c-soft)"></i>state on disk: queue, git</span>
+    </figcaption>
+  </figure>
+
+  <h2>Five things to know</h2>
+  <ul>
+    <li><strong>How an item flows.</strong> <code>wq add</code> puts a line of work in the queue. The planner writes
+      its brief with the exact files it owns. A worker claims it, works in the item's own worktree, commits and
+      submits. The reviewer verifies or returns it. <code>wq merge</code> brings it into main and removes the tree.</li>
+    <li><strong>Why a worktree per item.</strong> Two agents in one file is a merge conflict paid for twice. A claim
+      that touches a file another live claim owns is refused, and each item's commits live in its own tree until
+      merged.</li>
+    <li><strong>Why a fresh agent per item.</strong> Every turn of a long-lived agent re-reads its whole history: the
+      first day's reused reviewer read 414,000 cached tokens a turn; a fresh one pays about 14,000 once. So a persona
+      is started for one item and ends with it, and the main session is handed over at natural breaks.</li>
+    <li><strong>Script or model.</strong> Waiting, claiming, checking a claim's files, the merge gates, the lease
+      sweep and the cost trailer are Python. Only the brief, the change and the verdict come from a model (planner,
+      architect and workers on Sonnet; the reviewer on Fable).</li>
+    <li><strong>What the main session still does.</strong> Answers the owner, stocks the queue, starts the supervisor,
+      launches builds in a visible console, resolves what needs a person, runs the checkpoint. It is refused if it
+      edits product code itself.</li>
+  </ul>
+
+  <h2>Headline numbers</h2>
+  <p class="sub">Read at 08:24 on 2026-10-22 from <code>wq cost</code>, <code>wq status</code> and
+    <code>bug_queue.py list</code>. Tokens are reconciled from transcripts after the fact, never live.</p>
+  <div class="nums">
+    <div class="num n-a"><b>86</b><span>items merged of 101 queued</span></div>
+    <div class="num n-b"><b>118</b><span>commits on merged items</span></div>
+    <div class="num n-c"><b>12.9M</b><span>direct tokens per merged item</span></div>
+    <div class="num n-c"><b>26.5M</b><span>per item with the run's share</span></div>
+    <div class="num n-d"><b>22.8%</b><span>of items went back at least once (23)</span></div>
+    <div class="num n-d"><b>12 / 83</b><span>bugs open / closed, of 95 (64 fixed)</span></div>
   </div>
 
-  <h2>How an item moves</h2>
-  <p class="sub">The states are <code>workpipe/stages.py</code>'s and <code>store.py</code>'s, not a description of
-    them. Each arrow is a command the script performs; the agents only judge.</p>
-  <ol class="flow">
-    <li><b>queued</b><span>A line of the project's open work. No spec yet.</span></li>
-    <li><b>speccing &rarr; specced</b><span>The planner reads the code and writes the brief with the exact files the item owns, its risk and its prerequisites.</span></li>
-    <li><b>designing &rarr; contracted</b><span>Only if the item asked: the architect's versioned, hashed contract.</span></li>
-    <li><b>claimed</b><span><code>claim</code> makes the item's worktree and branch, records them on the item, and a worker owns it and its files. Never offered while a prerequisite is unmerged.</span></li>
-    <li><b>submitted</b><span>Committed in the item's worktree, inside the files it claimed.</span></li>
-    <li><b>reviewing &rarr; verified</b><span>Read against the brief. Low risk skips straight to the merge.</span></li>
-    <li><b>merged</b><span>Tried on the main branch's head in a throwaway worktree first; then the item's tree is removed and its branch deleted, when the tree is clean and the branch has landed.</span></li>
-  </ol>
-  <h3 class="plain">And the ways out</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Exit</th><th>What it means</th><th>Who picks it up</th></tr></thead>
-      <tbody>
-        <tr><td><code>returned</code></td><td>Sent back with reasons; it still holds its files and its worktree</td><td>The next worker to claim it continues in that same tree</td></tr>
-        <tr><td><code>blocked</code></td><td>The work cannot proceed (a brief that contradicts itself, a dependency that is not there)</td><td>The main session, not the worker</td></tr>
-        <tr><td><code>needs-owner</code></td><td>The intended behaviour is a product decision</td><td>The owner, asked by the main session; the answer comes back through <code>resolve</code></td></tr>
-        <tr><td><code>dropped</code></td><td>Not worth doing after reading the code</td><td>Nobody. Two items have ended here</td></tr>
-        <tr><td>a reclaim</td><td>The holder is evidenced gone: no turn, no heartbeat, no claim for thirty minutes</td><td>The sweep commits its uncommitted work as <code>WIP:</code> on the item's branch; the queue <strong>adopts</strong>, and the next claim is bound to the same tree. <code>recover --to redo</code> is an explicit order to start afresh</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>No agent turns uncertainty into a product decision, and a stalled item is reported rather than worked around.
-    Running long is never evidence that a holder is gone: an L item ran over an hour and was alive throughout. A
-    claim whose holder the queue cannot recognise is never taken back automatically &mdash; it is named in
-    <code>status</code> for a person to <code>release</code>.</p>
+  <h2>In flight, and next</h2>
+  <ul>
+    <li>No-gates order (cinematic work ships on, no tuning keys): item <code>20261022-070638</code> is
+      <em>returned</em>, not merged; <code>TUNING_GATES.md</code> keeps its old register until it is.</li>
+    <li>Landed between 08:19 and 08:21: the bug pipeline's own supervisor (<code>bug_queue.py supervise</code>),
+      the compact <code>wq show</code>, the document-budget check with the <code>groom</code> skill, and the rule
+      that a bug fix is made on main's head before it is marked fixed.</li>
+    <li>Music-aware cuts, the owner's B: item <code>20261022-071118</code> is <em>returned</em>; the land level 4
+      item waits as <em>needs-owner</em> over two unlisted files.</li>
+    <li>Seven items wait for a person: one blocked, six needs-owner. Twelve bugs open: five returned only for a
+      stale base, four blocked, two fixing, one answered B and not yet resolved.</li>
+    <li>Is the pipeline cheaper than direct work? Not proven: <code>tools/commit_cost.py</code> landed today and the
+      comparison against a direct-work window is the next read.</li>
+  </ul>
 
-  <h2>The machinery</h2>
-  <p class="sub">5,095 lines of Python at the user level, so it works in any repository (2,757 on the first day).
-    It was modelled line for line on the bug pipeline (<code>bug_queue.py</code>, <code>bugpipe/</code>) so that the
-    states, the commands and the exit codes feel the same to anyone who has used that.</p>
-  <div class="cards">
-    <section class="card accent-a">
-      <h3>The command line</h3>
-      <p class="what">Every mechanical step, done by the script and never by an agent's judgement.</p>
-      <dl><dt>Where</dt><dd><code>~/.claude/scripts/work_queue.py</code></dd>
-        <dt>Tests</dt><dd><code>~/.claude/tests/test_work_queue.py</code></dd></dl>
-      <ul>
-        <li>Moving an item between states; checking a claim against the live ones; making and reattaching the
-          item's worktree; checking a commit against the files its item owns; trying a branch on the main branch's
-          head; removing the tree and branch after the merge.</li>
-        <li>For the main session: <code>supervise</code>, <code>status</code>, <code>ready --role</code>,
-          <code>spawns</code>, <code>cost</code>, <code>prune</code>, <code>lease</code>, <code>deps</code>,
-          <code>recover</code>, <code>widen</code>, <code>depend</code>.</li>
-        <li><code>take</code> and <code>claim</code> print the item they took as JSON; the exit codes say what
-          happened: 3 nothing now, 4 the run is over, 6 held back, <strong>7 nothing can move without a person</strong>.</li>
-      </ul>
-    </section>
-    <section class="card accent-a">
-      <h3>The modules</h3>
-      <p class="what">One file per concern, under <code>~/.claude/scripts/workpipe/</code>.</p>
-      <ul>
-        <li><code>store.py</code> &mdash; the items on disk, the claim and its collisions, the priority order</li>
-        <li><code>stages.py</code> &mdash; the states and the transitions between them</li>
-        <li><code>trees.py</code> &mdash; the item's worktree and branch: made at claim, preserved at reclaim, removed at merge</li>
-        <li><code>leases.py</code> &mdash; a claim's holder, its generation and its evidence of life</li>
-        <li><code>depends.py</code> &mdash; prerequisites, and the stuck chain that is reported rather than waited on</li>
-        <li><code>supervise.py</code> &mdash; the Python loop that waits and starts headless personas</li>
-        <li><code>briefs.py</code>, <code>contracts.py</code> &mdash; the brief with its standing rules; the architect's hashed contract</li>
-        <li><code>schemas.py</code>, <code>runtimes.py</code>, <code>usage.py</code> &mdash; which personas handled an item, how they waited, and what it cost</li>
-        <li><code>pilot.py</code>, <code>paired.py</code>, <code>held.py</code> &mdash; the paired-replay pilot, which refuses to promise power it has not measured</li>
-      </ul>
-    </section>
-    <section class="card accent-b">
-      <h3>The queue itself</h3>
-      <p class="what">One folder per item, shared by every item's worktree.</p>
-      <dl><dt>Where</dt><dd><code>.claude/work-queue/</code>, per project</dd>
-        <dt>In git</dt><dd>no &mdash; <code>work-start</code> names it in the repository's own exclude file</dd></dl>
-      <ul>
-        <li>So the live queue is not in this record, and this page is. The queue is the run's working memory; this is
-          the part meant to outlive it.</li>
-        <li>The supervisor's spawn results and its ledger live under <code>.claude/work-queue/.supervisor/</code>.</li>
-      </ul>
-    </section>
-    <section class="card accent-b">
-      <h3>How it is started</h3>
-      <p class="what">Two doors to the same mechanism, and two modes behind them.</p>
-      <dl><dt>Command</dt><dd><code>/work</code> (<code>~/.claude/commands/work.md</code>)</dd>
-        <dt>Skill</dt><dd><code>disperse</code> (<code>~/.claude/skills/disperse/SKILL.md</code>)</dd></dl>
-      <ul>
-        <li>The default: <code>wq supervise --workers 3 --merge</code>, one background command, personas started
-          only as items wait for them.</li>
-        <li>The second mode, when the owner wants to watch: the planner, the workers and the reviewer started in the
-          session as background agents, each blocking in <code>wait</code> / <code>claim --wait</code> between items.</li>
-        <li>The <code>disperse</code> skill is the same mechanism reached by the words the owner actually says
-          &mdash; &ldquo;hand this out&rdquo;, &ldquo;why are you running stuff&rdquo;.</li>
-      </ul>
-    </section>
-    <section class="card accent-d">
-      <h3>The cleaners</h3>
-      <p class="what">What used to pile up now goes when its work has landed.</p>
-      <ul>
-        <li><code>wq merge</code> removes the item's tree and deletes its branch (<code>git branch -d</code>) when
-          the tree is clean and the branch is an ancestor of the main branch; otherwise the reason is recorded on
-          the item and the merge stands.</li>
-        <li><code>wq prune</code> lists every tree and branch of the queue's shape with its item's state;
-          <code>--sweep</code> removes only the merged, clean, landed ones. <code>bug_queue.py prune</code> does the
-          same for a finished bug's fix branches, its mitigator's tree and its dead verify trees.</li>
-        <li>TaleMontage's <code>tools/git_tidy.py</code>, run by <code>.githooks/post-merge</code> after a merge on
-          main, asks both queues to prune first and then sweeps what no queue accounts for. Nothing of an unfinished
-          item or bug, a dirty tree, or a branch holding a commit main does not is ever touched. 31 worktrees and 44
-          branches had piled up before this.</li>
-      </ul>
-    </section>
-  </div>
-
-  <h2>Waiting is Python, not an LLM</h2>
-  <p class="sub">The second day's change, and the measurement that forced it.</p>
-  <p>An idle agent costs nearly what a busy one does: every turn re-reads its whole conversation, so a turn spent
-    asking &ldquo;is there anything yet?&rdquo; is charged at that agent's full context. The blocking waits added on
-    the first day (<code>wait</code>, <code>claim --wait</code>, <code>take --wait</code>: a real sleep in the script)
-    took the asking out of the personas, but still left a live session per persona, and every wake-up of one was a
-    turn.</p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Role</th><th class="num">agents</th><th class="num">turns</th><th class="num">weighted $</th><th class="num">spent waiting</th><th class="num">share</th></tr></thead>
-      <tbody>
-        <tr><td>work-reviewer</td><td class="num">4</td><td class="num">675</td><td class="num">273.99</td><td class="num">77.91</td><td class="num">28.4%</td></tr>
-        <tr><td>work-architect</td><td class="num">3</td><td class="num">141</td><td class="num">7.83</td><td class="num">1.32</td><td class="num">16.9%</td></tr>
-        <tr><td>work-worker</td><td class="num">26</td><td class="num">3,381</td><td class="num">221.31</td><td class="num">14.41</td><td class="num">6.5%</td></tr>
-        <tr><td>work-planner</td><td class="num">10</td><td class="num">1,023</td><td class="num">61.03</td><td class="num">2.52</td><td class="num">4.1%</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p><code>cost --by role</code>, read at 07:57 on 2026-10-22 over both days. The dollars are a scale, not a bill:
-    <code>in + 5 out + 1.25 cache-write + 0.1 cache-read</code>, priced per model from the cost records the harness
-    keeps on this machine, with Fable's rate uncertain to about &plusmn;40%. A &ldquo;waiting&rdquo; turn is one whose
-    only tool calls asked the queue for work.</p>
-  <div class="callout">
-    <p><strong>So the loop is <code>wait &rarr; claim &rarr; think &rarr; submit</code>, and only <code>think</code>
-      needs a model.</strong> <code>wq supervise</code> is the wait: a Python process with no context, whose wake-ups
-      are free, and which starts a session only when <code>store</code> answers yes to a deterministic question
-      &mdash; is an item queued, specced and asking for a contract, claimable, submitted and not review-optional.
-      The session it starts is paid for only while it holds an item.</p>
-    <p><strong>What a spawn costs, measured</strong>: one headless reviewer with one turn and no tool pays 13,544
-      cache-write tokens, $0.27 at Fable's list rate &mdash; the orientation a fresh persona pays once per item. The
-      reused reviewer of the first run read 245M cached tokens over 592 turns, 414,000 a turn. That arithmetic is why
-      one persona per item is the default and a persona kept alive for many items is not.</p>
-  </div>
-  <h3 class="plain">The supervisor's ledger so far</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Persona</th><th class="num">spawns</th><th class="num">turns</th><th class="num">$</th><th class="num">items</th><th class="num">$ / spawn</th></tr></thead>
-      <tbody>
-        <tr><td>work-planner</td><td class="num">1</td><td class="num">6</td><td class="num">0.22</td><td class="num">1</td><td class="num">0.22</td></tr>
-        <tr><td>work-reviewer</td><td class="num">1</td><td class="num">8</td><td class="num">1.37</td><td class="num">1</td><td class="num">1.37</td></tr>
-        <tr><td>work-worker</td><td class="num">2</td><td class="num">65</td><td class="num">1.66</td><td class="num">2</td><td class="num">0.83</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p><code>wq spawns</code>, four spawns on the supervisor's first morning: each a headless session run as the
-    persona, paid for only while it held an item. The waiting between them cost nothing.</p>
-
-  <h2>What the work has cost</h2>
-  <p class="sub">Read by <code>work_queue.py cost</code> at 07:57 on 2026-10-22, over both days' sessions and their
-    agents. These are measurements, reconciled from the transcripts after the turns happened &mdash; never captured
-    live, because nothing a running command can ask carries usage.</p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Tokens</th><th class="num">output</th><th class="num">cache write</th><th class="num">cache read</th><th class="num">input</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Direct</strong> &mdash; the work, the designs, the reviews</td><td class="num">3,510,321</td><td class="num">25,474,901</td><td class="num">1,082,378,045</td><td class="num">21,663</td></tr>
-        <tr><td><strong>Shared</strong> &mdash; the run's own, never one item's</td><td class="num">3,399,913</td><td class="num">17,745,441</td><td class="num">1,117,517,840</td><td class="num">15,967</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>A cache read is not an input token &mdash; it is charged differently, and here it is two orders of magnitude the
-    larger. The four kinds are kept apart everywhere for that reason.</p>
-  <div class="stats">
-    <div class="stat accent-a"><div class="n">13,390,180</div><div class="what">direct tokens per merged item (14.1M on the first day alone)</div></div>
-    <div class="stat accent-b"><div class="n">27,109,206</div><div class="what">per merged item counting the run's share too</div></div>
-    <div class="stat accent-c"><div class="n">9,020,544</div><div class="what">direct tokens per commit, over the 115 commits merged</div></div>
-    <div class="stat accent-d"><div class="n">50.6%</div><div class="what">of everything read was the run's own, not any one item's</div></div>
-  </div>
-  <h3 class="plain">Where the shared cost went</h3>
-  <div class="share" role="img" aria-label="The run's shared cache reads of 1,118 million tokens, by bucket: the main session 492 million, the planner's speccing 240 million, waiting 136 million, every agent's orientation 43 million, personas the queue does not know 206 million">
-    <i class="a" style="flex: 492"></i><i class="b" style="flex: 240"></i><i class="c" style="flex: 179"></i><i class="d" style="flex: 206"></i>
-  </div>
-  <div class="pills legend">
-    <span class="pill a">the main session &middot; 492M</span>
-    <span class="pill b">the planner's speccing &middot; 240M</span>
-    <span class="pill c">waiting 136M + orientation 43M</span>
-    <span class="pill d">personas the queue does not know &middot; 206M</span>
-  </div>
-  <div class="callout">
-    <p><strong>Shared cost is the run's, not one item's.</strong> The planner's reading and speccing, each agent's
-      orientation before it holds any item, every turn that only asked for work, and the main session's own merging
-      and answering are charged to the run. Putting them on whichever item was specced first would make that item
-      look dear and every later one cheap. Both arithmetics are printed, with the counts they were divided by, so the
-      division can be checked.</p>
-    <p>6.7% of the direct tokens are on items that were not merged &mdash; and 9 of those items were still in flight
-      when this was read, so that is not all waste. 17.7% could be placed on no item at all and is reported as such:
-      <code>cost --by role</code> keeps its three parts (orientation, waiting, personas the queue does not know) apart,
-      because each has a different fix.</p>
-  </div>
-
-  <h2>Tuning the shape of the team</h2>
-  <p class="sub">The point of writing any of this down. <code>workpipe/schemas.py</code> holds a registry of persona
-    sets, and every commit records which one handled its item &mdash; so a change to the team can be measured
-    instead of argued about.</p>
-  <p>A schema reads <code>queue/planner+worker+reviewer@2</code>: the workflow, the persona set in the order the
-    queue applies them, and the version of that set's <em>definition</em> in the registry. It is <strong>derived
-    from the item's own history</strong>, which records every transition and the role that made it, and never from
-    a configuration somebody typed &mdash; a session that thinks well of itself cannot label its work with a schema
-    it did not use. Whether the item was independently reviewed is kept out of the schema and recorded separately,
-    because an item that skipped its review is not the same data point as one that passed it. <strong>How the
-    personas waited is a third field, <code>runtime</code></strong> (<code>poll</code> on the first day,
-    <code>wait/1</code> since), because that costs or saves more than any difference between two team shapes.</p>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Schema</th><th class="num">items</th><th class="num">merged</th><th class="num">commits</th><th class="num">rework</th><th class="num">direct tokens / verified item</th></tr></thead>
-      <tbody>
-        <tr><td><code>queue/planner+worker+reviewer@2</code><br><span class="pill c">70 verified first time, 11 after one return, 3 pending</span></td><td class="num">84</td><td class="num">80</td><td class="num">108</td><td class="num">21</td><td class="num">12,384,799</td></tr>
-        <tr><td><code>queue/planner+architect+worker+reviewer@2</code><br><span class="pill d">one of two returned once</span></td><td class="num">2</td><td class="num">2</td><td class="num">10</td><td class="num">1</td><td class="num">19,998,934</td></tr>
-        <tr><td><code>queue/planner+worker@2</code><br><span class="pill a">one merged unreviewed as low risk, 3 pending</span></td><td class="num">4</td><td class="num">1</td><td class="num">1</td><td class="num">1</td><td class="num">&mdash;</td></tr>
-        <tr><td><code>queue/planner@0</code><br><span class="pill a">not a registered set &mdash; that is what <code>@0</code> says</span></td><td class="num">9</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">&mdash;</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>Every set has a version 1 (the first day's polling personas) and a version 2 (the same briefs and division of
-    labour under the blocking-wait runtime); the registry keeps every version's definition, so a figure read out of
-    an old commit's <code>@1</code> still resolves. <code>planner@0</code> is the set of items caught mid-flight
-    &mdash; an unfinished item's schema is the set that has touched it <em>so far</em>, which is a fact about the
-    record and not a team shape anyone chose.</p>
-  <div class="callout warn">
-    <p><strong>What the architect figure is not.</strong> 20.0M against 12.4M is two items against eighty-one, and
-      they are the items that asked for an architect <em>because</em> they were the hardest. It says nothing about
-      whether the architect stage is worth its cost. That question needs the paired-replay pilot, which is why the
-      pilot exists and why it refuses to report a comparison it has not measured.</p>
-  </div>
-
-  <h2>Every commit says what it cost</h2>
-  <p class="sub">A git trailer, written by <code>~/.claude/scripts/token_trailer.py</code> through
-    <code>prepare-commit-msg</code> and <code>post-commit</code> hooks.</p>
-  <div class="cmd"><pre>Session-Token-Delta: status=provisional session=1558e400 scope=session workflow=queue runtime=wait/1 run=20261022T031624 item=20261022-064938-a-labelled-land-level-comparison-for-the schema=queue/planner+worker@2 review=pending since=session-start at=2026-10-22T04:37:20Z basis=transcript-jsonl/1@2.1.307 model=claude-sonnet-5-5 in=30 out=23871 cache_read=892219 cache_write=88524 turns=15</pre><span>One real trailer from a supervisor-spawned worker. The four token kinds apart, the model, the session, the workflow and the runtime, the item and its schema, and a collection status.</span></div>
-  <div class="stats">
-    <div class="stat accent-a"><div class="n">208</div><div class="what">commits since the hooks went live at 08:11 on 2026-10-21</div></div>
-    <div class="stat accent-b"><div class="n">199</div><div class="what">of them carry the trailer &mdash; the 9 without predate the hooks by minutes</div></div>
-    <div class="stat accent-c"><div class="n">123</div><div class="what">carry a real figure (<code>status=provisional</code>)</div></div>
-    <div class="stat accent-d"><div class="n">76</div><div class="what">are merges and cherry-picks, marked <code>not-measured</code> or <code>unavailable</code></div></div>
-  </div>
-  <p>The workflow is <strong>derived, never declared</strong>: a commit whose sha is on a queue item, or made on a
-    branch an item owns, is <code>queue</code> work; one made in an agent's scope on a branch no item owns is
-    <code>delegated</code>; one in the main session's own scope is <code>direct</code>. Of the 199 trailers, 54 say
-    <code>queue</code>, 32 <code>delegated</code> and 108 <code>direct</code> &mdash; the last being mostly merges,
-    backlog edits and the owner's own records.</p>
-  <div class="callout">
-    <p><strong>The honesty is the design.</strong> The figure is called a session token delta and not a cost,
-      because that is what it measures: the usage the committing session recorded between its previous measured
-      commit and this one. It is <em>not</em> the causal cost of implementing the commit &mdash; the same session
-      reads files, answers questions, runs tests and abandons attempts in that window. A name claiming causality
-      would be used as though it had it.</p>
-    <p>It says <code>provisional</code> every time, because at the moment a commit message is written the current
-      turn may not be in the transcript yet and the last message's output count is still growing; the settled
-      figure goes to a ledger when the agent stops. A merge commit carries work done elsewhere and says
-      <code>not-measured</code> rather than claiming the window as its own. And no trailer ever carries a path, a
-      transcript, a prompt, a result or a secret &mdash; a session id and an agent id are opaque, and are the only
-      identity recorded. It cannot fail a commit: it catches everything and exits 0 whatever happens.</p>
-    <p><strong>Pricing each commit from its trailer</strong> is a queued item, not a tool yet:
-      <code>20261022-074126-a-tool-prices-every-commit-from-its-sess</code> is <em>specced</em> and
-      <code>tools/commit_cost.py</code> does not exist on main as this is read.</p>
-  </div>
-
-  <h2>The bug pipeline, beside it</h2>
-  <p class="sub">The older queue the dev queue was modelled on: <code>~/.claude/scripts/bug_queue.py</code>,
-    <code>bugpipe/</code>, seven agents around <code>.claude/bug-queue/</code>.</p>
-  <div class="stats">
-    <div class="stat accent-a"><div class="n">95</div><div class="what">bugs in the queue over three weeks</div></div>
-    <div class="stat accent-c"><div class="n">62</div><div class="what">merged, each with its immutable proof now a regression test</div></div>
-    <div class="stat accent-d"><div class="n">19</div><div class="what">closed without a fix: 16 invalid proofs, 2 unreproduced, 1 duplicate</div></div>
-    <div class="stat accent-b"><div class="n">14</div><div class="what">open as read: 4 blocked, 2 verified, 2 fixed, 2 fixing, 2 returned, 1 verifying, 1 proven</div></div>
-  </div>
-  <p>The queue was triaged on 2026-10-22 (recorded in <code>BACKLOG.md</code>): of the 16 bugs then open, 15 still
-    failed on main and one had been fixed outside the pipeline; the verifier was set on the ones with a fix, the rest
-    go back through the mitigator on the main branch of now, and one waits on the owner. A gap found on the way:
-    <code>resolve</code> cannot close a bug stuck in <em>fixing</em> that main already fixed, because it accepts only
-    blocked, verified, disputed and needs-owner.</p>
-  <div class="callout warn">
-    <p><strong>In progress &mdash; <code>bug_queue.py supervise</code>.</strong> A Fable agent is building the bug
-      pipeline's own supervisor on the branch <code>bug-supervisor</code> of <code>~/.claude</code> (worktree
-      <code>C:\dev\claude4guy-bugsup</code>): as this is read it holds an uncommitted
-      <code>scripts/bugpipe/supervise.py</code> and a change to <code>workpipe/supervise.py</code>, and no commit yet.
-      Its brief is the dev queue's loop for bugs: a deterministic Python loop that starts a headless persona only when
-      there is a bug for that role, and the finders (chaos-monkey, bug-prover) only with <code>--finders</code>.
-      Until it lands, <code>/hunt-bugs</code> and <code>/cr</code> start their agents in the session as before.</p>
-  </div>
-
-  <h2>The guards, and why they had to exist</h2>
-  <p class="sub">The rule failed on the action, not on the judgement &mdash; so the action is what is refused.</p>
-  <div class="cards">
-    <section class="card accent-d">
-      <h3>delegate_guard.py <span class="pill d">this project</span></h3>
-      <p class="what">Refuses an <code>Edit</code>, <code>Write</code>, <code>MultiEdit</code> or
-        <code>NotebookEdit</code> on TaleMontage's own source in the main worktree.</p>
-      <dl><dt>Where</dt><dd><code>.claude/hooks/delegate_guard.py</code></dd></dl>
-      <ul>
-        <li>Allows every agent worktree (<code>C:\dev\tm-*</code> and the in-repo ones), or it would deny the very
-          work the rule asks for. That prefix is why <code>.claude/quality.json</code> names
-          <code>worktree_prefix: "tm"</code>, so the queue's trees land where the guard allows them.</li>
-        <li>Allows the project's records &mdash; <code>BACKLOG.md</code>, <code>CHANGELOG.md</code>, <code>docs/</code>.</li>
-        <li><strong>Fails open on purpose</strong>: an unknown tool-input shape, a missing field or a relative path
-          ends in &ldquo;allow&rdquo;, because a hook that crashes blocks work it was never meant to judge.</li>
-        <li>There is a deliberate escape for a merge-conflict resolution or a genuine one-liner: creating
-          <code>.claude/allow-main-edit</code> by hand, which is a conscious act, and is removed again after.</li>
-      </ul>
-    </section>
-    <section class="card accent-d">
-      <h3>delegate_shell_guard.py <span class="pill d">any project</span></h3>
-      <p class="what">The same refusal for a write made through the shell, which the editing-tool guard never sees.</p>
-      <dl><dt>Where</dt><dd><code>~/.claude/scripts/delegate_shell_guard.py</code></dd></dl>
-      <ul>
-        <li><code>sed -i customer/app.py</code>, a redirection into a tracked file, a <code>python -c</code> that
-          opens one for writing &mdash; holes demonstrated within an hour of the first guard being built.</li>
-        <li>A narrow list of obvious writers, not every shell command: judging whether an arbitrary command writes a
-          tracked file is guesswork, and a false deny would block the agents the rule depends on.</li>
-        <li>It is a fence against the easy escape, not a proof, and says so.</li>
-      </ul>
-    </section>
-  </div>
-
-  <h2>What was broken on the first day, and what closed it</h2>
-  <p class="sub">A memory that only flatters is worth nothing. The first day's page named three open faults; each was
-    checked against the code again on the second day.</p>
-  <div class="callout">
-    <p><strong>Closed &mdash; dependencies are now read.</strong> <code>depends_on</code> was recorded and consumed
-      nowhere, so the queue handed out work whose files did not exist yet. Now <code>depends.py</code>: only a
-      <em>merged</em> prerequisite satisfies a dependency, <code>claim</code> never offers an item whose prerequisites
-      are unmet, <code>spec</code> refuses a cycle, and a chain that will not clear (a prerequisite dropped, blocked
-      or sent to the owner) is reported in <code>list</code>, <code>deps</code> and <code>doctor</code> rather than
-      silently waited on.</p>
-  </div>
-  <div class="callout">
-    <p><strong>Closed &mdash; a claim no longer outlives its worker.</strong> <code>leases.py</code>: a claim names
-      its holder and carries a generation; liveness is evidenced by a turn in the holder's transcript, a heartbeat or
-      a claim, never inferred from elapsed time; a claim with none for thirty minutes is taken back, its uncommitted
-      work committed as <code>WIP:</code> first, and a holder that wakes from a long freeze is refused by its stale
-      token rather than by a guess.</p>
-  </div>
-  <div class="callout">
-    <p><strong>Closed &mdash; one id inside another.</strong> <code>store.new_id</code> puts the discriminator
-      between the stamp and the slug, and the accounting's alternation is bounded and tries the longest id first. A
-      test holds both.</p>
-  </div>
-  <div class="callout">
-    <p><strong>Closed &mdash; worktrees and branches piled up.</strong> Seventeen stale trees had to be matched to
-      their items by commit subject after the first run. Now the tree is the item's, the merge removes it,
-      <code>prune</code> sweeps earlier runs, and the project's post-merge tidy asks both queues first.</p>
-  </div>
-
-  <h2>What is still open or in flight</h2>
-  <div class="callout warn">
-    <p><strong>Open &mdash; three live claims the queue cannot check.</strong> <code>wq status</code> as read names
-      three holders it could not recognise (<code>not-found</code>), so their liveness cannot be evidenced and they
-      are a person's to <code>release</code>. The safety mechanism held &mdash; nothing was taken back on a guess
-      &mdash; but the detector did not recognise these holders, and why is not yet written down.</p>
-  </div>
-  <div class="callout warn">
-    <p><strong>In flight &mdash; the owner's no-gates order.</strong> On 2026-10-22 the owner ordered that cinematic
-      work ships on, with no tuning key to open it, and that the committed defaults take the sandbox overlay's
-      values. The item that does it and rewrites <code>docs/reference/TUNING_GATES.md</code> accordingly
-      (<code>20261022-070638-lift-every-cinematic-gate-the-committed-</code>) was <em>returned</em> by the reviewer
-      once and waits for its second attempt as this is read; that file still carries its old register until the
-      item merges.</p>
-  </div>
-  <div class="callout warn">
-    <p><strong>In flight &mdash; the per-commit price</strong> (<code>tools/commit_cost.py</code>, queued, above)
-      <strong>and the bug pipeline's supervisor</strong> (branch <code>bug-supervisor</code>, above).</p>
-  </div>
-
-  <h2>Worth keeping in mind</h2>
-  <div class="callout">
-    <p><strong>What stays judgment, on purpose.</strong> The spec, the design, the change and the verdict are a
-      model's: a planner reading code to write a brief, an architect choosing a shape, a worker implementing, a
-      reviewer reading a diff against a brief. The supervisor, the leases, the dependencies, the worktrees and the
-      merge gates are scripts, because each is a deterministic question the files on disk can answer. Nothing that
-      can be answered without a model is asked of one; nothing that needs one is pretended to be a script.</p>
-  </div>
-  <div class="callout">
-    <p><strong>Why the planner is also the scrum master, and why there is no fourth watching persona.</strong>
-      Keeping the queue stocked, ordered and decomposed, giving each item verified file paths, and keeping two items
-      out of one module are all the same work as reading the code to write a brief. The watching half is script
-      work &mdash; and since the second day it is the supervisor's.</p>
-  </div>
-  <div class="callout">
-    <p><strong>Why the reviewer is a persona and not a step of <code>submit</code>.</strong> In the bug pipeline the
-      verifier earns its place because a proof is mechanical: red before the fix, green after. Dev work has no
-      proof. The script can only show that a commit stayed inside its claim and that the worker says the tests
-      passed &mdash; which a change that does nothing the brief asked also satisfies. Without the reviewer,
-      <em>verified</em> would mean &ldquo;it compiled&rdquo;, and the main session would have to read every diff,
-      which is the session doing the work again.</p>
-  </div>
-  <div class="callout">
-    <p><strong>A shared registry file belongs to one item, not to every item.</strong> Three items that each add a
-      row to one configuration file cannot each commit that row &mdash; a worker may only commit files its item
-      owns &mdash; so the file would serialise all three behind one claim. Each item adds its own key in code with a
-      safe default and <em>reports</em> the row it needs; one further item owns the registry file and writes every
-      row at once.</p>
-  </div>
-  <div class="callout">
-    <p><strong>Never cite a line number in a record file.</strong> <code>BACKLOG.md</code> and
-      <code>CHANGELOG.md</code> move under an item as a matter of course, because every worker writes to them. A
-      measurement saying &ldquo;BACKLOG.md:214&rdquo; is wrong by the time the item is claimed, and it has already
-      sent workers to the wrong entry. Cite the entry by its title. A line number in <em>code</em> is a measurement
-      and is welcome.</p>
-  </div>
-
-  <footer>
-    <p><strong>This is a record and keeps its dates.</strong> The project's rule is that comments say why and not
-      when; a record is the exception, and here the dates are the point.</p>
-    <p><strong>Built from</strong>, read on 2026-10-22 between 07:40 and 07:57 (and first on 2026-10-21 between
-      11:35 and 12:08): <code>~/.claude/agents/work-planner.md</code>, <code>work-architect.md</code>,
-      <code>work-worker.md</code>, <code>work-reviewer.md</code> and the bug pipeline's eight agent files (the
-      models and efforts are their own front matter); <code>~/.claude/scripts/workpipe/README.md</code>,
-      <code>supervise.py</code>, <code>trees.py</code>, <code>leases.py</code>, <code>depends.py</code>,
-      <code>schemas.py</code>; <code>~/.claude/scripts/bugpipe/README.md</code>;
-      <code>~/.claude/scripts/work_queue.py --help</code> and <code>doctor</code>; <code>token_trailer.py</code>;
-      <code>~/.claude/commands/work.md</code>; <code>.claude/hooks/delegate_guard.py</code>,
-      <code>tools/git_tidy.py</code>, <code>.githooks/post-merge</code>, <code>tools/cr_night.cmd</code>;
-      <code>git -C ~/.claude branch</code> and <code>worktree list</code> for the bug supervisor's state; the live
-      queue's 99 item files under <code>.claude/work-queue/</code>.</p>
-    <p><strong>Numbers from</strong> <code>python "$HOME/.claude/scripts/work_queue.py" cost</code>,
-      <code>cost --by role</code>, <code>cost --by schema</code>, <code>status</code> and <code>spawns</code>, read
-      at 07:57 (basis <code>transcript-jsonl/1@2.1.307</code>); <code>bug_queue.py list</code> for the bug counts;
-      <code>git log 6fb63fd6^..HEAD</code> for the trailer counts; <code>wc -l</code> over
-      <code>work_queue.py</code> and <code>workpipe/*.py</code> for the 5,095 lines. The queue was live while this
-      was written, so every figure is a snapshot of that minute and will have moved since.</p>
-  </footer>
+  <footer><p>A record; it keeps its dates. Sources, verdicts, the cost story, the bug triage and both queues' states:
+    <a href="scrum-team-details.html">details.html</a>.</p></footer>
 </main>
 </body>
 </html>

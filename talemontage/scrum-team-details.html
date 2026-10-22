@@ -1,0 +1,362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Guy Eden">
+<title>Scrum Team Details</title>
+<style>
+  /* The same tokens as docs/team/index.html: a = an LLM persona, b = a Python script, c = state on disk, d = the owner. */
+  :root {
+    --bg: #f6f4fb; --ink: #17151f; --muted: #625d72; --card: #ffffff; --line: #e4e0ef; --code-bg: #f0edf7;
+    --a: #6d3fe0; --a-soft: #ece4ff; --b: #c9356a; --b-soft: #ffe3ee; --c: #0b7f70; --c-soft: #dcf5f1;
+    --d: #b46605; --d-soft: #ffefd9;
+    --shadow: 0 1px 2px rgba(23, 21, 31, .06), 0 8px 24px rgba(23, 21, 31, .08);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #121018; --ink: #eeeaf7; --muted: #a59fb8; --card: #1c1925; --line: #2f2a3d; --code-bg: #26222f;
+      --a: #a98bff; --a-soft: #2a2140; --b: #ff7aa6; --b-soft: #3a1d2a; --c: #4fd6c3; --c-soft: #14302c;
+      --d: #ffb35c; --d-soft: #35281a; --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #121018; --ink: #eeeaf7; --muted: #a59fb8; --card: #1c1925; --line: #2f2a3d; --code-bg: #26222f;
+    --a: #a98bff; --a-soft: #2a2140; --b: #ff7aa6; --b-soft: #3a1d2a; --c: #4fd6c3; --c-soft: #14302c;
+    --d: #ffb35c; --d-soft: #35281a; --shadow: 0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px rgba(0, 0, 0, .35);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 900px; margin: 0 auto; padding: 0 16px 48px; }
+  h1 { font-size: clamp(1.6rem, 6vw, 2.2rem); line-height: 1.1; margin: 24px 0 6px; letter-spacing: -.02em; }
+  h2 { font-size: 1.2rem; margin: 32px 0 8px; }
+  p { margin: 0 0 10px; max-width: 72ch; } .sub { color: var(--muted); }
+  code { font: .86em/1.4 ui-monospace, Consolas, monospace; background: var(--code-bg); padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; }
+  ul, ol { margin: 0 0 10px; padding-left: 20px; } li { margin: 0 0 6px; }
+  details { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); padding: 10px 16px; margin: 10px 0; }
+  summary { cursor: pointer; font-weight: 700; }
+  details > :not(summary) { margin-top: 8px; }
+  .table-wrap { overflow-x: auto; background: var(--card); border-radius: 14px; box-shadow: var(--shadow); margin: 10px 0; }
+  table { border-collapse: collapse; width: 100%; min-width: 520px; font-size: .9rem; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+  th { font: 700 .72rem/1.3 system-ui, sans-serif; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  tr:last-child td { border-bottom: 0; } td.num, th.num { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .callout { border-radius: 14px; padding: 12px 16px; background: var(--a-soft); border-left: 5px solid var(--a); margin: 10px 0; }
+  .callout.warn { background: var(--d-soft); border-left-color: var(--d); } .callout p { max-width: none; margin: 0; } .callout p + p { margin-top: 8px; }
+
+  /* The wide diagram scrolls sideways on a phone instead of shrinking its text below 12 px. */
+  figure { margin: 14px 0 0; background: var(--card); border-radius: 18px; padding: 12px; box-shadow: var(--shadow); }
+  .scroll { overflow-x: auto; } .scroll svg { min-width: 900px; }
+  svg { display: block; width: 100%; height: auto; }
+  .node { stroke-width: 2; rx: 9; } .node.dash { stroke-dasharray: 6 4; }
+  .k-a { fill: var(--a-soft); stroke: var(--a); } .k-b { fill: var(--b-soft); stroke: var(--b); }
+  .k-c { fill: var(--c-soft); stroke: var(--c); } .k-d { fill: var(--d-soft); stroke: var(--d); } .k-g { fill: var(--code-bg); stroke: var(--muted); }
+  .t { font: 600 14px system-ui, sans-serif; fill: var(--ink); text-anchor: middle; }
+  .s { font: 12px system-ui, sans-serif; fill: var(--muted); text-anchor: middle; }
+  .e { font: 12px system-ui, sans-serif; fill: var(--muted); }
+  .h { font: 700 12px system-ui, sans-serif; fill: var(--muted); letter-spacing: .08em; }
+  .arrow { fill: none; stroke: var(--muted); stroke-width: 1.7; marker-end: url(#m2); } .arrow.llm { stroke-dasharray: 6 4; }
+  figcaption { font-size: .85rem; color: var(--muted); margin-top: 8px; display: flex; gap: 14px; flex-wrap: wrap; }
+  figcaption i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; border: 2px solid; vertical-align: -1px; margin-right: 5px; }
+  footer { margin-top: 32px; color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>The scrum team, in detail</h1>
+  <p class="sub">The long form behind <a href="scrum-team.html">the team page</a>: every interaction drawn, the two
+    walk-throughs, the states, the cost story, the bug pipeline and the owner's verdicts. Read at 08:18&ndash;08:24 on
+    2026-10-22; first written on 2026-10-21, rewritten on 2026-10-22.</p>
+
+  <h2>Every interaction</h2>
+  <p class="sub">Left to right: the people, the two supervisors, the dev queue with its personas, git, the bug
+    pipeline, and underneath the cost and the documents. Scroll sideways on a phone.</p>
+  <figure>
+    <div class="scroll">
+    <svg viewBox="0 0 1000 640" role="img" aria-label="Detailed interaction diagram of the owner, the main session, the two supervisors, the dev queue and its personas, git with its worktrees and hooks, the bug pipeline chain, the cost tools and the documents.">
+      <defs><marker id="m2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--muted)"/></marker></defs>
+      <text class="h" x="10" y="16">PEOPLE</text><text class="h" x="200" y="16">SUPERVISORS (PYTHON)</text>
+      <text class="h" x="420" y="16">DEV QUEUE</text><text class="h" x="640" y="16">GIT</text><text class="h" x="830" y="16">BUG PIPELINE</text>
+
+      <rect class="node k-d" x="10" y="28" width="150" height="48"/><text class="t" x="85" y="48">owner</text><text class="s" x="85" y="66">verdicts, resolve</text>
+      <rect class="node k-a" x="10" y="110" width="150" height="80"/><text class="t" x="85" y="132">main session</text>
+      <text class="s" x="85" y="150">wq add, supervise</text><text class="s" x="85" y="166">builds in a console</text><text class="s" x="85" y="182">checkpoint, merges</text>
+      <path class="arrow llm" d="M85 76 V108"/>
+
+      <rect class="node k-b" x="200" y="60" width="190" height="60"/><text class="t" x="295" y="82">wq supervise</text><text class="s" x="295" y="100">polls, reaps, sweeps, --merge</text>
+      <rect class="node k-b" x="200" y="150" width="190" height="60"/><text class="t" x="295" y="172">bug_queue.py supervise</text><text class="s" x="295" y="190">same loop for bugs, --finders</text>
+      <path class="arrow" d="M160 125 L198 95"/><path class="arrow" d="M160 160 L198 175"/><text class="e" x="164" y="102">starts</text>
+
+      <rect class="node k-c" x="420" y="60" width="200" height="130"/><text class="t" x="520" y="82">.claude/work-queue</text>
+      <text class="s" x="520" y="100">queued &rarr; specced &rarr; claimed</text><text class="s" x="520" y="116">&rarr; submitted &rarr; reviewing</text>
+      <text class="s" x="520" y="132">&rarr; verified &rarr; merged</text><text class="s" x="520" y="150">side exits: returned, blocked,</text>
+      <text class="s" x="520" y="166">needs-owner, dropped</text><text class="s" x="520" y="182">one folder per item, not in git</text>
+      <path class="arrow" d="M390 90 H418"/><text class="e" x="392" y="84">ready --role</text>
+      <path class="arrow" d="M160 140 C 300 250, 400 230, 420 185" /><text class="e" x="230" y="236">wq add, resolve, merge</text>
+
+      <rect class="node k-a" x="420" y="220" width="92" height="46"/><text class="t" x="466" y="239">planner</text><text class="s" x="466" y="255">Sonnet, high</text>
+      <rect class="node k-a" x="420" y="276" width="92" height="46"/><text class="t" x="466" y="295">architect</text><text class="s" x="466" y="311">Sonnet, high</text>
+      <rect class="node k-a" x="528" y="220" width="92" height="46"/><text class="t" x="574" y="239">worker</text><text class="s" x="574" y="255">Sonnet, medium</text>
+      <rect class="node k-a" x="528" y="276" width="92" height="46"/><text class="t" x="574" y="295">reviewer</text><text class="s" x="574" y="311">Fable, medium</text>
+      <path class="arrow llm" d="M466 218 V192"/><text class="e" x="430" y="208">spec</text>
+      <path class="arrow llm" d="M574 218 V192"/><text class="e" x="580" y="208">claim, submit</text>
+      <path class="arrow llm" d="M512 299 L528 299"/><text class="e" x="420" y="340">architect: contract, only if asked &middot; reviewer: verified / returned / blocked</text>
+      <path class="arrow" d="M390 110 C 400 200, 400 240, 418 243"/><text class="e" x="396" y="266" transform="rotate(-90 396 266)">spawn, headless</text>
+
+      <rect class="node k-c" x="640" y="60" width="170" height="48"/><text class="t" x="725" y="80">main</text><text class="s" x="725" y="98">the main branch</text>
+      <rect class="node k-c" x="640" y="130" width="170" height="60"/><text class="t" x="725" y="152">tm-&lt;item&gt; on wq/&lt;item&gt;</text><text class="s" x="725" y="170">made by claim, one per item</text><text class="s" x="725" y="184">removed by merge</text>
+      <rect class="node k-b" x="640" y="214" width="170" height="90"/><text class="t" x="725" y="236">hooks</text>
+      <text class="s" x="725" y="254">pre-commit: lint, gates</text><text class="s" x="725" y="270">prepare-commit-msg: trailer</text><text class="s" x="725" y="286">post-merge: git_tidy</text><text class="s" x="725" y="300">doc_budget warns</text>
+      <path class="arrow" d="M620 243 L638 170"/><text class="e" x="620" y="200" transform="rotate(-72 620 200)">commits</text>
+      <path class="arrow llm" d="M620 299 L638 190"/>
+      <path class="arrow" d="M725 128 V110"/><text class="e" x="732" y="122">wq merge</text>
+      <path class="arrow" d="M620 125 L638 90"/><text class="e" x="596" y="54">--merge</text>
+
+      <rect class="node k-a" x="830" y="28" width="160" height="48"/><text class="t" x="910" y="48">finders</text><text class="s" x="910" y="66">chaos-monkey, bug-prover, cr</text>
+      <rect class="node k-a" x="830" y="92" width="160" height="40"/><text class="t" x="910" y="110">test-writer</text><text class="s" x="910" y="126">a failing proof, hashed</text>
+      <rect class="node k-a" x="830" y="148" width="160" height="40"/><text class="t" x="910" y="166">triage &rarr; architect</text><text class="s" x="910" y="182">proven, contract</text>
+      <rect class="node k-a" x="830" y="204" width="160" height="40"/><text class="t" x="910" y="222">mitigator</text><text class="s" x="910" y="238">own tree, fix/&lt;id&gt; branch</text>
+      <rect class="node k-a" x="830" y="260" width="160" height="40"/><text class="t" x="910" y="278">verifier</text><text class="s" x="910" y="294">proof red, green, red again</text>
+      <rect class="node k-b" x="830" y="316" width="160" height="40"/><text class="t" x="910" y="334">bug_queue.py merge</text><text class="s" x="910" y="350">verified bugs only</text>
+      <path class="arrow" d="M910 76 V90"/><path class="arrow" d="M910 132 V146"/><path class="arrow" d="M910 188 V202"/><path class="arrow" d="M910 244 V258"/><path class="arrow" d="M910 300 V314"/>
+      <path class="arrow" d="M828 336 C 800 336, 760 200, 760 110"/><text class="e" x="770" y="330">into main</text>
+      <path class="arrow llm" d="M828 168 C 700 20, 400 10, 160 40"/><text class="e" x="500" y="40">needs-owner: the architect's options go to the owner</text>
+      <path class="arrow" d="M390 190 C 500 360, 700 330, 828 230" stroke-dasharray="2 4"/>
+      <text class="s" x="910" y="372">Sonnet: chaos, test-writer, triage,</text><text class="s" x="910" y="386">architect, mitigator &middot; Fable: prover, cr, verifier</text>
+
+      <text class="h" x="10" y="420">COST</text><text class="h" x="520" y="420">DOCUMENTS</text>
+      <rect class="node k-c" x="10" y="432" width="230" height="56"/><text class="t" x="125" y="454">Session-Token-Delta trailer</text><text class="s" x="125" y="472">on every commit, four token kinds</text>
+      <rect class="node k-c" x="10" y="504" width="230" height="44"/><text class="t" x="125" y="523">~/.claude/state/token-ledger.jsonl</text><text class="s" x="125" y="540">settled totals when an agent stops</text>
+      <rect class="node k-b" x="260" y="432" width="230" height="56"/><text class="t" x="375" y="454">wq cost, wq spawns</text><text class="s" x="375" y="472">per item, role, schema; per spawn</text>
+      <rect class="node k-b" x="260" y="504" width="230" height="44"/><text class="t" x="375" y="523">tools/commit_cost.py</text><text class="s" x="375" y="540">prices commits, queue against direct</text>
+      <path class="arrow" d="M240 460 H258"/><path class="arrow" d="M240 526 H258"/><path class="arrow" d="M725 306 C 725 380, 200 380, 125 430"/>
+      <rect class="node k-c" x="520" y="432" width="150" height="56"/><text class="t" x="595" y="454">docs/team</text><text class="s" x="595" y="472">this record</text>
+      <rect class="node k-c" x="680" y="432" width="150" height="56"/><text class="t" x="755" y="454">BACKLOG.md</text><text class="s" x="755" y="472">open work</text>
+      <rect class="node k-c" x="840" y="432" width="150" height="56"/><text class="t" x="915" y="454">OWNER_OPEN_ITEMS</text><text class="s" x="915" y="472">his decisions</text>
+      <rect class="node k-c" x="520" y="504" width="150" height="44"/><text class="t" x="595" y="523">HANDOVER_&lt;date&gt;</text><text class="s" x="595" y="540">session to session</text>
+      <rect class="node k-b" x="680" y="504" width="310" height="44"/><text class="t" x="835" y="523">tools/doc_budget.py + groom skill</text><text class="s" x="835" y="540">warns when these outgrow their limits; condenses them</text>
+      <path class="arrow llm" d="M160 150 C 300 420, 480 420, 518 460"/>
+      <path class="arrow llm" d="M915 430 C 915 300, 400 120, 160 50"/>
+      <text class="s" x="500" y="600">solid: a script performs it &middot; dashed: a model reads or decides &middot; dotted: the supervisor's merge path</text>
+      <text class="s" x="500" y="620">a box holds state when it is teal; every teal box is on disk and survives any session</text>
+    </svg>
+    </div>
+    <figcaption>
+      <span><i style="border-color: var(--a); background: var(--a-soft)"></i>AI persona</span>
+      <span><i style="border-color: var(--b); background: var(--b-soft)"></i>Python script</span>
+      <span><i style="border-color: var(--c); background: var(--c-soft)"></i>state on disk</span>
+      <span><i style="border-color: var(--d); background: var(--d-soft)"></i>the owner</span>
+    </figcaption>
+  </figure>
+
+  <h2>Fresh session per item, state in the worktree</h2>
+  <figure>
+    <svg viewBox="0 0 480 170" role="img" aria-label="Three short-lived worker sessions in a row, each starting from and ending in the item's worktree on disk, which persists between them.">
+      <rect class="node k-a" x="12" y="20" width="130" height="44"/><text class="t" x="77" y="39">worker #1</text><text class="s" x="77" y="56">claims, ends</text>
+      <rect class="node k-a" x="175" y="20" width="130" height="44"/><text class="t" x="240" y="39">worker #2</text><text class="s" x="240" y="56">continues, ends</text>
+      <rect class="node k-a" x="338" y="20" width="130" height="44"/><text class="t" x="403" y="39">reviewer</text><text class="s" x="403" y="56">reads, ends</text>
+      <rect class="node k-c" x="12" y="106" width="456" height="50"/><text class="t" x="240" y="128">worktree tm-&lt;item&gt;, the item file, the commits</text><text class="s" x="240" y="146">on disk; nothing a session knew is needed again</text>
+      <path class="arrow" d="M77 64 V104"/><path class="arrow" d="M240 64 V104"/><path class="arrow llm" d="M403 104 V66"/>
+      <text class="e" x="84" y="90">WIP: committed by the sweep</text><text class="e" x="248" y="90">reattached by claim</text>
+    </svg>
+  </figure>
+  <p>A long-lived agent re-reads its whole history every turn: the first day's reused reviewer read 414,000 cached
+    tokens a turn over 592 turns; a fresh headless reviewer pays about 13,500 cache-write tokens once. So nothing
+    stays alive between items. The verifier was recycled after four bugs in one session (the session's own report;
+    not a figure the files hold), and the main session is handed over at natural breaks with a
+    <code>HANDOVER_&lt;date&gt;.md</code>.</p>
+
+  <h2>One item's life</h2>
+  <ol>
+    <li><code>wq add</code> from the main session: a line of open work, <em>queued</em>.</li>
+    <li>The supervisor sees <code>ready --role planner</code> say yes and starts one headless planner; it reads the
+      code and writes the brief with the files the item owns: <em>specced</em>. Only an item carrying
+      <code>needs_contract</code> goes to the architect first.</li>
+    <li><code>ready --role worker</code> says the item is claimable (no live claim owns its files, its
+      prerequisites merged); a worker is started; <code>claim</code> makes <code>C:\dev\tm-&lt;item&gt;</code> on
+      <code>wq/&lt;item&gt;</code>: <em>claimed</em>.</li>
+    <li>The worker implements and tests there; the pre-commit hook runs its quick gates; the prepare-commit-msg hook
+      writes the token trailer; <code>submit</code> refuses a dirty tree or a file outside the claim: <em>submitted</em>.</li>
+    <li>Unless the planner graded it low risk, a reviewer is started and reads the diff against the brief:
+      <em>verified</em>, or <em>returned</em> with reasons (the next claimant continues in the same tree).</li>
+    <li><code>wq merge</code> (or the supervisor's <code>--merge</code>) tries the branch on main's head in a
+      throwaway tree, merges with <code>--no-ff</code>, then removes the worktree and deletes the branch:
+      <em>merged</em>. The post-merge hook tidies what no queue accounts for; <code>merge_check.py</code> runs after
+      a batch because a merge fires no pre-commit.</li>
+  </ol>
+
+  <h2>One bug's life</h2>
+  <ol>
+    <li>A finder (chaos-monkey, bug-prover, or the code reviewer under <code>/cr</code>) queues a scenario.</li>
+    <li>The test-writer writes the smallest failing test; the pipeline runs it red twice; its hash is recorded and it
+      is immutable from here.</li>
+    <li>Triage accepts it as <em>proven</em> or marks it invalid or a duplicate. The architect writes the hashed
+      contract, or routes it <em>needs-owner</em> with options; the owner answers through <code>resolve</code>.</li>
+    <li>The mitigator fixes it in its own tree on <code>fix/&lt;id&gt;</code>, on main's current head, and marks it
+      <em>fixed</em>.</li>
+    <li>The verifier's <code>verify-run</code> replays the proof red before the fix, green after, red with only the
+      production change taken back, plus the contract's suites: <em>verified</em>, <em>returned</em> or <em>blocked</em>.</li>
+    <li><code>bug_queue.py merge</code> merges verified bugs only, each tried on main's head first; the proof is now a
+      regression test and <code>audit</code> notices if it is ever changed.</li>
+  </ol>
+
+  <h2>What the dev queue holds</h2>
+  <p class="sub"><code>wq status</code> at 08:21 on 2026-10-22: 101 items; merged 86, needs-owner 6, specced 3,
+    returned 2, dropped 2, submitted 1, blocked 1. Eleven of its worktrees stand, none removable.</p>
+  <details><summary>Who moves an item, from which state to which</summary>
+    <div class="table-wrap"><table>
+      <thead><tr><th>From</th><th>To</th><th>Who</th><th>By</th></tr></thead>
+      <tbody>
+        <tr><td>&mdash;</td><td>queued</td><td>main session</td><td><code>add</code></td></tr>
+        <tr><td>queued</td><td>speccing &rarr; specced</td><td>planner</td><td><code>take</code>, <code>spec</code></td></tr>
+        <tr><td>specced</td><td>designing &rarr; contracted</td><td>architect</td><td>only with <code>needs_contract</code></td></tr>
+        <tr><td>specced</td><td>claimed</td><td>worker</td><td><code>claim</code> (refused if a file is owned, or a prerequisite is unmerged)</td></tr>
+        <tr><td>claimed</td><td>submitted</td><td>worker</td><td><code>submit</code> (refuses a dirty tree or a file outside the claim)</td></tr>
+        <tr><td>submitted</td><td>reviewing &rarr; verified / returned / blocked</td><td>reviewer</td><td><code>verdict</code>; low risk skips to merge</td></tr>
+        <tr><td>returned</td><td>claimed</td><td>the next worker</td><td><code>claim</code> reattaches the same tree</td></tr>
+        <tr><td>verified</td><td>merged</td><td>script</td><td><code>merge</code>, then the tree and branch go</td></tr>
+        <tr><td>any</td><td>needs-owner / blocked</td><td>any persona</td><td><code>stop --to</code>; back with <code>resolve</code> by the main session</td></tr>
+        <tr><td>claimed</td><td>claimed, next holder</td><td>the sweep</td><td>no turn, heartbeat or claim for 30 min: uncommitted work committed as <code>WIP:</code>, claim taken back</td></tr>
+      </tbody>
+    </table></div>
+  </details>
+  <details><summary>The supervisor's ledger: 35 spawns</summary>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Persona</th><th class="num">spawns</th><th class="num">turns</th><th class="num">$</th><th class="num">items</th><th class="num">$ / spawn</th></tr></thead>
+      <tbody>
+        <tr><td>work-planner</td><td class="num">3</td><td class="num">21</td><td class="num">0.57</td><td class="num">3</td><td class="num">0.19</td></tr>
+        <tr><td>work-reviewer</td><td class="num">2</td><td class="num">28</td><td class="num">3.01</td><td class="num">2</td><td class="num">1.51</td></tr>
+        <tr><td>work-worker</td><td class="num">30</td><td class="num">218</td><td class="num">7.93</td><td class="num">6</td><td class="num">0.26</td></tr>
+      </tbody>
+    </table></div>
+    <p><code>wq spawns</code> at 08:18. A spawn is one headless session run as the persona (<code>claude --agent
+      work-&lt;role&gt; -p</code>, <code>--dangerously-skip-permissions</code> because nobody is at the keyboard),
+      paid for only while it held an item. 30 worker spawns for 6 items: most ended without a claim it could take, which
+      is the cost of asking a model instead of <code>ready --role</code> and is why the supervisor asks the script
+      first.</p>
+  </details>
+
+  <h2>The cost story</h2>
+  <p><strong>The owner's question: is the pipeline cheaper than direct work? Not proven.</strong> What is measured
+    (<code>wq cost</code> at 08:18, basis <code>transcript-jsonl/1@2.1.307</code>, two days, 57 agent transcripts,
+    7,536 billed turns):</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Tokens</th><th class="num">input</th><th class="num">output</th><th class="num">cache write</th><th class="num">cache read</th></tr></thead>
+    <tbody>
+      <tr><td>direct: work, design, review</td><td class="num">21,663</td><td class="num">3,510,321</td><td class="num">25,474,901</td><td class="num">1,082,378,045</td></tr>
+      <tr><td>shared: the run's own</td><td class="num">16,596</td><td class="num">3,494,574</td><td class="num">18,036,770</td><td class="num">1,136,962,255</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li>13,075,117 direct tokens per merged item; 26,704,648 counting the run's share; 8,866,347 per commit over
+      117 commits. 51.0% of everything read was the run's, not any item's: the planner's speccing 240M, the main
+      session 508M, waiting 136M, orientation 43M, personas the queue does not know 210M.</li>
+    <li>Fresh per item against warm: a reused reviewer read 414,000 cached tokens a turn; a fresh spawn pays
+      about 13,500 cache-write tokens once. That is why the supervisor starts one session per item.</li>
+    <li>The dollars are a scale, not a bill: weighted tokens priced per model from the harness's own cost records
+      (Sonnet 5.5 $1.69/M, Fable 5.1 $5.91/M, with a wide spread); the harness's own figure for the two sessions,
+      $1,481, is 31% above the weighted $1,020.</li>
+    <li>What is still missing is the comparison: <code>tools/commit_cost.py</code> (merged at 08:03) prices each
+      commit from its <code>Session-Token-Delta</code> trailer and sets queue work against direct work per commit
+      and per merged item; it has not yet been run over a direct-work window of the same kind, so no claim either
+      way is made here.</li>
+  </ul>
+  <details><summary>The trailer, and what it is honest about</summary>
+    <p>Written by <code>~/.claude/scripts/token_trailer.py</code> through <code>prepare-commit-msg</code>; the
+      settled total goes to <code>~/.claude/state/token-ledger.jsonl</code> when the agent stops. It is a session
+      token delta, not a causal cost: the window also holds file reads, answers and abandoned attempts. It says
+      <code>provisional</code> because the transcript is appended asynchronously; a merge says
+      <code>not-measured</code>; the workflow (<code>queue</code>, <code>delegated</code>, <code>direct</code>) and
+      the runtime (<code>poll</code>, <code>wait/1</code>) are derived from disk, never declared. 219 commits since
+      08:00 on 2026-10-21; about 209 carry it. It can never fail a commit.</p>
+  </details>
+
+  <h2>The bug pipeline today</h2>
+  <p class="sub"><code>bug_queue.py list</code> at 08:18: 95 bugs; 64 merged; 19 closed without a fix (16 invalid
+    proofs, 2 unreproduced, 1 duplicate); 12 open: 5 returned, 4 blocked, 2 fixing, 1 proven.</p>
+  <ul>
+    <li>The 16 bugs open before today were triaged: 15 still failed on main, one had been fixed outside the
+      pipeline (recorded in <code>BACKLOG.md</code>).</li>
+    <li>The verifier verified two, now merged: <code>20261018-051516</code> (film download's chunk byte count) and
+      <code>20261019-051110</code> (Try again refused for an older film, commit <code>12584632</code>).</li>
+    <li>It returned five only because their branches were stale against main, not for their fixes: <code>050741</code>
+      (hosted keepsakes redraw), <code>051924</code>, <code>051205</code>, <code>051240</code>, <code>051320</code>.
+      The verify report of 051205 says it: the suite failure belongs to the commit's base, and the fix must be
+      re-made on main's head. <strong>The lesson is now a rule in the mitigator's file</strong> (<code>~/.claude</code>
+      commit <code>672af49</code>, 08:20): a mitigator makes its fix on main's current head before marking it fixed.</li>
+    <li><code>20261019-051241</code> (a Progressive caption's later fragments outside the booked time) was answered
+      B by the owner and recorded in commit <code>070ecdc0</code>; the bug's own record still reads
+      <em>needs-owner</em>, so it goes back through <code>resolve</code> and the architect next.</li>
+    <li>Open after that: 050741, 051924, 051205, 051240, 051320 (returned); 111801 and 050818 (fixing); 050611,
+      052705, 050412, 050742 (blocked); 051241 (proven, above).</li>
+    <li><code>bug_queue.py supervise</code> landed on <code>~/.claude</code> main at 08:20 (branch
+      <code>bug-supervisor</code> merged): the same Python loop as the dev queue's, finders only with
+      <code>--finders</code>; <code>tools/cr_night.cmd</code> and the instructions start the pipeline through it
+      (commit <code>96be4f52</code>).</li>
+  </ul>
+
+  <h2>The owner's verdicts today, and where each is recorded</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Decision</th><th>Verdict</th><th>Recorded</th></tr></thead>
+    <tbody>
+      <tr><td>Music-aware cuts (blind pair)</td><td>B, the beat-placed cut</td><td>item <code>20261022-071118</code> records it; <em>returned</em>, so not on main yet</td></tr>
+      <tr><td>Very wide photograph in a portrait frame</td><td>B, two stacked halves</td><td>merged, <code>ff74ed92</code></td></tr>
+      <tr><td>Music bed level</td><td>2 = +6 dB</td><td>merged, <code>dc488d15</code></td></tr>
+      <tr><td>Map plate land level</td><td>4</td><td>item <code>20261022-080017</code>, work committed on its branch; <em>needs-owner</em> because submit refused two unlisted files</td></tr>
+      <tr><td>Progressive caption booked end</td><td>B, book the whole run</td><td>merged, <code>070ecdc0</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Merged toward the cinematic work since 2026-10-21</h2>
+  <ul>
+    <li>The compound scene as an event kind the renderer draws (<code>38b86765</code>), its landscape template
+      (<code>e2df5238</code>), the slice tool that turns a saved story's moment into compound scenes
+      (<code>cdbe13e7</code>).</li>
+    <li>A very wide photograph stacked in two (<code>ff74ed92</code>); the music bed +6 dB (<code>dc488d15</code>);
+      the labelled land-level comparison tool (<code>72d9de72</code>).</li>
+    <li>Selection provenance recorded and read back (<code>68bf3072</code>); day cards count the day reached
+      (<code>920939f4</code>); the customer is told which notes the film did not show (<code>64b9e943</code>).</li>
+    <li>Before that: notes placed by album position, the video quality floor, caption treatments that can fire,
+      title plates that cut through nobody, build decision codes, place labels, the download's orientation marks.</li>
+  </ul>
+
+  <h2>What changed in the machinery today</h2>
+  <ul>
+    <li>The supervisor runs the dev queue: planner, workers and reviewer start headless; the Agent-tool reviewer of
+      the first day is retired; an item's worktree is <code>tm-&lt;item id&gt;</code> (<code>ae3f6069</code>).</li>
+    <li>The no-gates order: cinematic work ships on, no tuning keys, committed defaults take the sandbox overlay's
+      values. Item <code>20261022-070638</code> rewrites <code>TUNING_GATES.md</code>; it is <em>returned</em> and
+      not merged.</li>
+    <li>The project's <code>CLAUDE.md</code> trimmed 36.6k to 25.2k characters (31%) with seven detail documents
+      under <code>docs/reference/CLAUDE_DETAIL_*.md</code> (<code>73b0906e</code>); the user-level one 7.0k to 5.7k
+      (18%). The memory index is 9,029 characters; its earlier size (about 14.7k) is the session's report, not in git.</li>
+    <li>Queue-history compaction: <code>wq show</code> prints a line per transition by default (<code>~/.claude</code>
+      <code>47df62b</code>, merged 08:21).</li>
+    <li>The document budget check (<code>tools/doc_budget.py</code>, warnings in merge_check and the hook) and the
+      <code>groom</code> skill: item <code>20261022-081600</code>, merged 08:19 (<code>40d178ea</code>).</li>
+    <li><code>tools/commit_cost.py</code>: item <code>20261022-074126</code>, merged 08:03 (<code>bb71847c</code>).</li>
+  </ul>
+
+  <details><summary>Still open in the dev queue</summary>
+    <ul>
+      <li>Three live claims the queue could not recognise (<code>not-found</code> holders) on the morning read; one
+        remained at 08:18 and its item has since merged.</li>
+      <li>Six needs-owner: the offline smoke's tiles fault (needs a WSL run only the main session may launch); two
+        held on purpose behind an unmerged predecessor; two submit refusals over files the brief did not list
+        (<code>165947</code> both orientations, <code>171545</code> the review's notice, <code>080017</code> land
+        level); and <code>112250</code>'s pair. One blocked: the music-aware cuts kit's acceptance criterion.</li>
+      <li>Known gap: <code>resolve</code> cannot close a bug stuck in <em>fixing</em> that main already fixed.</li>
+    </ul>
+  </details>
+
+  <footer>
+    <p><strong>Built from</strong>: <code>~/.claude/agents/work-*.md</code> and the bug pipeline's agent files (the
+      models are their front matter); <code>workpipe/</code> and <code>bugpipe/</code>; <code>git log</code> of both
+      repositories since 2026-10-21; <code>wq list</code>, <code>status</code>, <code>cost</code>,
+      <code>cost --by role</code>, <code>spawns</code>; <code>bug_queue.py list</code> and <code>show</code>;
+      <code>BACKLOG.md</code>, <code>OWNER_OPEN_ITEMS.md</code>. Read between 08:18 and 08:21 on 2026-10-22; both
+      queues were live, so every figure is that minute's.</p>
+  </footer>
+</main>
+</body>
+</html>
