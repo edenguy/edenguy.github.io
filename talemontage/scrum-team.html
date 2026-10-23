@@ -68,7 +68,7 @@
   <h1>The scrum team</h1>
   <p class="sub">One owner, one session he talks to, a work queue on disk, and short-lived AI personas that pull items
     out of it and do them each in its own git worktree &mdash; with Python, not a model, doing all the waiting.
-    Read at 08:24 on 2026-10-22; <a href="scrum-team-details.html">the details</a> are a page of their own.</p>
+    Numbers read on 2026-10-23; <a href="scrum-team-details.html">the details</a> are a page of their own.</p>
 
   <figure>
     <svg viewBox="0 0 480 700" role="img" aria-label="Block diagram: the owner talks to the main session; the main session adds items to the work queue and starts the supervisor; the supervisor polls the queue and starts a planner, a worker or a reviewer only when an item waits for one; the worker commits in the item's own worktree; wq merge brings it into main and removes the tree; the bug pipeline runs beside it with its own queue and merge; every commit carries a token trailer.">
@@ -149,16 +149,43 @@
   </ul>
 
   <h2>Headline numbers</h2>
-  <p class="sub">Read at 08:24 on 2026-10-22 from <code>wq cost</code>, <code>wq status</code> and
-    <code>bug_queue.py list</code>. Tokens are reconciled from transcripts after the fact, never live.</p>
+  <p class="sub">Read on 2026-10-23 from <code>wq status</code>, <code>wq cost</code>, the supervisor's spawn ledger and
+    <code>bug_queue.py status</code>. Dollars are the harness's own figure per session at list prices.</p>
   <div class="nums">
-    <div class="num n-a"><b>86</b><span>items merged of 101 queued</span></div>
-    <div class="num n-b"><b>118</b><span>commits on merged items</span></div>
-    <div class="num n-c"><b>12.9M</b><span>direct tokens per merged item</span></div>
-    <div class="num n-c"><b>26.5M</b><span>per item with the run's share</span></div>
-    <div class="num n-d"><b>22.8%</b><span>of items went back at least once (23)</span></div>
-    <div class="num n-d"><b>12 / 83</b><span>bugs open / closed, of 95 (64 fixed)</span></div>
+    <div class="num n-a"><b>217</b><span>items merged of 629 queued (215 dropped, most as already on main)</span></div>
+    <div class="num n-b"><b>276</b><span>commits on merged items</span></div>
+    <div class="num n-c"><b>$1.39</b><span>per merged item: $301.91 over 569 sessions</span></div>
+    <div class="num n-c"><b>60%</b><span>of that is review: reviewer $183.69, workers $95.69</span></div>
+    <div class="num n-d"><b>10.2%</b><span>of items went back at least once (64 of 629)</span></div>
+    <div class="num n-d"><b>64 / 95</b><span>bugs merged; 7 fixed and waiting, 2 disputed</span></div>
   </div>
+
+  <h2>The queue against direct agents: a 30-item pilot</h2>
+  <p class="sub">The same 30 small, independent items done twice: by background agents the main session briefed
+    directly, and by the queue. A pilot, not a benchmark: one batch, one reviewer model, and the queue's rate comes
+    from its earlier ten-hour run, not from these 30.</p>
+  <div class="nums">
+    <div class="num n-a"><b>~50 / h</b><span>direct agents, 30 items in 36 minutes</span></div>
+    <div class="num n-b"><b>20 / h</b><span>the queue: 205 merged items in 10.25 hours</span></div>
+    <div class="num n-c"><b>~$0.28</b><span>per item, direct agents (an estimate at list prices)</span></div>
+    <div class="num n-c"><b>$0.51</b><span>per item, the queue (workers $0.21, review $0.30)</span></div>
+  </div>
+  <ul>
+    <li><strong>Quality did not separate them.</strong> Both legs' changes were graded blind by reviewers who did not
+      know which was which: 20 findings against 22, one item with a high-severity bug on each side (both of the
+      queue's two highs were one item). Thirty items cannot tell a real difference from noise.</li>
+    <li><strong>Speed.</strong> A typical item took 1.5 minutes of agent time directly and 3.6 minutes from claim to
+      merge in the queue; the queue's median wait from queued to merged was 168 minutes, mostly waiting for a worker
+      and for file ownership.</li>
+    <li><strong>Price.</strong> The queue costs about twice as much per item; most of the difference is the reviewer
+      (13 reviews cost $8.93, the 30 workers $6.36). The direct agents' workers read more, 4.97M weighted tokens
+      against 2.92M.</li>
+    <li><strong>What the numbers leave out.</strong> The direct agents' figures omit the main session's briefing and
+      reviewing; the queue's omit the planner. The direct agents also skipped a failing-test-first run on about two
+      thirds of the items and ran the affected suite on 10 of 30, steps the queue enforces.</li>
+    <li><strong>What follows.</strong> Direct agents for small, urgent, independent items; the queue for a backlog, for
+      unattended runs and for work that shares files. Cutting the reviewer's cost is the first lever.</li>
+  </ul>
 
   <h2>In flight, and next</h2>
   <ul>
@@ -171,9 +198,9 @@
       item waits as <em>needs-owner</em> over two unlisted files.</li>
     <li>Seven items wait for a person: one blocked, six needs-owner. Twelve bugs open: five returned only for a
       stale base, four blocked, two fixing, one answered B and not yet resolved.</li>
-    <li>Is the pipeline cheaper than direct work? <strong>Pilot, not a benchmark (2026-10-22):</strong> on five small items
-      from the same base, agents spawned directly cost about $2.50 and the scrum queue about $8.30, with about
-      the same wall time (<a href="scrum-team-details.html">details</a>). The earlier two-hour windows were not comparable.</li>
+    <li>Is the pipeline cheaper than direct work? <strong>No, not on small items (2026-10-23, 30 matched items):</strong>
+      about twice the price and a longer wait to merge, for the same measured quality; see the pilot above. The
+      earlier five-item pilot (2026-10-22: about $2.50 direct against $8.30 queued) points the same way.</li>
   </ul>
 
   <footer><p>A record; it keeps its dates. Sources, verdicts, the cost story, the bug triage and both queues' states:
