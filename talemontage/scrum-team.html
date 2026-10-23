@@ -187,6 +187,18 @@
       unattended runs and for work that shares files. Cutting the reviewer's cost is the first lever.</li>
   </ul>
 
+  <h2>Why the queue takes longer and costs more</h2>
+  <ul>
+    <li><strong>Time (measured).</strong> Most of it is waiting: an item is specced, then waits for a free worker and
+      for its files, so the median took 168 minutes queued to merged but 3.6 from claim to merge. Each step is also
+      a fresh session that reads the repository first, and 13 of 30 items went through review and the merge gates.</li>
+    <li><strong>Price (measured).</strong> Review is most of the gap: 13 reviews cost $8.93, the 30 workers $6.36,
+      because a reviewer is a larger model reading the whole change cold. The planner's share is not in the $0.51.</li>
+    <li><strong>Not saved, moved.</strong> The direct figures leave out the main session's briefing and review, and
+      those agents skipped steps the queue enforces. Cheaper review and fewer sessions per item are the levers; neither
+      is measured yet.</li>
+  </ul>
+
   <h2>In flight, and next</h2>
   <ul>
     <li>No-gates order (cinematic work ships on, no tuning keys): item <code>20261022-070638</code> is
