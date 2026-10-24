@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { ANALYZER_FAULT_IDS } from '@/science/analyzer';
 
 /**
  * Content model for Nitrox Academy.
@@ -19,8 +20,42 @@ export const InteractiveId = z.enum([
   'mod-explorer',
   'air-vs-nitrox',
   'ead-explorer',
+  // Phase 2–3
+  'ndl-compare',
+  'oxygen-exposure',
+  'virtual-analyzer',
+  'cylinder-label',
+  'dive-planner',
+  'scenario',
 ]);
 export type InteractiveId = z.infer<typeof InteractiveId>;
+
+/**
+ * Fault/scenario ids the `virtual-analyzer` simulator can be preset to, and the discriminated
+ * state the `instrument` question type renders read-only. Sourced from `science/analyzer.ts`
+ * (single source of truth) rather than redeclared here, so content validation and the
+ * simulation model cannot drift apart.
+ */
+const AnalyzerFaultIdSchema = z.enum(ANALYZER_FAULT_IDS);
+
+/** Mirrors `AnalyzerState` in `science/analyzer.ts` — see that file for the field meanings. */
+export const AnalyzerStateSchema = z
+  .object({
+    seed: z.number(),
+    powered: z.boolean(),
+    calOffset: z.number().min(-3).max(3),
+    cellGain: z.number(),
+    flowLpm: z.number().min(0).max(5),
+    sampling: z.boolean(),
+    trueFo2: z.number().min(0.16).max(1),
+    ambientFo2: z.number(),
+    sensorFo2: z.number(),
+    display: z.number(),
+    tSeconds: z.number().nonnegative(),
+    fault: AnalyzerFaultIdSchema,
+  })
+  .strict();
+export type AnalyzerState = z.infer<typeof AnalyzerStateSchema>;
 
 /**
  * Props each simulation accepts from content. Validated at content load so an authoring typo
@@ -41,6 +76,40 @@ export const INTERACTIVE_PROPS: Record<InteractiveId, z.ZodType> = {
   'mod-explorer': z.object({ minPct: Pct.optional(), maxPct: Pct.optional(), initialPct: Pct.optional(), limits: Limits.optional(), deep: z.boolean().optional() }).strict(),
   'air-vs-nitrox': z.object({ initialPct: Pct.optional(), initialDepth: Depth.optional() }).strict(),
   'ead-explorer': z.object({ initialPct: Pct.optional() }).strict(),
+  'ndl-compare': z.object({ initialDepth: Depth.optional(), initialPct: Pct.optional() }).strict(),
+  'oxygen-exposure': z
+    .object({
+      initialPpo2: z.number().min(0.5).max(1.6).optional(),
+      initialMinutes: z.number().min(0).max(240).optional(),
+      segments: z.boolean().optional(),
+    })
+    .strict(),
+  'virtual-analyzer': z
+    .object({
+      mode: z.enum(['free', 'guided', 'readonly']).optional(),
+      /** Preset fault, see `science/analyzer.ts` `ANALYZER_FAULT_IDS`. */
+      scenario: AnalyzerFaultIdSchema.optional(),
+      trueFo2: Fo2.optional(),
+    })
+    .strict(),
+  'cylinder-label': z
+    .object({
+      fo2: Fo2.optional(),
+      limit: z.number().min(1).max(1.6).optional(),
+      editable: z.boolean().optional(),
+    })
+    .strict(),
+  'dive-planner': z
+    .object({
+      initialMix: Fo2.optional(),
+      initialDepth: Depth.optional(),
+      initialMinutes: z.number().min(0).max(240).optional(),
+      repetitive: z.boolean().optional(),
+    })
+    .strict(),
+  // `ScenarioPlayer`'s own props; distinct from the lesson `scenario` block below, which
+  // renders it directly rather than through a generic `interactive` block.
+  scenario: z.object({ scenarioId: z.string() }).strict(),
 };
 
 const InteractiveRef = z
@@ -115,6 +184,9 @@ export const Block = z.discriminatedUnion('type', [
     columns: z.array(LocalizedString).min(2),
     rows: z.array(z.object({ label: LocalizedString, cells: z.array(LocalizedString) })),
   }),
+  // Scenarios themselves live in `src/content/scenarios/*.json`, validated by `Scenario` (§6.1,
+  // added with the scenario engine). This block only references one by id.
+  z.object({ ...Base, type: z.literal('scenario'), scenarioId: z.string() }),
 ]);
 export type Block = z.infer<typeof Block>;
 
@@ -194,6 +266,30 @@ export const Question = z.discriminatedUnion('type', [
     type: z.literal('true-false'),
     answer: z.boolean(),
   }),
+  // Learner sets a value with a slider/stepper; correct if within [accept.min, accept.max].
+  z.object({
+    ...QuestionBase,
+    type: z.literal('parameter'),
+    parameter: z.enum(['fo2Percent', 'depth', 'ppo2', 'minutes']),
+    range: z.object({ min: z.number(), max: z.number(), step: z.number().positive() }),
+    accept: z.object({ min: z.number(), max: z.number() }),
+    unit: z.string().optional(),
+  }),
+  // Learner reads a rendered instrument (the virtual analyzer face, read-only) and types the
+  // value, or picks the fault it is demonstrating.
+  z.object({
+    ...QuestionBase,
+    type: z.literal('instrument'),
+    instrument: z.literal('analyzer'),
+    /** Deterministic simulator state to render (see `AnalyzerStateSchema` above). */
+    state: AnalyzerStateSchema,
+    /** What the learner must report. */
+    ask: z.enum(['reading', 'fault']),
+    answer: z.union([z.number(), z.string()]),
+    tolerance: z.number().nonnegative().default(0),
+    options: z.array(LocalizedString).optional(), // for ask = 'fault' (multiple choice of fault ids)
+    correctIndex: z.number().int().optional(),
+  }),
 ]);
 export type Question = z.infer<typeof Question>;
 export type QuestionType = Question['type'];
@@ -207,3 +303,26 @@ export const Topic = z.object({
   title: LocalizedString,
 });
 export type Topic = z.infer<typeof Topic>;
+
+/**
+ * Validates `src/content/exams.json`: the mock/topic/calculation/scenario exams the practice
+ * hub builds with `assessment/exam.ts`'s `buildExam()`.
+ */
+export const ExamConfig = z
+  .object({
+    id: z.string(), // 'mock-a', 'mock-b', 'topic-ch04', ...
+    title: LocalizedString,
+    kind: z.enum(['mock', 'topic', 'calculation', 'scenario']),
+    questionCount: z.number().int().positive(),
+    timeLimitMinutes: z.number().int().positive().nullable(), // null = untimed
+    /** Weighted sampling: chapterId → number of questions. Sum must equal questionCount. */
+    blueprint: z.record(z.string(), z.number().int().nonnegative()),
+    passScore: z.number().min(0).max(1), // 0.8 for mocks (mirrors common agency pass marks; say "unofficial")
+  })
+  .superRefine((v, ctx) => {
+    const sum = Object.values(v.blueprint).reduce((a, b) => a + b, 0);
+    if (sum !== v.questionCount) {
+      ctx.addIssue({ code: 'custom', path: ['blueprint'], message: `blueprint sums to ${sum}, expected questionCount ${v.questionCount}` });
+    }
+  });
+export type ExamConfig = z.infer<typeof ExamConfig>;

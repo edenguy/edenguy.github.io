@@ -100,3 +100,10 @@ export const REPEX_DAILY_OTU_ALLOWANCE: Record<number, number> = {
   10: 310,
   11: 300,
 };
+
+/**
+ * Simplified CNS surface-interval decay used by many dive computers and recreational texts
+ * (a 90-minute half-time model), NOT a NOAA value. See `cns.ts` for `cnsAfterInterval()`,
+ * which uses this constant, and `docs/RESEARCH.md` for the model's provenance caveat.
+ */
+export const CNS_HALFTIME_MIN = 90;

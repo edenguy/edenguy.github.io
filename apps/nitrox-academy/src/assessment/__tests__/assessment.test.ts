@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { grade } from '../grade';
 import { dueForReview, overallMastery, topicMastery, type Attempt } from '../mastery';
-import type { Question } from '@/content/schema';
+import type { AnalyzerState, Question } from '@/content/schema';
 
 const mc: Question = {
   id: 'q1',
@@ -31,6 +31,68 @@ const num: Question = {
   tolerance: 0.3,
   steps: [],
 };
+const param: Question = {
+  id: 'q3',
+  type: 'parameter',
+  chapterId: 'ch05',
+  topic: 't',
+  objective: { en: 'o' },
+  difficulty: 2,
+  prompt: { en: 'p' },
+  explanation: { en: 'e' },
+  tags: [],
+  parameter: 'fo2Percent',
+  range: { min: 21, max: 40, step: 1 },
+  accept: { min: 28, max: 35 },
+};
+const analyzerState: AnalyzerState = {
+  seed: 1,
+  powered: true,
+  calOffset: 0,
+  cellGain: 1,
+  flowLpm: 2,
+  sampling: true,
+  trueFo2: 0.32,
+  ambientFo2: 0.209,
+  sensorFo2: 0.32,
+  display: 32.0,
+  tSeconds: 60,
+  fault: 'none',
+};
+const instrumentReading: Question = {
+  id: 'q4',
+  type: 'instrument',
+  chapterId: 'ch06',
+  topic: 't',
+  objective: { en: 'o' },
+  difficulty: 2,
+  prompt: { en: 'p' },
+  explanation: { en: 'e' },
+  tags: [],
+  instrument: 'analyzer',
+  state: analyzerState,
+  ask: 'reading',
+  answer: 32.0,
+  tolerance: 0.3,
+};
+const instrumentFault: Question = {
+  id: 'q5',
+  type: 'instrument',
+  chapterId: 'ch06',
+  topic: 't',
+  objective: { en: 'o' },
+  difficulty: 2,
+  prompt: { en: 'p' },
+  explanation: { en: 'e' },
+  tags: [],
+  instrument: 'analyzer',
+  state: { ...analyzerState, fault: 'flow-too-high' },
+  ask: 'fault',
+  answer: 'flow-too-high',
+  tolerance: 0,
+  options: [{ en: 'none' }, { en: 'flow too high' }],
+  correctIndex: 1,
+};
 
 describe('grade()', () => {
   it('grades multiple choice and reports misconceptions', () => {
@@ -46,6 +108,27 @@ describe('grade()', () => {
   });
   it('rejects mismatched answer shapes', () => {
     expect(grade(num, { type: 'multiple-choice', optionIndex: 0 }).correct).toBe(false);
+  });
+  it('grades parameter answers as correct within accept.min..accept.max', () => {
+    expect(grade(param, { type: 'parameter', value: 32 }).correct).toBe(true);
+    expect(grade(param, { type: 'parameter', value: 28 }).correct).toBe(true); // lower bound
+    expect(grade(param, { type: 'parameter', value: 35 }).correct).toBe(true); // upper bound
+    expect(grade(param, { type: 'parameter', value: 27.9 }).correct).toBe(false);
+    expect(grade(param, { type: 'parameter', value: 36 }).correct).toBe(false);
+    expect(grade(param, { type: 'parameter', value: Number.NaN }).correct).toBe(false);
+    expect(grade(param, { type: 'numeric', value: 32 }).correct).toBe(false);
+  });
+  it('grades an instrument "reading" answer numerically within tolerance', () => {
+    expect(grade(instrumentReading, { type: 'instrument', value: 32.0 }).correct).toBe(true);
+    expect(grade(instrumentReading, { type: 'instrument', value: 32.3 }).correct).toBe(true); // at tolerance
+    expect(grade(instrumentReading, { type: 'instrument', value: 32.4 }).correct).toBe(false);
+    expect(grade(instrumentReading, { type: 'instrument', value: 'thirty-two' }).correct).toBe(false);
+    expect(grade(instrumentReading, { type: 'parameter', value: 32 }).correct).toBe(false);
+  });
+  it('grades an instrument "fault" answer by option index, not the answer text', () => {
+    expect(grade(instrumentFault, { type: 'instrument', value: 'flow-too-high', optionIndex: 1 }).correct).toBe(true);
+    expect(grade(instrumentFault, { type: 'instrument', value: 'flow-too-high', optionIndex: 0 }).correct).toBe(false);
+    expect(grade(instrumentFault, { type: 'instrument', value: 'flow-too-high' }).correct).toBe(false); // no optionIndex
   });
 });
 
