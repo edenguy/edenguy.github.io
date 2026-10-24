@@ -65,7 +65,11 @@ export function DashboardPage() {
       </section>
 
       <Callout variant="insight" title={t('dashboard.storyTitle')}>
-        {t('dashboard.storyBody')}
+        <div className="space-y-2">
+          {(t('dashboard.storyBody', { returnObjects: true }) as string[]).map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
+        </div>
       </Callout>
 
       {/* Stats row */}
