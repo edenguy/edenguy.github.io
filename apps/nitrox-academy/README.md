@@ -110,5 +110,16 @@ verified directly and what still needs checking against a primary document.
 - **Phase 1 complete**: shell, dashboard, Hebrew/English with real RTL, themes, Chapters 1 and 2
   with full content, five interactive explorers, the assessment engine, progress persistence
   and the installable offline PWA.
-- **Phases 2 to 4 outstanding**: Chapters 3 to 10, the virtual oxygen analyzer, the oxygen
-  exposure explorer, the dive planning sandbox, interactive scenarios and full mock exams.
+- **Schema and science groundwork landed**: the content schema and the science layer already
+  carry the extensions Phases 2–4 need (`cns.ts`, `ndl.ts`, `analyzer.ts`, the `scenario` content
+  block, `parameter`/`instrument` question types) — see `docs/LLD.md` §1 (tasks T1–T2).
+- **Paused by the project owner**: Chapters 3 to 10, the virtual oxygen analyzer, the oxygen
+  exposure explorer, the dive planning sandbox, interactive scenarios and full mock exams. Their
+  roadmap entries exist as `"coming-soon"` placeholders in `chapters/roadmap.json` with no lessons
+  yet. `docs/LLD.md` is the full spec for resuming this work; it is not in progress.
+
+## Working on this with Claude
+
+See `CLAUDE.md` for the rules that are easy to miss: git authorship, the "never invent a number"
+policy, bilingual-parity requirements, and why the build output must be committed together with
+the source that produced it.
