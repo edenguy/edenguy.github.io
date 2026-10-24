@@ -11,6 +11,7 @@ import { Card } from '@/components/ui/Card';
 import { LinkButton } from '@/components/ui/Button';
 import { Icon } from '@/components/ui/Icon';
 import { Badge } from '@/components/ui/Badge';
+import { Callout } from '@/components/ui/Callout';
 import { ChapterIcon } from '@/components/ChapterIcon';
 import { MoleculeField } from '@/simulations/MoleculeField';
 import { getTopic } from '@/content';
@@ -62,6 +63,10 @@ export function DashboardPage() {
           )}
         </div>
       </section>
+
+      <Callout variant="insight" title={t('dashboard.storyTitle')}>
+        {t('dashboard.storyBody')}
+      </Callout>
 
       {/* Stats row */}
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

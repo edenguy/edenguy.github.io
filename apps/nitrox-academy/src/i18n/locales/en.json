@@ -99,6 +99,8 @@
     "practiceBlurb": "Original questions with full explanations. Unofficial practice only.",
     "reviewDue": "{{count}} questions due for review",
     "chaptersTitle": "Chapters",
+    "storyTitle": "Why this site exists",
+    "storyBody": "I first heard about Nitrox from Ilana, my instructor. It was 10pm at an airport in Ethiopia, between flights, too sleep-deprived to take in her class materials. I built this site to teach myself, so I wouldn't let her down by forgetting what she'd taught. It's a personal study tool first — if it helps you too, I'm glad.",
     "disclaimer": "Nitrox Academy is an independent educational tool. It is not affiliated with any training agency and does not certify divers. Enriched Air diving requires training and certification from a recognized agency.",
     "credit": "Created by Guy Eden"
   },
