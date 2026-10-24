@@ -10,8 +10,11 @@
     <meta name="author" content="Guy Eden" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png" />
+    <!-- The query string forces browsers to refetch when the favicon changes; they cache
+         favicons separately from normal assets and often ignore ordinary cache rules. Bump
+         this value (e.g. to the file's content hash) whenever the favicon image changes. -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png?v=b11c80e5" />
+    <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16.png?v=b11c80e5" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
     <title>אקדמיית נייטרוקס · Nitrox Academy</title>
     <!-- Link-preview card (WhatsApp, Facebook, etc. read Open Graph tags; image must be an absolute URL). -->
