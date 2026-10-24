@@ -9,7 +9,7 @@ export interface BackupFile {
   app: 'nitrox-academy';
   version: 1;
   exportedAt: string;
-  data: Pick<ProgressState, 'settings' | 'lessonsCompleted' | 'lastVisited' | 'assessments' | 'attempts' | 'predictions' | 'achievements' | 'labVisits'>;
+  data: Pick<ProgressState, 'settings' | 'lessonsCompleted' | 'lastVisited' | 'assessments' | 'attempts' | 'predictions' | 'achievements' | 'labVisits' | 'acknowledgedAt'>;
 }
 
 export function createBackup(): BackupFile {
@@ -27,6 +27,7 @@ export function createBackup(): BackupFile {
       predictions: s.predictions,
       achievements: s.achievements,
       labVisits: s.labVisits,
+      acknowledgedAt: s.acknowledgedAt,
     },
   };
 }

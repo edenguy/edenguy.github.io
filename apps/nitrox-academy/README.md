@@ -10,6 +10,20 @@ agency, it does not certify anyone, and nothing in it authorizes diving with enr
 Enriched Air diving requires a certification course with a recognized agency, including
 in-person practical training.**
 
+## Sources and responsibility
+
+The content is original and based on published professional sources: the NOAA Diving Manual
+oxygen exposure limits, DAN publications, public training-agency materials (BSAC, RAID, PADI,
+SDI), industry standards (CGA G-4.1, EN 144-3) and peer-reviewed studies, all cited in the
+chapters and listed in the app's About page and `docs/RESEARCH.md`. Every formula is tested
+against reference values.
+
+Nitrox Academy is a free educational website provided as is, without warranty. It does not
+certify divers, it is not a dive computer, and it is not affiliated with any agency. All
+diving decisions and their consequences are the sole responsibility of the diver; the site
+and its operators accept no liability for injury, loss or damage connected to its use. The
+learner acknowledges this on first use.
+
 ## Running it locally
 
 ```bash

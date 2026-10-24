@@ -188,6 +188,7 @@ export function DashboardPage() {
 
       <footer className="text-xs text-muted max-w-3xl space-y-1">
         <p>{t('dashboard.disclaimer')}</p>
+        <p>{t('legal.footer')}</p>
         <p>
           <a href="https://edenguy.github.io" rel="author" className="hover:text-ink">
             {t('dashboard.credit')}

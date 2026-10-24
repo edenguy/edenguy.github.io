@@ -323,5 +323,28 @@
   "storage": {
     "slow": "Loading your progress is taking longer than usual…",
     "unavailable": "Progress cannot be saved on this device (storage is blocked). You can still learn; nothing will be remembered."
+  },
+  "legal": {
+    "title": "Before you start",
+    "intro": "Nitrox Academy is a free, independent study tool. Its material is drawn from published professional sources: the NOAA Diving Manual oxygen exposure limits, Divers Alert Network (DAN) publications, public training-agency materials (BSAC, RAID, PADI, SDI), industry standards (CGA G-4.1, EN 144-3) and peer-reviewed studies, all listed on the About page. Every formula is checked automatically against reference values.",
+    "p1": "It is a study aid, not a certification and not a substitute for a Nitrox course with a certified instructor.",
+    "p2": "The calculators and simulators exist to build understanding. They are not a dive computer and not a dive plan.",
+    "p3": "Every dive is planned and carried out at the diver's own responsibility, according to their training, their equipment, their dive computer and their agency's standards.",
+    "p4": "This site is provided free of charge and as is, without warranty of any kind. Its operators accept no liability for any loss, injury or damage arising from use of the information in it. The responsibility is yours.",
+    "accept": "I understand. The responsibility is mine",
+    "readMore": "Sources and full terms",
+    "aboutTitle": "Sources and responsibility",
+    "sourcesIntro": "The content is original and is based on the following published sources:",
+    "sources": [
+      "NOAA Diving Manual: oxygen exposure limits and Nitrox conventions.",
+      "Divers Alert Network (DAN): oxygen toxicity, maximum operating depth and oxygen-cleaning articles.",
+      "Public training-agency materials: BSAC Nitrox workbook, RAID, PADI and SDI course descriptions.",
+      "Industry standards: CGA G-4.1 (oxygen service), EN 144-3 (Nitrox valves).",
+      "Peer-reviewed studies: Donald 1947 (oxygen poisoning), Harris et al. 2003 and Chapman & Plato 2008 (fatigue), Hesser et al. 1978 (narcosis).",
+      "Standard dive-planning formulas (pressure, Dalton's law, MOD, EAD, OTU) as published in training materials."
+    ],
+    "liabilityTitle": "Responsibility",
+    "liability": "Nitrox Academy is a free educational website. It does not certify divers, it is not a dive computer, and it is not affiliated with any training agency or standards body. All diving decisions and their consequences are the sole responsibility of the diver. The site and its operators accept no liability whatsoever for injury, loss or damage connected to its use. Where this site and your instructor, agency or dive computer differ, follow them.",
+    "footer": "Free educational site. Use at your own responsibility; not a certification."
   }
 }

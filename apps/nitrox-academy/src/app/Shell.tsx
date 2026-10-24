@@ -12,6 +12,7 @@ import { PwaUpdater } from './PwaUpdater';
 import { HydrationGate } from './HydrationGate';
 import { AchievementToast } from './AchievementToast';
 import { PageTransition } from './PageTransition';
+import { FirstRunNotice } from './FirstRunNotice';
 
 const NAV: { to: string; key: string; icon: IconName; end?: boolean }[] = [
   { to: '/', key: 'nav.home', icon: 'home', end: true },
@@ -34,6 +35,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
       <HydrationGate>
         {children}
         <AchievementToast />
+        <FirstRunNotice />
       </HydrationGate>
       <PwaUpdater />
     </ErrorBoundary>

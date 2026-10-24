@@ -23,6 +23,18 @@ export function AboutPage() {
         <Callout variant="warning" title={t('about.reviewTitle')}>
           {t('about.reviewBody')}
         </Callout>
+        <div>
+          <h3 className="text-lg text-ink mb-1">{t('legal.aboutTitle')}</h3>
+          <p className="text-ink-2 mb-2">{t('legal.sourcesIntro')}</p>
+          <ul className="space-y-1.5 text-ink-2 list-disc ps-5">
+            {(t('legal.sources', { returnObjects: true }) as string[]).map((src, i) => (
+              <li key={i}>{src}</li>
+            ))}
+          </ul>
+        </div>
+        <Callout variant="safety" title={t('legal.liabilityTitle')}>
+          {t('legal.liability')}
+        </Callout>
         <Section title={t('about.privacyTitle')} body={t('about.privacyBody')} />
         <div>
           <h3 className="text-lg text-ink mb-1">{t('about.creditTitle')}</h3>

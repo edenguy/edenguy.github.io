@@ -127,6 +127,10 @@ describe('UI translations', () => {
   const flatten = (o: Record<string, unknown>, p = ''): string[] =>
     Object.entries(o).flatMap(([k, v]) => (typeof v === 'object' && v !== null ? flatten(v as Record<string, unknown>, `${p}${k}.`) : [`${p}${k}`]));
 
+  it('lists the same number of sources in both languages', () => {
+    expect((he as { legal: { sources: string[] } }).legal.sources).toHaveLength((en as { legal: { sources: string[] } }).legal.sources.length);
+  });
+
   it('has the same keys in English and Hebrew', () => {
     const a = flatten(en as Record<string, unknown>).sort();
     const b = flatten(he as Record<string, unknown>).sort();

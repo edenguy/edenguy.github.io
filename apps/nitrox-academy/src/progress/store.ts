@@ -66,7 +66,10 @@ export interface ProgressState {
   predictions: Record<string, PredictionRecord>;
   achievements: Partial<Record<AchievementId, number>>;
   labVisits: number;
+  /** When the learner acknowledged the free-tool / own-responsibility notice; null until then. */
+  acknowledgedAt: number | null;
 
+  acknowledge: () => void;
   setLocale: (locale: Locale) => void;
   setTheme: (theme: ThemePreference) => void;
   setUnits: (units: DepthUnit) => void;
@@ -89,6 +92,7 @@ const initialProgress = {
   predictions: {} as Record<string, PredictionRecord>,
   achievements: {} as Partial<Record<AchievementId, number>>,
   labVisits: 0,
+  acknowledgedAt: null as number | null,
 };
 
 function readInitialLocale(): Locale {
@@ -120,6 +124,7 @@ export const useProgress = create<ProgressState>()(
       settings: { locale: readInitialLocale(), theme: readInitialTheme(), units: 'm', ppo2Limit: 1.4 },
       ...initialProgress,
 
+      acknowledge: () => set({ acknowledgedAt: Date.now() }),
       setLocale: (locale) => set((s) => ({ settings: { ...s.settings, locale } })),
       setTheme: (theme) => set((s) => ({ settings: { ...s.settings, theme } })),
       setUnits: (units) => set((s) => ({ settings: { ...s.settings, units } })),
@@ -161,7 +166,7 @@ export const useProgress = create<ProgressState>()(
           labVisits: s.labVisits + 1,
           achievements: s.achievements['lab-visit'] ? s.achievements : { ...s.achievements, 'lab-visit': Date.now() },
         })),
-      resetProgress: () => set({ ...initialProgress }),
+      resetProgress: () => set((s) => ({ ...initialProgress, acknowledgedAt: s.acknowledgedAt })),
     }),
     {
       name: 'nitrox-academy:v1',
@@ -183,6 +188,7 @@ export const useProgress = create<ProgressState>()(
         predictions: s.predictions,
         achievements: s.achievements,
         labVisits: s.labVisits,
+        acknowledgedAt: s.acknowledgedAt,
       }),
     },
   ),
@@ -225,6 +231,7 @@ export function sanitisePersisted(input: unknown): Partial<ProgressState> {
     predictions,
     achievements,
     labVisits: typeof p.labVisits === 'number' && Number.isFinite(p.labVisits) ? p.labVisits : 0,
+    acknowledgedAt: typeof p.acknowledgedAt === 'number' && Number.isFinite(p.acknowledgedAt) ? p.acknowledgedAt : null,
   };
 }
 
