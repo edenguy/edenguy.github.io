@@ -1,0 +1,957 @@
+{
+  "id": "ch02",
+  "number": 2,
+  "icon": "physics",
+  "status": "available",
+  "title": {
+    "en": "Gas Physics",
+    "he": "פיזיקה של גזים"
+  },
+  "tagline": {
+    "en": "Pressure, Dalton's law and partial pressure: the three ideas behind every Nitrox number.",
+    "he": "לחץ, חוק דלטון ולחץ חלקי: שלושת הרעיונות שמאחורי כל מספר בנייטרוקס."
+  },
+  "description": {
+    "en": "This is the chapter that makes everything else click. You will learn how pressure grows with depth, why a gas mixture behaves like several separate gases, and how to compute the oxygen and nitrogen partial pressures at any depth.",
+    "he": "זה הפרק שגורם לכל השאר להתחבר. תלמדו איך הלחץ גדל עם העומק, למה תערובת גזים מתנהגת כמו כמה גזים נפרדים, ואיך לחשב את הלחצים החלקיים של חמצן וחנקן בכל עומק."
+  },
+  "objectives": [
+    {
+      "en": "Compute absolute pressure at any depth in seawater.",
+      "he": "לחשב לחץ מוחלט בכל עומק במי ים."
+    },
+    {
+      "en": "Distinguish absolute pressure from gauge pressure and know which one gas physics uses.",
+      "he": "להבדיל בין לחץ מוחלט ללחץ מד ולדעת באיזה מהם הפיזיקה של הגזים משתמשת."
+    },
+    {
+      "en": "State Dalton's law in your own words.",
+      "he": "לנסח את חוק דלטון במילים שלכם."
+    },
+    {
+      "en": "Calculate PPO2 and PPN2 for any mix at any depth.",
+      "he": "לחשב PPO2 ו־PPN2 לכל תערובת בכל עומק."
+    },
+    {
+      "en": "Predict how partial pressures change as you descend and ascend.",
+      "he": "לחזות איך הלחצים החלקיים משתנים בירידה ובעלייה."
+    }
+  ],
+  "lessons": [
+    {
+      "id": "ch02-l01",
+      "title": {
+        "en": "Pressure and depth",
+        "he": "לחץ ועומק"
+      },
+      "summary": {
+        "en": "The atmosphere is heavy, water is heavier, and every 10 metres adds another atmosphere.",
+        "he": "האטמוספרה כבדה, המים כבדים יותר, וכל 10 מטר מוסיפים עוד אטמוספרה."
+      },
+      "estimatedMinutes": 7,
+      "topics": [
+        "pressure-depth"
+      ],
+      "blocks": [
+        {
+          "type": "text",
+          "body": {
+            "en": "Right now, the entire column of air above you is pressing down on your body. At sea level that weight produces a pressure of about **1 bar**, which divers call **1 atmosphere** and write as [[1 ata]] (atmospheres absolute). You do not feel it because the gas inside you pushes back with the same pressure.\n\nWater is roughly 800 times denser than air, so it does not take a tall column of water to match the whole atmosphere. In seawater, just **10 metres** of depth adds another full atmosphere of pressure. (In feet: 33 ft.) That gives the simplest and most important rule in diving physics:",
+            "he": "ברגע זה, כל עמוד האוויר שמעליכם לוחץ על הגוף שלכם. בגובה פני הים המשקל הזה יוצר לחץ של בערך **1 בר**, שצוללים קוראים לו **אטמוספרה אחת** וכותבים [[1 ata]] (אטמוספרות מוחלטות). אתם לא מרגישים אותו כי הגז שבתוככם דוחף בחזרה באותו לחץ.\n\nמים צפופים פי 800 בערך מאוויר, ולכן לא צריך עמוד מים גבוה כדי להשתוות לאטמוספרה שלמה. במי ים, רק **10 מטר** של עומק מוסיפים עוד אטמוספרה שלמה של לחץ. (ביחידות רגל: 33 רגל.) מכאן הכלל הפשוט והחשוב ביותר בפיזיקה של הצלילה:"
+          }
+        },
+        {
+          "type": "formula",
+          "expression": "P_abs = depth ÷ 10 + 1",
+          "legend": [
+            {
+              "symbol": "P_abs",
+              "meaning": {
+                "en": "absolute pressure in ata (or bar)",
+                "he": "לחץ מוחלט ב־ata (או בר)"
+              }
+            },
+            {
+              "symbol": "depth ÷ 10",
+              "meaning": {
+                "en": "the pressure of the water itself",
+                "he": "הלחץ של המים עצמם"
+              }
+            },
+            {
+              "symbol": "+ 1",
+              "meaning": {
+                "en": "the atmosphere sitting on top of the sea",
+                "he": "האטמוספרה שיושבת על פני הים"
+              }
+            }
+          ],
+          "note": {
+            "en": "(metres, seawater). In feet of seawater: P_abs = depth ÷ 33 + 1.",
+            "he": "(מטרים, מי ים). ברגל של מי ים: {{P_abs = depth ÷ 33 + 1}}."
+          }
+        },
+        {
+          "type": "interactive",
+          "component": "pressure-column",
+          "props": {
+            "initialDepth": 10
+          },
+          "caption": {
+            "en": "Drag the diver down. Each block is one atmosphere; the bubble shows how a flexible air space shrinks as pressure rises.",
+            "he": "גררו את הצולל למטה. כל בלוק הוא אטמוספרה אחת; הבועה מראה איך חלל אוויר גמיש מתכווץ כשהלחץ עולה."
+          }
+        },
+        {
+          "type": "predict",
+          "topic": "pressure-depth",
+          "prompt": {
+            "en": "What is the absolute pressure at 20 m in seawater?",
+            "he": "מהו הלחץ המוחלט בעומק 20 מטר במי ים?"
+          },
+          "options": [
+            {
+              "en": "2 ata",
+              "he": "2 ata"
+            },
+            {
+              "en": "3 ata",
+              "he": "3 ata"
+            },
+            {
+              "en": "20 ata",
+              "he": "20 ata"
+            },
+            {
+              "en": "21 ata",
+              "he": "21 ata"
+            }
+          ],
+          "correctIndex": 1,
+          "reveal": {
+            "en": "[[20 ÷ 10 = 2]] atmospheres of water, **plus** the 1 atmosphere of air above the sea: **3 ata**. The most common slip is forgetting the +1. The sea does not start in a vacuum; the sky is already pressing on it.",
+            "he": "[[20 ÷ 10 = 2]] אטמוספרות של מים, **ועוד** האטמוספרה האחת של האוויר שמעל הים: **3 ata**. הטעות הנפוצה ביותר היא לשכוח את ה־[[+1]]. הים לא מתחיל בריק; השמיים כבר לוחצים עליו."
+          },
+          "id": "ch02-l01-predict-1"
+        },
+        {
+          "type": "example",
+          "title": {
+            "en": "Pressure at 35 m",
+            "he": "לחץ בעומק 35 מטר"
+          },
+          "steps": [
+            {
+              "text": {
+                "en": "Pressure of the water: depth divided by 10.",
+                "he": "הלחץ של המים: העומק חלקי 10."
+              },
+              "math": "35 ÷ 10 = 3.5 ata"
+            },
+            {
+              "text": {
+                "en": "Add the atmosphere above the surface.",
+                "he": "מוסיפים את האטמוספרה שמעל פני המים."
+              },
+              "math": "3.5 + 1 = 4.5 ata"
+            }
+          ],
+          "result": {
+            "en": "At 35 m the absolute pressure is 4.5 ata: four and a half times what you feel on the boat.",
+            "he": "בעומק 35 מטר הלחץ המוחלט הוא 4.5 ata: פי ארבעה וחצי ממה שמרגישים על הסירה."
+          }
+        },
+        {
+          "type": "deeper",
+          "title": {
+            "en": "Is it exactly 10 metres?",
+            "he": "האם זה בדיוק 10 מטר?"
+          },
+          "body": {
+            "en": "Not exactly. With typical seawater density, one bar corresponds to about 9.9 to 10 m of seawater, and one physical atmosphere (1.013 bar) to about 10.1 m. Fresh water is less dense, so it takes about 10.2 m of fresh water to add one bar (10.3 m per atmosphere). Training agencies round all of this to **10 m of seawater per bar** because the difference is far smaller than the safety margins built into dive planning. Nitrox Academy uses the same convention, and labels it as a convention wherever it matters.",
+            "he": "לא בדיוק. בצפיפות טיפוסית של מי ים, בר אחד מתאים לכ־9.9 עד 10 מטר של מי ים, ואטמוספרה פיזיקלית אחת (1.013 בר) לכ־10.1 מטר. מים מתוקים פחות צפופים, ולכן צריך כ־10.2 מטר של מים מתוקים כדי להוסיף בר אחד (10.3 מטר לאטמוספרה). ארגוני ההדרכה מעגלים את כל זה ל־**10 מטר מי ים לבר** כי ההבדל קטן בהרבה ממרווחי הביטחון שמובנים בתכנון צלילה. אקדמיית נייטרוקס משתמשת באותה מוסכמה, ומסמנת אותה כמוסכמה בכל מקום שבו זה חשוב."
+          }
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q01"
+        },
+        {
+          "type": "keypoints",
+          "items": [
+            {
+              "en": "Sea level = 1 ata. Every 10 m of seawater adds 1 ata (33 ft in imperial units).",
+              "he": "פני הים = 1 ata. כל 10 מטר מי ים מוסיפים 1 ata (33 רגל ביחידות אימפריאליות)."
+            },
+            {
+              "en": "Absolute pressure = depth ÷ 10 + 1.",
+              "he": "לחץ מוחלט: {{P_abs = depth ÷ 10 + 1}}."
+            },
+            {
+              "en": "Never forget the +1: the atmosphere is already pressing on the sea.",
+              "he": "לעולם אל תשכחו את ה־[[+1]]: האטמוספרה כבר לוחצת על הים."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch02-l02",
+      "title": {
+        "en": "Absolute versus gauge pressure",
+        "he": "לחץ מוחלט מול לחץ מד"
+      },
+      "summary": {
+        "en": "Your gauge reads zero at the surface. Physics does not.",
+        "he": "המד שלכם מראה אפס על פני המים. הפיזיקה לא."
+      },
+      "estimatedMinutes": 5,
+      "topics": [
+        "pressure-depth"
+      ],
+      "blocks": [
+        {
+          "type": "text",
+          "body": {
+            "en": "Most instruments measure pressure **relative to the atmosphere around them**. A depth gauge, a tyre gauge and your cylinder pressure gauge all read zero in open air at the surface. That reading is called **gauge pressure**. It tells you how much pressure the water adds, and nothing about the atmosphere on top.\n\n**Absolute pressure** counts everything: the water _and_ the atmosphere. It is the pressure a gas molecule actually experiences, and it is the only kind of pressure that gas laws care about. The relationship is simple:",
+            "he": "רוב המכשירים מודדים לחץ **ביחס לאטמוספרה שסביבם**. מד עומק, מד לחץ אוויר בצמיג ומד הלחץ של המיכל שלכם מראים כולם אפס באוויר הפתוח על פני המים. הקריאה הזאת נקראת **לחץ מד** (לחץ יחסי). היא אומרת כמה לחץ המים מוסיפים, ושום דבר על האטמוספרה שמעל.\n\n**לחץ מוחלט** סופר הכול: את המים _וגם_ את האטמוספרה. זה הלחץ שמולקולת גז באמת חווה, וזה סוג הלחץ היחיד שחוקי הגזים מתעניינים בו. הקשר פשוט:"
+          }
+        },
+        {
+          "type": "formula",
+          "expression": "P_abs = P_gauge + 1 ata",
+          "legend": [
+            {
+              "symbol": "P_gauge",
+              "meaning": {
+                "en": "pressure due to the water only (depth ÷ 10)",
+                "he": "הלחץ של המים בלבד (עומק ÷ 10)"
+              }
+            }
+          ]
+        },
+        {
+          "type": "compare",
+          "columns": [
+            {
+              "en": "Depth",
+              "he": "עומק"
+            },
+            {
+              "en": "Gauge pressure",
+              "he": "לחץ מד"
+            },
+            {
+              "en": "Absolute pressure",
+              "he": "לחץ מוחלט"
+            }
+          ],
+          "rows": [
+            {
+              "label": {
+                "en": "Surface",
+                "he": "פני המים"
+              },
+              "cells": [
+                {
+                  "en": "0 m",
+                  "he": "0 מ׳"
+                },
+                {
+                  "en": "0 bar",
+                  "he": "0 בר"
+                },
+                {
+                  "en": "1 ata",
+                  "he": "[[1 ata]]"
+                }
+              ]
+            },
+            {
+              "label": {
+                "en": "Shallow",
+                "he": "רדוד"
+              },
+              "cells": [
+                {
+                  "en": "10 m",
+                  "he": "10 מ׳"
+                },
+                {
+                  "en": "1 bar",
+                  "he": "1 בר"
+                },
+                {
+                  "en": "2 ata",
+                  "he": "[[2 ata]]"
+                }
+              ]
+            },
+            {
+              "label": {
+                "en": "Typical reef",
+                "he": "שונית טיפוסית"
+              },
+              "cells": [
+                {
+                  "en": "18 m",
+                  "he": "18 מ׳"
+                },
+                {
+                  "en": "1.8 bar",
+                  "he": "1.8 בר"
+                },
+                {
+                  "en": "2.8 ata",
+                  "he": "[[2.8 ata]]"
+                }
+              ]
+            },
+            {
+              "label": {
+                "en": "Deep recreational",
+                "he": "צלילה ספורטיבית עמוקה"
+              },
+              "cells": [
+                {
+                  "en": "40 m",
+                  "he": "40 מ׳"
+                },
+                {
+                  "en": "4 bar",
+                  "he": "4 בר"
+                },
+                {
+                  "en": "5 ata",
+                  "he": "[[5 ata]]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "variant": "insight",
+          "title": {
+            "en": "Why the distinction matters for Nitrox",
+            "he": "למה ההבחנה חשובה לנייטרוקס"
+          },
+          "body": {
+            "en": "Every oxygen calculation in this course uses absolute pressure. If you use gauge pressure by mistake, you will compute an oxygen partial pressure that is too low, and a maximum operating depth that is **too deep**. That error is in the dangerous direction.",
+            "he": "כל חישוב חמצן בקורס הזה משתמש בלחץ מוחלט. אם תשתמשו בטעות בלחץ מד, תחשבו לחץ חלקי של חמצן נמוך מדי, ועומק הפעלה מרבי **עמוק מדי**. הטעות הזאת היא בכיוון המסוכן."
+          }
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q02"
+        },
+        {
+          "type": "keypoints",
+          "items": [
+            {
+              "en": "Gauge pressure ignores the atmosphere; absolute pressure includes it.",
+              "he": "לחץ מד מתעלם מהאטמוספרה; לחץ מוחלט כולל אותה."
+            },
+            {
+              "en": "Absolute = gauge + 1 ata.",
+              "he": "מוחלט = מד + 1 ata."
+            },
+            {
+              "en": "Gas laws, and therefore all Nitrox maths, use absolute pressure.",
+              "he": "חוקי הגזים, ולכן כל חישובי הנייטרוקס, משתמשים בלחץ מוחלט."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch02-l03",
+      "title": {
+        "en": "Dalton's law",
+        "he": "חוק דלטון"
+      },
+      "summary": {
+        "en": "A mixture of gases behaves like several gases sharing one space. Each pays its share of the pressure.",
+        "he": "תערובת גזים מתנהגת כמו כמה גזים שחולקים מרחב אחד. כל אחד משלם את חלקו בלחץ."
+      },
+      "estimatedMinutes": 7,
+      "topics": [
+        "daltons-law"
+      ],
+      "blocks": [
+        {
+          "type": "text",
+          "body": {
+            "en": "Picture a room with 100 people, 21 wearing orange and 79 wearing blue. The pressure on the walls comes from all 100 people bumping into them. If you could count only the orange bumps, you would find they make up 21% of the total. The orange people do not know the blue people exist; they just bounce around as if they had the room to themselves, and contribute their share.\n\nGas molecules work the same way. In 1801 John Dalton showed that in a mixture, **each gas exerts the pressure it would exert if it were alone in the container**, and the total pressure is simply the sum of those individual pressures. Each gas's individual pressure is its **partial pressure**.",
+            "he": "דמיינו חדר עם 100 אנשים, 21 לובשים כתום ו־79 לובשים כחול. הלחץ על הקירות מגיע מכל 100 האנשים שנתקלים בהם. אם הייתם יכולים לספור רק את ההתנגשויות הכתומות, הייתם מגלים שהן מהוות 21% מהסך הכול. הכתומים לא יודעים שהכחולים קיימים; הם פשוט מקפצים כאילו החדר כולו שלהם, ותורמים את חלקם.\n\nמולקולות גז עובדות באותו אופן. בשנת 1801 הראה ג׳ון דלטון שבתערובת, **כל גז מפעיל את הלחץ שהיה מפעיל אילו היה לבדו במיכל**, והלחץ הכולל הוא פשוט סכום הלחצים הנפרדים האלה. הלחץ הנפרד של כל גז הוא **הלחץ החלקי** שלו."
+          }
+        },
+        {
+          "type": "formula",
+          "expression": "P_total = PP_1 + PP_2 + …        PP_gas = F_gas × P_total",
+          "legend": [
+            {
+              "symbol": "PP_gas",
+              "meaning": {
+                "en": "partial pressure of one gas",
+                "he": "הלחץ החלקי של גז אחד"
+              }
+            },
+            {
+              "symbol": "F_gas",
+              "meaning": {
+                "en": "that gas's fraction of the mix (0 to 1)",
+                "he": "חלקו של הגז בתערובת (0 עד 1)"
+              }
+            },
+            {
+              "symbol": "P_total",
+              "meaning": {
+                "en": "absolute pressure of the whole mixture",
+                "he": "הלחץ המוחלט של כל התערובת"
+              }
+            }
+          ]
+        },
+        {
+          "type": "example",
+          "title": {
+            "en": "Air at the surface",
+            "he": "אוויר על פני המים"
+          },
+          "steps": [
+            {
+              "text": {
+                "en": "Oxygen's share of 1 ata.",
+                "he": "חלקו של החמצן מתוך 1 ata."
+              },
+              "math": "PPO2 = 0.21 × 1 = 0.21 ata"
+            },
+            {
+              "text": {
+                "en": "Nitrogen's share of 1 ata.",
+                "he": "חלקו של החנקן מתוך 1 ata."
+              },
+              "math": "PPN2 = 0.79 × 1 = 0.79 ata"
+            },
+            {
+              "text": {
+                "en": "Check: the shares add back up to the total.",
+                "he": "בדיקה: החלקים מסתכמים בחזרה לסך הכול."
+              },
+              "math": "0.21 + 0.79 = 1.00 ata"
+            }
+          ],
+          "result": {
+            "en": "At the surface you breathe oxygen at 0.21 ata. Your body is tuned to roughly that number.",
+            "he": "על פני המים אתם נושמים חמצן ב־0.21 ata. הגוף שלכם מכוון בערך למספר הזה."
+          }
+        },
+        {
+          "type": "predict",
+          "topic": "daltons-law",
+          "prompt": {
+            "en": "Double the absolute pressure on a mix (say, descend from the surface to 10 m). What happens to each gas's partial pressure?",
+            "he": "מכפילים את הלחץ המוחלט על תערובת (נניח, יורדים מפני המים ל־10 מטר). מה קורה ללחץ החלקי של כל גז?"
+          },
+          "options": [
+            {
+              "en": "Only the heavier gas's partial pressure rises",
+              "he": "רק הלחץ החלקי של הגז הכבד יותר עולה"
+            },
+            {
+              "en": "Each partial pressure doubles; the fractions stay the same",
+              "he": "כל לחץ חלקי מוכפל; החלקים נשארים זהים"
+            },
+            {
+              "en": "The fractions change but the partial pressures stay the same",
+              "he": "החלקים משתנים אבל הלחצים החלקיים נשארים זהים"
+            }
+          ],
+          "correctIndex": 1,
+          "reveal": {
+            "en": "Compressing a mixture does not change its recipe. Air at 10 m is still 21% oxygen, but every one of those molecules is now at twice the pressure, so PPO2 doubles from 0.21 to **0.42 ata** and PPN2 from 0.79 to **1.58 ata**. Fractions describe the gas; partial pressures describe what your body feels.",
+            "he": "דחיסת תערובת לא משנה את המתכון שלה. אוויר בעומק 10 מטר הוא עדיין 21% חמצן, אבל כל אחת מהמולקולות האלה נמצאת עכשיו בלחץ כפול, ולכן PPO2 מוכפל מ־0.21 ל־**[[0.42 ata]]** ו־PPN2 מ־0.79 ל־**[[1.58 ata]]**. החלקים מתארים את הגז; הלחצים החלקיים מתארים מה הגוף שלכם מרגיש."
+          },
+          "id": "ch02-l03-predict-1"
+        },
+        {
+          "type": "callout",
+          "variant": "science",
+          "title": {
+            "en": "Why the body cares about partial pressure, not percentage",
+            "he": "למה הגוף מתעניין בלחץ חלקי ולא באחוז"
+          },
+          "body": {
+            "en": "Gases dissolve into blood and tissues in proportion to their partial pressure (Henry's law), and oxygen's effects on the nervous system track its partial pressure too. Your cells cannot tell whether a PPO2 of 1.4 ata came from 32% oxygen at about 34 m or 100% oxygen at 4 m. This is why Nitrox planning is done in partial pressures.",
+            "he": "גזים מתמוססים בדם וברקמות ביחס ללחץ החלקי שלהם (חוק הנרי), וגם ההשפעות של חמצן על מערכת העצבים עוקבות אחרי הלחץ החלקי שלו. התאים שלכם לא יכולים לדעת אם PPO2 של 1.4 ata הגיע מ־32% חמצן בעומק של כ־34 מטר או מ־100% חמצן בעומק 4 מטר. זו הסיבה שתכנון נייטרוקס נעשה בלחצים חלקיים."
+          }
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q03"
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q04"
+        },
+        {
+          "type": "keypoints",
+          "items": [
+            {
+              "en": "Each gas in a mix exerts its own partial pressure, as if alone; the total is their sum.",
+              "he": "כל גז בתערובת מפעיל לחץ חלקי משלו, כאילו היה לבדו; הסך הכול הוא סכומם."
+            },
+            {
+              "en": "Partial pressure = fraction × absolute pressure.",
+              "he": "לחץ חלקי = חלק × לחץ מוחלט."
+            },
+            {
+              "en": "Descending leaves the fractions unchanged but raises every partial pressure.",
+              "he": "ירידה לעומק משאירה את החלקים ללא שינוי אבל מעלה כל לחץ חלקי."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch02-l04",
+      "title": {
+        "en": "Oxygen and nitrogen partial pressures",
+        "he": "לחצים חלקיים של חמצן וחנקן"
+      },
+      "summary": {
+        "en": "PPO2 and PPN2: the two numbers that drive every decision in Nitrox diving.",
+        "he": "PPO2 ו־PPN2: שני המספרים שמניעים כל החלטה בצלילת נייטרוקס."
+      },
+      "estimatedMinutes": 8,
+      "topics": [
+        "pp-at-depth"
+      ],
+      "blocks": [
+        {
+          "type": "text",
+          "body": {
+            "en": "Apply Dalton's law to a Nitrox mix and you get the two formulas you will use for the rest of this course. The **partial pressure of oxygen**, {{PPO2}}, governs oxygen toxicity and therefore your depth limit. The **partial pressure of nitrogen**, {{PPN2}}, governs nitrogen absorption and therefore your no-decompression time.",
+            "he": "מיישמים את חוק דלטון על תערובת נייטרוקס ומקבלים את שתי הנוסחאות שבהן תשתמשו בהמשך הקורס. **הלחץ החלקי של החמצן**, {{PPO2}}, שולט ברעילות החמצן ולכן בגבול העומק שלכם. **הלחץ החלקי של החנקן**, {{PPN2}}, שולט בספיגת החנקן ולכן בזמן ללא דקומפרסיה שלכם."
+          }
+        },
+        {
+          "type": "formula",
+          "expression": "PPO2 = FO2 × P_abs",
+          "legend": [
+            {
+              "symbol": "FO2",
+              "meaning": {
+                "en": "oxygen fraction (EAN32 → 0.32)",
+                "he": "חלק החמצן (EAN32 ← 0.32)"
+              }
+            },
+            {
+              "symbol": "P_abs",
+              "meaning": {
+                "en": "depth ÷ 10 + 1",
+                "he": "{{depth ÷ 10 + 1}}"
+              }
+            }
+          ]
+        },
+        {
+          "type": "formula",
+          "expression": "PPN2 = FN2 × P_abs",
+          "legend": [
+            {
+              "symbol": "FN2",
+              "meaning": {
+                "en": "nitrogen fraction = 1 − FO2",
+                "he": "חלק החנקן, {{FN2 = 1 − FO2}}"
+              }
+            }
+          ],
+          "note": {
+            "en": "The two partial pressures always add up to P_abs; use that as a check.",
+            "he": "שני הלחצים החלקיים תמיד מסתכמים ל־{{P_abs}}; השתמשו בזה כבדיקה."
+          }
+        },
+        {
+          "type": "example",
+          "title": {
+            "en": "EAN32 at 30 m",
+            "he": "EAN32 בעומק 30 מטר"
+          },
+          "steps": [
+            {
+              "text": {
+                "en": "Absolute pressure at 30 m.",
+                "he": "לחץ מוחלט בעומק 30 מטר."
+              },
+              "math": "30 ÷ 10 + 1 = 4.0 ata"
+            },
+            {
+              "text": {
+                "en": "Oxygen partial pressure.",
+                "he": "לחץ חלקי של חמצן."
+              },
+              "math": "PPO2 = 0.32 × 4.0 = 1.28 ata"
+            },
+            {
+              "text": {
+                "en": "Nitrogen partial pressure.",
+                "he": "לחץ חלקי של חנקן."
+              },
+              "math": "PPN2 = 0.68 × 4.0 = 2.72 ata"
+            }
+          ],
+          "result": {
+            "en": "On air at the same depth PPO2 would be 0.84 and PPN2 would be 3.16 ata. Nitrox trades nitrogen for oxygen, ata for ata.",
+            "he": "באוויר באותו עומק {{PPO2}} היה [[0.84]] ו־{{PPN2}} היה [[3.16 ata]]. נייטרוקס מחליף חנקן בחמצן, ata תמורת ata."
+          }
+        },
+        {
+          "type": "predict",
+          "topic": "pp-at-depth",
+          "prompt": {
+            "en": "Before you touch the slider: what is the PPO2 of EAN36 at 20 m?",
+            "he": "לפני שאתם נוגעים במחוון: מהו ה־PPO2 של EAN36 בעומק 20 מטר?"
+          },
+          "options": [
+            {
+              "en": "0.72 ata",
+              "he": "0.72 ata"
+            },
+            {
+              "en": "1.08 ata",
+              "he": "1.08 ata"
+            },
+            {
+              "en": "1.44 ata",
+              "he": "1.44 ata"
+            },
+            {
+              "en": "7.2 ata",
+              "he": "7.2 ata"
+            }
+          ],
+          "correctIndex": 1,
+          "reveal": {
+            "en": "20 m is **3 ata** (not 2: remember the atmosphere). [[0.36 × 3 = 1.08 ata]]. If you picked 0.72 you used gauge pressure; if you picked 7.2 you used 36 instead of 0.36. Now confirm it on the explorer below.",
+            "he": "20 מטר הם **3 ata** (לא 2: זכרו את האטמוספרה). [[0.36 × 3 = 1.08 ata]]. אם בחרתם 0.72 השתמשתם בלחץ מד; אם בחרתם 7.2 השתמשתם ב־36 במקום ב־0.36. עכשיו אמתו את זה בסימולטור שלמטה."
+          },
+          "id": "ch02-l04-predict-1"
+        },
+        {
+          "type": "interactive",
+          "component": "depth-ppo2",
+          "props": {
+            "initialFo2": 0.36,
+            "initialDepth": 20,
+            "showChart": false
+          },
+          "caption": {
+            "en": "Pick a mix, drag the diver, and read PPO2 and PPN2 live. Notice that they always add up to the absolute pressure.",
+            "he": "בחרו תערובת, גררו את הצולל, וקראו PPO2 ו־PPN2 בזמן אמת. שימו לב שהם תמיד מסתכמים ללחץ המוחלט."
+          }
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q05"
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q06"
+        },
+        {
+          "type": "keypoints",
+          "items": [
+            {
+              "en": "{{PPO2 = FO2 × P_abs}} and {{PPN2 = FN2 × P_abs}}.",
+              "he": "{{PPO2 = FO2 × P_abs}} וגם {{PPN2 = FN2 × P_abs}}."
+            },
+            {
+              "en": "Always convert depth to absolute pressure first, and percent to a fraction.",
+              "he": "תמיד המירו קודם עומק ללחץ מוחלט, ואחוז לשבר."
+            },
+            {
+              "en": "PPO2 + PPN2 = P_abs. Use it to check your arithmetic.",
+              "he": "{{PPO2 + PPN2 = P_abs}}. השתמשו בזה כדי לבדוק את החשבון."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch02-l05",
+      "title": {
+        "en": "How partial pressure changes with depth",
+        "he": "איך הלחץ החלקי משתנה עם העומק"
+      },
+      "summary": {
+        "en": "A straight line with a slope set by the mix. Where it crosses the limit is your MOD.",
+        "he": "קו ישר ששיפועו נקבע לפי התערובת. המקום שבו הוא חוצה את הגבול הוא ה־MOD שלכם."
+      },
+      "estimatedMinutes": 8,
+      "topics": [
+        "pp-at-depth"
+      ],
+      "blocks": [
+        {
+          "type": "text",
+          "body": {
+            "en": "Because absolute pressure grows by the same amount for every 10 m, partial pressure grows along a **straight line** as you descend. The line starts at the surface value ({{FO2}} × 1) and climbs by {{FO2}} ata for every 10 m. A richer mix has a steeper line.\n\nNow add a horizontal line for an oxygen limit. Recreational agencies commonly teach **[[1.4 ata]]** as the maximum PPO2 for the working part of a dive and **[[1.6 ata]]** as a contingency ceiling. The depth where your mix's line crosses the chosen limit is its **maximum operating depth**. Chapter 5 treats MOD in detail; here, simply watch how the crossing point moves.",
+            "he": "מכיוון שהלחץ המוחלט גדל באותה כמות על כל 10 מטר, הלחץ החלקי גדל לאורך **קו ישר** ככל שיורדים. הקו מתחיל בערך של פני המים ({{FO2}} × 1) ומטפס ב־{{FO2}} ata על כל 10 מטר. לתערובת עשירה יותר יש קו תלול יותר.\n\nעכשיו הוסיפו קו אופקי לגבול חמצן. ארגוני ההדרכה לצלילה ספורטיבית מלמדים בדרך כלל **[[1.4 ata]]** כ־PPO2 מרבי לחלק העבודה של הצלילה ו־**[[1.6 ata]]** כתקרת חירום. העומק שבו הקו של התערובת שלכם חוצה את הגבול שנבחר הוא **עומק ההפעלה המרבי** שלה. פרק 5 מטפל ב־MOD בפירוט; כאן, פשוט צפו איך נקודת החצייה זזה."
+          }
+        },
+        {
+          "type": "predict",
+          "topic": "pp-at-depth",
+          "prompt": {
+            "en": "You switch from EAN32 to EAN36. What happens to the depth at which PPO2 reaches 1.4 ata?",
+            "he": "אתם עוברים מ־EAN32 ל־EAN36. מה קורה לעומק שבו PPO2 מגיע ל־1.4 ata?"
+          },
+          "options": [
+            {
+              "en": "It gets deeper",
+              "he": "הוא נעשה עמוק יותר"
+            },
+            {
+              "en": "It gets shallower",
+              "he": "הוא נעשה רדוד יותר"
+            },
+            {
+              "en": "It does not change; the limit is fixed at 1.4",
+              "he": "הוא לא משתנה; הגבול קבוע על 1.4"
+            }
+          ],
+          "correctIndex": 1,
+          "reveal": {
+            "en": "Shallower. EAN36's line is steeper, so it reaches 1.4 ata sooner: at about 28 m instead of about 33 m. The limit stays put; the mix decides how fast you get there.",
+            "he": "רדוד יותר. הקו של EAN36 תלול יותר, ולכן הוא מגיע ל־1.4 ata מוקדם יותר: בכ־28 מטר במקום בכ־33 מטר. הגבול נשאר במקומו; התערובת קובעת כמה מהר מגיעים אליו."
+          },
+          "id": "ch02-l05-predict-1"
+        },
+        {
+          "type": "interactive",
+          "component": "mod-explorer",
+          "props": {
+            "minPct": 21,
+            "maxPct": 40,
+            "initialPct": 32,
+            "limits": [
+              1.4,
+              1.6
+            ],
+            "deep": true
+          },
+          "caption": {
+            "en": "The chart shows your mix (solid) and air (dashed). Slide the oxygen fraction and watch the MOD marker walk up the column.",
+            "he": "התרשים מראה את התערובת שלכם (קו מלא) ואוויר (קו מקווקו). הזיזו את חלק החמצן וצפו בסמן ה־MOD מטפס במעלה העמוד."
+          }
+        },
+        {
+          "type": "callout",
+          "variant": "standard",
+          "title": {
+            "en": "Where 1.4 and 1.6 come from",
+            "he": "מאיפה מגיעים 1.4 ו־1.6"
+          },
+          "body": {
+            "en": "These numbers are **training-agency planning limits**, informed by the NOAA oxygen exposure limits, not laws of physics. Agencies differ in wording: some teach 1.4 as an absolute maximum for recreational dives, others allow 1.6 for short, restful contingency exposure. Your agency's standard is the one you dive by. This app lets you explore both so you understand the trade-off.",
+            "he": "המספרים האלה הם **גבולות תכנון של ארגוני הדרכה**, שמבוססים על גבולות חשיפת החמצן של NOAA, ולא חוקי פיזיקה. הארגונים נבדלים בניסוח: חלקם מלמדים 1.4 כמקסימום מוחלט לצלילות ספורטיביות, אחרים מתירים 1.6 לחשיפת חירום קצרה וללא מאמץ. התקן של הארגון שלכם הוא זה שאתם צוללים לפיו. האפליקציה מאפשרת לחקור את שניהם כדי שתבינו את הפשרה."
+          }
+        },
+        {
+          "type": "heading",
+          "text": {
+            "en": "Ascending reverses everything",
+            "he": "עלייה הופכת הכול"
+          }
+        },
+        {
+          "type": "text",
+          "body": {
+            "en": "The same straight line runs backwards on the way up. Ascend from 30 m to 15 m on EAN32 and PPO2 falls from 1.28 to 0.80 ata. This is why oxygen exposure is managed by depth: a few metres shallower, the same mix is well inside the limit.\n\nIt does **not** mean the danger switches off the moment you are shallower. Oxygen toxicity symptoms can appear during or shortly after a reduction in PPO2, and many convulsions come with no warning at all. If you ever suspect early symptoms, the response recreational agencies teach is: signal your buddy, make a controlled ascent, and **end the dive**.",
+            "he": "אותו קו ישר רץ לאחור בדרך למעלה. עלו מ־30 מטר ל־15 מטר עם EAN32 וה־PPO2 יורד מ־1.28 ל־0.80 ata. זו הסיבה שחשיפת חמצן מנוהלת באמצעות העומק: כמה מטרים רדוד יותר, אותה תערובת נמצאת היטב בתוך הגבול.\n\nזה **לא** אומר שהסכנה נכבית ברגע שאתם רדודים יותר. תסמיני רעילות חמצן יכולים להופיע במהלך ירידת ה־PPO2 או זמן קצר אחריה, ופרכוסים רבים מגיעים בלי שום אזהרה. אם אי פעם תחשדו בתסמינים מוקדמים, התגובה שארגוני ההדרכה לצלילה ספורטיבית מלמדים היא: לסמן לבאדי, לבצע עלייה מבוקרת, ו**לסיים את הצלילה**."
+          }
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q07"
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q08"
+        },
+        {
+          "type": "keypoints",
+          "items": [
+            {
+              "en": "Partial pressure rises linearly with depth; richer mixes rise faster.",
+              "he": "הלחץ החלקי עולה ליניארית עם העומק; תערובות עשירות יותר עולות מהר יותר."
+            },
+            {
+              "en": "The depth where PPO2 meets the planning limit is the mix's MOD.",
+              "he": "העומק שבו PPO2 פוגש את גבול התכנון הוא ה־MOD של התערובת."
+            },
+            {
+              "en": "1.4 and 1.6 ata are agency planning conventions; follow your training.",
+              "he": "1.4 ו־1.6 ata הן מוסכמות תכנון של ארגונים; פעלו לפי ההכשרה שלכם."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch02-l06",
+      "title": {
+        "en": "Putting it together",
+        "he": "מחברים הכול"
+      },
+      "summary": {
+        "en": "Three calculations you should now be able to do in your head, plus a first look at MOD.",
+        "he": "שלושה חישובים שעכשיו אתם אמורים לעשות בראש, ועוד הצצה ראשונה ל־MOD."
+      },
+      "estimatedMinutes": 8,
+      "topics": [
+        "pp-at-depth",
+        "pressure-depth",
+        "daltons-law"
+      ],
+      "blocks": [
+        {
+          "type": "text",
+          "body": {
+            "en": "You now own the full toolkit of Nitrox physics: depth to absolute pressure, fraction times pressure to partial pressure, and the mental picture of a straight line crossing a limit. Everything in later chapters is one of these three moves, sometimes run backwards.\n\nRunning the PPO2 formula backwards is exactly how MOD is calculated. Instead of asking _what is the PPO2 at this depth_, you ask _at what depth does the PPO2 reach the limit_. Walk through it below.",
+            "he": "עכשיו יש לכם את ארגז הכלים המלא של הפיזיקה של נייטרוקס: מעומק ללחץ מוחלט, חלק כפול לחץ ללחץ חלקי, והתמונה המנטלית של קו ישר שחוצה גבול. כל מה שבפרקים הבאים הוא אחד משלושת המהלכים האלה, לפעמים בכיוון ההפוך.\n\nהרצת נוסחת ה־PPO2 לאחור היא בדיוק הדרך שבה מחשבים MOD. במקום לשאול _מהו ה־PPO2 בעומק הזה_, שואלים _באיזה עומק ה־PPO2 מגיע לגבול_. עברו על זה למטה."
+          }
+        },
+        {
+          "type": "interactive",
+          "component": "mod-calculator",
+          "props": {
+            "initialFo2": 0.32,
+            "limits": [
+              1.4,
+              1.6
+            ]
+          },
+          "caption": {
+            "en": "Step through the calculation for any mix. Agencies round the final depth down to the whole metre.",
+            "he": "עברו שלב אחר שלב בחישוב לכל תערובת. ארגוני ההדרכה מעגלים את העומק הסופי כלפי מטה למטר שלם."
+          }
+        },
+        {
+          "type": "example",
+          "title": {
+            "en": "The reverse calculation, by hand",
+            "he": "החישוב ההפוך, ביד"
+          },
+          "steps": [
+            {
+              "text": {
+                "en": "Which absolute pressure gives PPO2 = 1.4 on EAN32? Divide the limit by the fraction.",
+                "he": "איזה לחץ מוחלט נותן PPO2 = 1.4 עם EAN32? מחלקים את הגבול בחלק החמצן."
+              },
+              "math": "1.4 ÷ 0.32 = 4.375 ata"
+            },
+            {
+              "text": {
+                "en": "Remove the atmosphere to get the water pressure.",
+                "he": "מסירים את האטמוספרה כדי לקבל את לחץ המים."
+              },
+              "math": "4.375 − 1 = 3.375 ata"
+            },
+            {
+              "text": {
+                "en": "Convert to depth, 10 m per atmosphere, and round down.",
+                "he": "ממירים לעומק, 10 מטר לאטמוספרה, ומעגלים כלפי מטה."
+              },
+              "math": "3.375 × 10 = 33.75 → 33 m"
+            }
+          ],
+          "result": {
+            "en": "EAN32 reaches 1.4 ata at 33 m. That is the number you would write on the cylinder label.",
+            "he": "EAN32 מגיעה ל־1.4 ata בעומק 33 מטר. זה המספר שהייתם כותבים על תווית המיכל."
+          }
+        },
+        {
+          "type": "callout",
+          "variant": "safety",
+          "title": {
+            "en": "A limit, not a target",
+            "he": "גבול, לא יעד"
+          },
+          "body": {
+            "en": "The MOD is the depth at which you would be breathing oxygen at the maximum planned partial pressure. Diving exactly at it leaves no margin for a depth gauge error, a current, or a moment of inattention. Trained Nitrox divers plan to stay comfortably above it. And always calculate the MOD from the percentage you measured with your own analyzer, never from the nominal or labelled mix: a cylinder that analyzes at 34% but is labelled \"EAN32\" has a 1.4 ata MOD of 31 m, not 33 m.",
+            "he": "ה־MOD הוא העומק שבו הייתם נושמים חמצן בלחץ החלקי המרבי המתוכנן. צלילה בדיוק בו לא משאירה מרווח לטעות במד העומק, לזרם או לרגע של חוסר תשומת לב. צוללי נייטרוקס מיומנים מתכננים להישאר במרחק נוח מעליו. ותמיד חשבו את ה־MOD לפי האחוז שמדדתם במנתח שלכם, לעולם לא לפי התערובת הנומינלית או זו שעל התווית: מיכל שבניתוח התקבל בו 34% אבל על התווית כתוב {{EAN32}} — ה־MOD שלו ב־[[1.4 ata]] הוא 31 מטר, לא 33."
+          }
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q09"
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q10"
+        },
+        {
+          "type": "question",
+          "questionId": "ch02-q11"
+        },
+        {
+          "type": "keypoints",
+          "items": [
+            {
+              "en": "P_abs = depth ÷ 10 + 1; PPO2 = FO2 × P_abs; MOD runs the second formula backwards.",
+              "he": "לחץ מוחלט: {{P_abs = depth ÷ 10 + 1}}; לחץ חלקי: {{PPO2 = FO2 × P_abs}}; חישוב ה־MOD מריץ את הנוסחה השנייה לאחור."
+            },
+            {
+              "en": "Round MOD down to the whole metre; it is a ceiling you plan to stay above.",
+              "he": "מעגלים MOD כלפי מטה למטר שלם; זו תקרה שמתכננים להישאר מעליה."
+            },
+            {
+              "en": "If a result looks strange, check: did you use absolute pressure, and a fraction rather than a percent?",
+              "he": "אם תוצאה נראית מוזרה, בדקו: האם השתמשתם בלחץ מוחלט, ובשבר ולא באחוז?"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "assessment": {
+    "questionIds": [
+      "ch02-q01",
+      "ch02-q02",
+      "ch02-q03",
+      "ch02-q05",
+      "ch02-q06",
+      "ch02-q07",
+      "ch02-q09",
+      "ch02-q10",
+      "ch02-q12",
+      "ch02-q13",
+      "ch02-q14",
+      "ch02-q15"
+    ],
+    "passScore": 0.8
+  },
+  "references": [
+    {
+      "id": "ref-msw",
+      "citation": "Metre sea water and foot sea water conventions (10 msw = 1 bar by definition; 33 fsw ≈ 1 atm); EN 13319.",
+      "url": "https://en.wikipedia.org/wiki/Metre_sea_water",
+      "scope": "Unit conventions used for all depth-to-pressure arithmetic. The 10 m/bar figure is a training convention; with typical seawater density one bar is about 9.95 m and one atmosphere about 10.1 m."
+    },
+    {
+      "id": "ref-bsac-nitrox",
+      "citation": "BSAC Sports Diver Nitrox Workshop student workbook: Dalton's law, PO2 = FO2 × P_abs, MOD rounding down.",
+      "url": "https://people.bath.ac.uk/bssjd/Files/BSAC%20Nitrox/Part2/SD_Nitrox_Workshop_Student_Workbook_V10.pdf",
+      "scope": "Public agency workbook confirming the formulas and the practice of rounding MOD down."
+    },
+    {
+      "id": "ref-dan-o2tox",
+      "citation": "Divers Alert Network, Oxygen Toxicity (health resource): NOAA exposure limits and the 1.4 ata recommendation.",
+      "url": "https://dan.org/health-medicine/health-resources/diseases-conditions/oxygen-toxicity/",
+      "scope": "Provenance of the 1.4 / 1.6 ata planning limits referenced in the depth lessons."
+    }
+  ]
+}

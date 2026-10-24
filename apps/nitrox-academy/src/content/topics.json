@@ -1,0 +1,8 @@
+[
+  { "id": "nitrox-basics", "chapterId": "ch01", "title": { "en": "What Nitrox is", "he": "מהו נייטרוקס" } },
+  { "id": "why-nitrox", "chapterId": "ch01", "title": { "en": "Why divers use Nitrox", "he": "למה צוללים משתמשים בנייטרוקס" } },
+  { "id": "nitrox-limits", "chapterId": "ch01", "title": { "en": "Limits and misconceptions", "he": "מגבלות ותפיסות שגויות" } },
+  { "id": "pressure-depth", "chapterId": "ch02", "title": { "en": "Pressure and depth", "he": "לחץ ועומק" } },
+  { "id": "daltons-law", "chapterId": "ch02", "title": { "en": "Dalton's law and partial pressure", "he": "חוק דלטון ולחץ חלקי" } },
+  { "id": "pp-at-depth", "chapterId": "ch02", "title": { "en": "Partial pressures at depth", "he": "לחצים חלקיים בעומק" } }
+]

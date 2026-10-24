@@ -1,0 +1,202 @@
+[
+  {
+    "id": "ch03",
+    "number": 3,
+    "icon": "deco",
+    "status": "coming-soon",
+    "title": {
+      "en": "Nitrox and Decompression",
+      "he": "נייטרוקס ודקומפרסיה"
+    },
+    "tagline": {
+      "en": "Less nitrogen, longer no-decompression limits, and what that does not mean.",
+      "he": "פחות חנקן, גבולות ללא דקומפרסיה ארוכים יותר, ומה זה לא אומר."
+    },
+    "description": {
+      "en": "Nitrogen absorption and elimination, no-decompression limits, equivalent air depth, dive computers and repetitive diving.",
+      "he": "ספיגת חנקן ופליטתו, גבולות ללא דקומפרסיה, עומק אוויר שקול, מחשבי צלילה וצלילות חוזרות."
+    },
+    "objectives": [],
+    "lessons": [],
+    "assessment": {
+      "questionIds": [],
+      "passScore": 0.8
+    },
+    "references": []
+  },
+  {
+    "id": "ch04",
+    "number": 4,
+    "icon": "oxygen",
+    "status": "coming-soon",
+    "title": {
+      "en": "Oxygen Exposure and Toxicity",
+      "he": "חשיפה לחמצן ורעילות חמצן"
+    },
+    "tagline": {
+      "en": "CNS and pulmonary toxicity, exposure accounting, and why warning signs are unreliable.",
+      "he": "רעילות למערכת העצבים ולריאות, חישוב חשיפה, ולמה סימני האזהרה אינם אמינים."
+    },
+    "description": {
+      "en": "Central nervous system and pulmonary oxygen toxicity, the NOAA exposure limits, CNS percentage and OTU accounting.",
+      "he": "רעילות חמצן למערכת העצבים המרכזית ולריאות, גבולות החשיפה של NOAA, אחוזי CNS וחישוב OTU."
+    },
+    "objectives": [],
+    "lessons": [],
+    "assessment": {
+      "questionIds": [],
+      "passScore": 0.8
+    },
+    "references": []
+  },
+  {
+    "id": "ch05",
+    "number": 5,
+    "icon": "mod",
+    "status": "coming-soon",
+    "title": {
+      "en": "Maximum Operating Depth",
+      "he": "עומק הפעלה מרבי (MOD)"
+    },
+    "tagline": {
+      "en": "The one number every Nitrox diver must know for every cylinder.",
+      "he": "המספר האחד שכל צולל נייטרוקס חייב לדעת לכל מיכל."
+    },
+    "description": {
+      "en": "Defining and calculating MOD, planning versus contingency limits, and why MOD is a ceiling rather than a target.",
+      "he": "הגדרה וחישוב של MOD, גבולות תכנון מול גבולות חירום, ולמה MOD הוא תקרה ולא יעד."
+    },
+    "objectives": [],
+    "lessons": [],
+    "assessment": {
+      "questionIds": [],
+      "passScore": 0.8
+    },
+    "references": []
+  },
+  {
+    "id": "ch06",
+    "number": 6,
+    "icon": "analyzer",
+    "status": "coming-soon",
+    "title": {
+      "en": "Analyzing a Nitrox Cylinder",
+      "he": "ניתוח מיכל נייטרוקס"
+    },
+    "tagline": {
+      "en": "Calibrate, measure, label, verify. With a virtual analyzer.",
+      "he": "כיול, מדידה, תיוג, אימות. עם מנתח וירטואלי."
+    },
+    "description": {
+      "en": "How oxygen analyzers work, calibration and its limits, sensor drift and failure, reading and recording FO2, and labeling.",
+      "he": "איך מנתחי חמצן עובדים, כיול ומגבלותיו, סחיפה וכשל של חיישנים, קריאה ורישום של FO2, ותיוג."
+    },
+    "objectives": [],
+    "lessons": [],
+    "assessment": {
+      "questionIds": [],
+      "passScore": 0.8
+    },
+    "references": []
+  },
+  {
+    "id": "ch07",
+    "number": 7,
+    "icon": "planning",
+    "status": "coming-soon",
+    "title": {
+      "en": "Dive Planning",
+      "he": "תכנון צלילה"
+    },
+    "tagline": {
+      "en": "Choose a mix, set the computer, budget your oxygen.",
+      "he": "בחירת תערובת, הגדרת המחשב, ניהול תקציב החמצן."
+    },
+    "description": {
+      "en": "Choosing a gas, comparing profiles, oxygen exposure budgeting, dive computer configuration and repetitive dives.",
+      "he": "בחירת גז, השוואת פרופילים, תקצוב חשיפת חמצן, הגדרת מחשב צלילה וצלילות חוזרות."
+    },
+    "objectives": [],
+    "lessons": [],
+    "assessment": {
+      "questionIds": [],
+      "passScore": 0.8
+    },
+    "references": []
+  },
+  {
+    "id": "ch08",
+    "number": 8,
+    "icon": "equipment",
+    "status": "coming-soon",
+    "title": {
+      "en": "Equipment and Procedures",
+      "he": "ציוד ונהלים"
+    },
+    "tagline": {
+      "en": "Oxygen compatibility, cylinder identification and pre-dive checks.",
+      "he": "תאימות לחמצן, זיהוי מיכלים ובדיקות לפני צלילה."
+    },
+    "description": {
+      "en": "Oxygen service, standards and manufacturer requirements, cylinder identification, filling and handling, and common procedural errors.",
+      "he": "שירות חמצן, תקנים ודרישות יצרן, זיהוי מיכלים, מילוי וטיפול, וטעויות נוהל נפוצות."
+    },
+    "objectives": [],
+    "lessons": [],
+    "assessment": {
+      "questionIds": [],
+      "passScore": 0.8
+    },
+    "references": []
+  },
+  {
+    "id": "ch09",
+    "number": 9,
+    "icon": "scenarios",
+    "status": "coming-soon",
+    "title": {
+      "en": "Real-World Scenarios",
+      "he": "תרחישים מהעולם האמיתי"
+    },
+    "tagline": {
+      "en": "Make the decisions, see the consequences, understand why.",
+      "he": "קבלו את ההחלטות, ראו את ההשלכות, הבינו למה."
+    },
+    "description": {
+      "en": "Interactive scenarios: wrong gas for the depth, mislabeled cylinders, unstable analyzers, misconfigured computers and more.",
+      "he": "תרחישים אינטראקטיביים: גז לא מתאים לעומק, מיכלים עם תיוג שגוי, מנתחים לא יציבים, מחשבים עם הגדרות שגויות ועוד."
+    },
+    "objectives": [],
+    "lessons": [],
+    "assessment": {
+      "questionIds": [],
+      "passScore": 0.8
+    },
+    "references": []
+  },
+  {
+    "id": "ch10",
+    "number": 10,
+    "icon": "exam",
+    "status": "coming-soon",
+    "title": {
+      "en": "Exam Preparation",
+      "he": "הכנה למבחן"
+    },
+    "tagline": {
+      "en": "Original question bank, mock exams and a readiness check.",
+      "he": "מאגר שאלות מקורי, מבחנים מדמים ובדיקת מוכנות."
+    },
+    "description": {
+      "en": "Topic quizzes, mixed mock exams, calculation drills, timed and untimed practice, and review of what you missed.",
+      "he": "חידונים לפי נושא, מבחנים מדמים מעורבים, תרגילי חישוב, תרגול עם ובלי שעון, וחזרה על מה שפספסתם."
+    },
+    "objectives": [],
+    "lessons": [],
+    "assessment": {
+      "questionIds": [],
+      "passScore": 0.8
+    },
+    "references": []
+  }
+]

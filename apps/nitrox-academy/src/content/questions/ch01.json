@@ -1,0 +1,463 @@
+[
+  {
+    "id": "ch01-q01",
+    "type": "multiple-choice",
+    "chapterId": "ch01",
+    "topic": "nitrox-basics",
+    "difficulty": 1,
+    "tags": [
+      "concept"
+    ],
+    "objective": {
+      "en": "Read a mix name and state its gas fractions.",
+      "he": "לקרוא שם של תערובת ולציין את חלקי הגזים שלה."
+    },
+    "prompt": {
+      "en": "A cylinder is labelled {{EAN36}}. What does it contain?",
+      "he": "מיכל מסומן {{EAN36}}. מה הוא מכיל?"
+    },
+    "options": [
+      {
+        "en": "36% oxygen and 64% nitrogen",
+        "he": "36% חמצן ו־64% חנקן"
+      },
+      {
+        "en": "36% nitrogen and 64% oxygen",
+        "he": "36% חנקן ו־64% חמצן"
+      },
+      {
+        "en": "36% oxygen, 36% nitrogen and 28% other gases",
+        "he": "36% חמצן, 36% חנקן ו־28% גזים אחרים"
+      },
+      {
+        "en": "Air that has been compressed 36 times",
+        "he": "אוויר שנדחס 36 פעמים"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "The number in a mix name is always the **oxygen** percentage, never the nitrogen.",
+          "he": "המספר בשם התערובת הוא תמיד אחוז ה**חמצן**, לעולם לא החנקן."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "EANx names state the oxygen percentage. The rest of a recreational Nitrox mix is nitrogen, so 36% oxygen leaves 64% nitrogen.",
+      "he": "שמות EANx מציינים את אחוז החמצן. שאר תערובת הנייטרוקס הספורטיבית היא חנקן, ולכן 36% חמצן משאירים 64% חנקן."
+    }
+  },
+  {
+    "id": "ch01-q02",
+    "type": "numeric",
+    "chapterId": "ch01",
+    "topic": "nitrox-basics",
+    "difficulty": 1,
+    "tags": [
+      "calculation"
+    ],
+    "objective": {
+      "en": "Convert an oxygen percentage to a nitrogen fraction.",
+      "he": "להמיר אחוז חמצן לחלק חנקן."
+    },
+    "prompt": {
+      "en": "What is the nitrogen fraction {{FN2}} of {{EAN28}}? Give a decimal fraction, e.g. 0.79.",
+      "he": "מהו חלק החנקן {{FN2}} של {{EAN28}}? ענו בשבר עשרוני, למשל [[0.79]]."
+    },
+    "answer": 0.72,
+    "tolerance": 0.005,
+    "steps": [
+      {
+        "text": {
+          "en": "Convert the oxygen percentage to a fraction.",
+          "he": "המירו את אחוז החמצן לשבר."
+        },
+        "math": "28% → FO2 = 0.28"
+      },
+      {
+        "text": {
+          "en": "Nitrogen takes up the rest of the mix.",
+          "he": "החנקן תופס את שאר התערובת."
+        },
+        "math": "FN2 = 1 − 0.28 = 0.72"
+      }
+    ],
+    "explanation": {
+      "en": "In a two-gas mix the fractions sum to 1, so FN2 = 1 − FO2 = 0.72.",
+      "he": "בתערובת של שני גזים החלקים מסתכמים ל־1, ולכן {{FN2 = 1 − FO2 = 0.72}}."
+    }
+  },
+  {
+    "id": "ch01-q03",
+    "type": "multiple-choice",
+    "chapterId": "ch01",
+    "topic": "nitrox-basics",
+    "difficulty": 2,
+    "tags": [
+      "concept",
+      "procedure"
+    ],
+    "objective": {
+      "en": "Recognise that the cylinder label must be verified by analysis.",
+      "he": "להבין שתווית המיכל חייבת להיות מאומתת בניתוח."
+    },
+    "prompt": {
+      "en": "You collect a cylinder marked \"EAN32\" from the fill station. What should you do before diving it?",
+      "he": "אתם לוקחים מיכל שמסומן \"EAN32\" מתחנת המילוי. מה צריך לעשות לפני שצוללים איתו?"
+    },
+    "options": [
+      {
+        "en": "Analyze the contents yourself, then label and log the measured percentage",
+        "he": "לנתח את התכולה בעצמכם, ואז לתייג ולתעד את האחוז שנמדד"
+      },
+      {
+        "en": "Nothing; the fill station is responsible for the mix",
+        "he": "שום דבר; תחנת המילוי אחראית לתערובת"
+      },
+      {
+        "en": "Check the cylinder pressure only",
+        "he": "לבדוק רק את לחץ המיכל"
+      },
+      {
+        "en": "Set your computer to 32% and descend",
+        "he": "להגדיר את המחשב ל־32% ולצלול"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 3,
+        "note": {
+          "en": "Setting the computer to the **labelled** value is exactly the error: if the real mix is richer, your computer underestimates your oxygen exposure and your MOD.",
+          "he": "הגדרת המחשב לפי הערך **שעל התווית** היא בדיוק הטעות: אם התערובת האמיתית עשירה יותר, המחשב שלכם יעריך בחסר את חשיפת החמצן ואת ה־MOD שלכם."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Every Nitrox diver personally analyzes each cylinder, records the measured FO2, labels the cylinder with that value and the resulting MOD, and sets the computer to the measured mix. A label alone is a claim, not a measurement.",
+      "he": "כל צולל נייטרוקס מנתח בעצמו כל מיכל, מתעד את ה־FO2 שנמדד, מתייג את המיכל בערך הזה וב־MOD שנגזר ממנו, ומגדיר את המחשב לפי התערובת שנמדדה. תווית לבדה היא טענה, לא מדידה."
+    }
+  },
+  {
+    "id": "ch01-q04",
+    "type": "multiple-choice",
+    "chapterId": "ch01",
+    "topic": "why-nitrox",
+    "difficulty": 1,
+    "tags": [
+      "concept"
+    ],
+    "objective": {
+      "en": "Identify the actual benefit of breathing Nitrox.",
+      "he": "לזהות את היתרון האמיתי של נשימת נייטרוקס."
+    },
+    "prompt": {
+      "en": "What is the primary benefit of breathing {{EAN32}} instead of air at 25 m?",
+      "he": "מהו היתרון העיקרי של נשימת {{EAN32}} במקום אוויר בעומק 25 מטר?"
+    },
+    "options": [
+      {
+        "en": "Less nitrogen is absorbed, which extends the no-decompression limit",
+        "he": "נספג פחות חנקן, מה שמאריך את הגבול ללא דקומפרסיה"
+      },
+      {
+        "en": "The cylinder lasts longer because less gas is consumed",
+        "he": "המיכל מספיק ליותר זמן כי נצרך פחות גז"
+      },
+      {
+        "en": "You may dive deeper than on air",
+        "he": "מותר לצלול עמוק יותר מאשר באוויר"
+      },
+      {
+        "en": "Nitrogen narcosis is largely eliminated",
+        "he": "נרקוזת החנקן נעלמת כמעט לגמרי"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "Breathing rate is set by your body and the work you do, not by the gas mix. A Nitrox cylinder empties at the same rate.",
+          "he": "קצב הנשימה נקבע לפי הגוף שלכם והמאמץ, לא לפי תערובת הגז. מיכל נייטרוקס מתרוקן באותו קצב."
+        }
+      },
+      {
+        "optionIndex": 2,
+        "note": {
+          "en": "The opposite: the extra oxygen imposes a shallower maximum operating depth.",
+          "he": "ההפך: החמצן הנוסף מטיל עומק הפעלה מרבי רדוד יותר."
+        }
+      },
+      {
+        "optionIndex": 3,
+        "note": {
+          "en": "Oxygen is assumed to be at least as narcotic as nitrogen, so agencies teach no meaningful reduction in narcosis.",
+          "he": "מניחים שחמצן נרקוטי לפחות כמו חנקן, ולכן ארגוני ההדרכה מלמדים שאין הפחתה משמעותית בנרקוזה."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Nitrox contains less nitrogen per breath, so nitrogen loads more slowly at a given depth. That is what extends the no-decompression limit. It changes nothing about gas consumption, depth allowance or narcosis.",
+      "he": "בנייטרוקס יש פחות חנקן בכל נשימה, ולכן החנקן נצבר לאט יותר בעומק נתון. זה מה שמאריך את הגבול ללא דקומפרסיה. זה לא משנה דבר בצריכת הגז, בעומק המותר או בנרקוזה."
+    }
+  },
+  {
+    "id": "ch01-q05",
+    "type": "true-false",
+    "chapterId": "ch01",
+    "topic": "nitrox-limits",
+    "difficulty": 1,
+    "tags": [
+      "concept",
+      "safety"
+    ],
+    "objective": {
+      "en": "Reject the belief that Nitrox allows deeper diving.",
+      "he": "לדחות את האמונה שנייטרוקס מאפשר צלילה עמוקה יותר."
+    },
+    "prompt": {
+      "en": "A Nitrox certification allows a diver to go deeper than the same diver could on air.",
+      "he": "הסמכת נייטרוקס מאפשרת לצולל לרדת עמוק יותר ממה שאותו צולל יכול באוויר."
+    },
+    "answer": false,
+    "explanation": {
+      "en": "The opposite is true. Enriched air reaches its oxygen limit at a shallower depth, so each mix has a maximum operating depth that is shallower than air's. A Nitrox certification does not extend a diver's depth limits at all; those come from the diver's other certifications and training.",
+      "he": "ההפך הוא הנכון. אוויר מועשר מגיע לגבול החמצן שלו בעומק רדוד יותר, ולכן לכל תערובת יש עומק הפעלה מרבי רדוד משל אוויר. הסמכת נייטרוקס לא מרחיבה בכלל את גבולות העומק של הצולל; אלה נגזרים מההסמכות ומההכשרה האחרות שלו."
+    }
+  },
+  {
+    "id": "ch01-q06",
+    "type": "multiple-choice",
+    "chapterId": "ch01",
+    "topic": "nitrox-limits",
+    "difficulty": 2,
+    "tags": [
+      "concept",
+      "safety"
+    ],
+    "objective": {
+      "en": "Explain why richer mixes have shallower depth limits.",
+      "he": "להסביר למה לתערובות עשירות יותר יש גבולות עומק רדודים יותר."
+    },
+    "prompt": {
+      "en": "Why does a richer Nitrox mix have a shallower maximum operating depth?",
+      "he": "למה לתערובת נייטרוקס עשירה יותר יש עומק הפעלה מרבי רדוד יותר?"
+    },
+    "options": [
+      {
+        "en": "A higher oxygen fraction reaches the toxic oxygen partial pressure at a lower pressure, i.e. shallower",
+        "he": "חלק חמצן גבוה יותר מגיע ללחץ חלקי רעיל של חמצן בלחץ נמוך יותר, כלומר רדוד יותר"
+      },
+      {
+        "en": "Richer mixes are denser and harder to breathe at depth",
+        "he": "תערובות עשירות יותר צפופות יותר וקשה יותר לנשום אותן בעומק"
+      },
+      {
+        "en": "Richer mixes run out of gas faster",
+        "he": "תערובות עשירות יותר נגמרות מהר יותר"
+      },
+      {
+        "en": "Because the nitrogen fraction is too low to protect against narcosis",
+        "he": "כי חלק החנקן נמוך מדי כדי להגן מפני נרקוזה"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "Richer mixes are very slightly denser (a few percent), and breathing resistance does rise with depth, but neither sets the MOD. The MOD comes purely from oxygen partial pressure.",
+          "he": "תערובות עשירות יותר אכן צפופות מעט יותר (כמה אחוזים), והתנגדות הנשימה אכן עולה עם העומק, אבל אף אחד מהם לא קובע את ה־MOD. ה־MOD נגזר כולו מהלחץ החלקי של החמצן."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Oxygen partial pressure is the oxygen fraction times the absolute pressure. With a bigger fraction, a smaller pressure (shallower depth) is enough to reach the planning limit, so the MOD moves up.",
+      "he": "הלחץ החלקי של החמצן הוא חלק החמצן כפול הלחץ המוחלט. עם חלק גדול יותר, לחץ קטן יותר (עומק רדוד יותר) מספיק כדי להגיע לגבול התכנון, ולכן ה־MOD נעשה רדוד יותר."
+    }
+  },
+  {
+    "id": "ch01-q07",
+    "type": "multiple-choice",
+    "chapterId": "ch01",
+    "topic": "nitrox-limits",
+    "difficulty": 2,
+    "tags": [
+      "concept"
+    ],
+    "objective": {
+      "en": "Distinguish recreational Nitrox from technical diving.",
+      "he": "להבדיל בין נייטרוקס ספורטיבי לצלילה טכנית."
+    },
+    "prompt": {
+      "en": "Which of these is part of recreational Enriched Air diving as agencies normally teach it?",
+      "he": "מה מהבאים הוא חלק מצלילה ספורטיבית באוויר מועשר כפי שארגוני ההדרכה מלמדים אותה בדרך כלל?"
+    },
+    "options": [
+      {
+        "en": "Breathing a single mix of 40% oxygen or less for the whole dive, with no mandatory decompression",
+        "he": "נשימת תערובת אחת של עד 40% חמצן לאורך כל הצלילה, בלי דקומפרסיה חובה"
+      },
+      {
+        "en": "Switching to pure oxygen at a shallow stop to shorten decompression",
+        "he": "מעבר לחמצן טהור בתחנה רדודה כדי לקצר את הדקומפרסיה"
+      },
+      {
+        "en": "Adding helium to the mix to reduce narcosis on deep dives",
+        "he": "הוספת הליום לתערובת כדי להפחית נרקוזה בצלילות עמוקות"
+      },
+      {
+        "en": "Carrying several stage cylinders with different mixes",
+        "he": "נשיאת כמה מיכלי סטייג׳ עם תערובות שונות"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "Oxygen decompression is a technical diving procedure requiring separate training, equipment and planning.",
+          "he": "דקומפרסיה בחמצן היא נוהל של צלילה טכנית שדורש הכשרה, ציוד ותכנון נפרדים."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Recreational Nitrox is single-gas, no-decompression diving on mixes typically up to 40% oxygen. Gas switches, helium blends and multiple stage cylinders belong to technical diving, which uses the same physics under different operating rules and requires its own certifications.",
+      "he": "נייטרוקס ספורטיבי הוא צלילה בגז יחיד, ללא דקומפרסיה, בתערובות של עד 40% חמצן בדרך כלל. החלפות גז, תערובות הליום וכמה מיכלי סטייג׳ שייכים לצלילה טכנית, שמשתמשת באותה פיזיקה תחת כללי הפעלה שונים ודורשת הסמכות משלה."
+    }
+  },
+  {
+    "id": "ch01-q08",
+    "type": "multiple-choice",
+    "chapterId": "ch01",
+    "topic": "nitrox-basics",
+    "difficulty": 1,
+    "tags": [
+      "concept"
+    ],
+    "objective": {
+      "en": "State the composition of air used in dive planning.",
+      "he": "לציין את הרכב האוויר שמשמש בתכנון צלילה."
+    },
+    "prompt": {
+      "en": "For dive-planning arithmetic, air is treated as:",
+      "he": "לצורכי חשבון בתכנון צלילה, מתייחסים לאוויר כאל:"
+    },
+    "options": [
+      {
+        "en": "21% oxygen, 79% nitrogen",
+        "he": "21% חמצן, 79% חנקן"
+      },
+      {
+        "en": "32% oxygen, 68% nitrogen",
+        "he": "32% חמצן, 68% חנקן"
+      },
+      {
+        "en": "50% oxygen, 50% nitrogen",
+        "he": "50% חמצן, 50% חנקן"
+      },
+      {
+        "en": "79% oxygen, 21% nitrogen",
+        "he": "79% חמצן, 21% חנקן"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 3,
+        "note": {
+          "en": "The fractions are the other way round. Air is mostly nitrogen.",
+          "he": "החלקים הפוכים. אוויר הוא בעיקר חנקן."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Dry air is about 20.9% oxygen, 78% nitrogen and 1% other gases, mostly argon. Dive planning rounds this to 21% oxygen and 79% nitrogen, counting the trace gases with the nitrogen.",
+      "he": "אוויר יבש הוא כ־20.9% חמצן, 78% חנקן ו־1% גזים אחרים, בעיקר הגז ארגון. תכנון צלילה מעגל את זה ל־21% חמצן ו־79% חנקן, כשהגזים הזניחים נספרים יחד עם החנקן."
+    }
+  },
+  {
+    "id": "ch01-q09",
+    "type": "true-false",
+    "chapterId": "ch01",
+    "topic": "nitrox-limits",
+    "difficulty": 2,
+    "tags": [
+      "safety"
+    ],
+    "objective": {
+      "en": "Reject the belief that Nitrox removes decompression risk.",
+      "he": "לדחות את האמונה שנייטרוקס מבטל את סיכון הדקומפרסיה."
+    },
+    "prompt": {
+      "en": "A diver breathing {{EAN36}} cannot develop decompression sickness.",
+      "he": "צולל שנושם {{EAN36}} לא יכול לפתח מחלת דקומפרסיה."
+    },
+    "answer": false,
+    "explanation": {
+      "en": "EAN36 still contains 64% nitrogen, which dissolves into tissue exactly as air's nitrogen does, only more slowly. Nitrox has its own no-decompression limits, and exceeding them carries the same decompression risk as exceeding an air limit.",
+      "he": "ב־EAN36 עדיין יש 64% חנקן, שמתמוסס ברקמה בדיוק כמו החנקן שבאוויר, רק לאט יותר. לנייטרוקס יש גבולות ללא דקומפרסיה משלו, וחריגה מהם כרוכה באותו סיכון למחלת דקומפרסיה כמו חריגה מגבול של אוויר."
+    }
+  },
+  {
+    "id": "ch01-q10",
+    "type": "multiple-choice",
+    "chapterId": "ch01",
+    "topic": "why-nitrox",
+    "difficulty": 3,
+    "tags": [
+      "concept",
+      "scenario"
+    ],
+    "objective": {
+      "en": "Choose how to spend the nitrogen margin Nitrox provides.",
+      "he": "לבחור איך לנצל את מרווח החנקן שנייטרוקס מספק."
+    },
+    "prompt": {
+      "en": "A diver plans three dives to 22 m in one day and wants maximum conservatism against decompression sickness rather than longer dives. Which approach uses Nitrox for that goal?",
+      "he": "צולל מתכנן שלוש צלילות ל־22 מטר ביום אחד ורוצה שמרנות מרבית נגד מחלת דקומפרסיה ולא צלילות ארוכות יותר. איזו גישה מנצלת את הנייטרוקס למטרה הזאת?"
+    },
+    "options": [
+      {
+        "en": "Breathe EAN32 but plan each dive to the air no-decompression limits",
+        "he": "לנשום EAN32 אבל לתכנן כל צלילה לפי ה־NDL של אוויר"
+      },
+      {
+        "en": "Breathe EAN32 and extend each dive to the full EAN32 limit",
+        "he": "לנשום EAN32 ולמשוך כל צלילה עד הגבול המלא של EAN32"
+      },
+      {
+        "en": "Breathe air but shorten the surface intervals",
+        "he": "לנשום אוויר אבל לקצר את הפסקות השטח"
+      },
+      {
+        "en": "Breathe EAN40, which has the longest limits at this depth",
+        "he": "לנשום EAN40, שיש לה את הגבולות הארוכים ביותר בעומק הזה"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "Diving the full Nitrox limit spends the entire margin on time, leaving the same nitrogen loading as an air dive to the air limit.",
+          "he": "צלילה עד הגבול המלא של הנייטרוקס מנצלת את כל המרווח לזמן, ומשאירה את אותו עומס חנקן כמו צלילת אוויר עד הגבול של אוויר."
+        }
+      },
+      {
+        "optionIndex": 3,
+        "note": {
+          "en": "A richer mix does give longer nitrogen limits, but it also raises oxygen exposure across three dives, and the question asked for conservatism, not longer limits.",
+          "he": "תערובת עשירה יותר אכן נותנת גבולות חנקן ארוכים יותר, אבל היא גם מעלה את חשיפת החמצן בשלוש צלילות, והשאלה ביקשה שמרנות ולא גבולות ארוכים יותר."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Breathing Nitrox while planning to air limits means the diver absorbs less nitrogen than the plan assumes, which adds a decompression safety margin. The oxygen limits of the actual mix still apply and must be tracked, especially across repetitive dives.",
+      "he": "נשימת נייטרוקס בתכנון לפי גבולות אוויר פירושה שהצולל סופג פחות חנקן ממה שהתכנון מניח, וזה מוסיף מרווח ביטחון מפני מחלת הדקומפרסיה. גבולות החמצן של התערובת האמיתית עדיין חלים וצריך לעקוב אחריהם, במיוחד על פני צלילות חוזרות."
+    }
+  }
+]

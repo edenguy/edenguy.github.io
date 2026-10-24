@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#050b16" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#eef4fa" media="(prefers-color-scheme: light)" />
+    <meta name="description" content="אקדמיית נייטרוקס: להבין אוויר מועשר דרך שיעורים אינטראקטיביים, סימולציות חיות ומבחני תרגול. כלי לימודי בלבד; אינו הסמכה רשמית." />
+    <meta name="author" content="Guy Eden" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <title>אקדמיית נייטרוקס · Nitrox Academy</title>
+    <script>
+      // Apply the stored theme before first paint to avoid a flash.
+      (function () {
+        try {
+          var t = localStorage.getItem('nitrox:theme');
+          if (t !== 'dark' && t !== 'light') {
+            t = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          }
+          document.documentElement.dataset.theme = t;
+          var l = localStorage.getItem('nitrox:locale');
+          if (l === 'en') { document.documentElement.lang = 'en'; document.documentElement.dir = 'ltr'; }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,4 @@
+node_modules/
+apps/nitrox-academy/dev-dist/
+apps/nitrox-academy/dist/
+.DS_Store

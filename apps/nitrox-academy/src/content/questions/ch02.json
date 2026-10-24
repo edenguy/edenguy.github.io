@@ -1,0 +1,722 @@
+[
+  {
+    "id": "ch02-q01",
+    "type": "numeric",
+    "chapterId": "ch02",
+    "topic": "pressure-depth",
+    "difficulty": 1,
+    "tags": [
+      "calculation"
+    ],
+    "objective": {
+      "en": "Compute absolute pressure at a depth in seawater.",
+      "he": "לחשב לחץ מוחלט בעומק במי ים."
+    },
+    "prompt": {
+      "en": "What is the absolute pressure at 30 m in seawater? Answer in ata.",
+      "he": "מהו הלחץ המוחלט בעומק 30 מטר במי ים? ענו ב־ata."
+    },
+    "answer": 4,
+    "tolerance": 0.05,
+    "unit": "ata",
+    "steps": [
+      {
+        "text": {
+          "en": "Pressure of the water: depth ÷ 10.",
+          "he": "לחץ המים: עומק ÷ 10."
+        },
+        "math": "30 ÷ 10 = 3 ata"
+      },
+      {
+        "text": {
+          "en": "Add the atmosphere above the surface.",
+          "he": "מוסיפים את האטמוספרה שמעל פני המים."
+        },
+        "math": "3 + 1 = 4 ata"
+      }
+    ],
+    "explanation": {
+      "en": "Each 10 m of seawater adds 1 ata, and the atmosphere contributes 1 ata, so 30 m gives 4 ata. Answering 3 means the +1 was forgotten.",
+      "he": "כל 10 מטר מי ים מוסיפים 1 ata, והאטמוספרה תורמת 1 ata, ולכן 30 מטר נותנים 4 ata. תשובה 3 פירושה ששכחתם את ה־[[+1]]."
+    }
+  },
+  {
+    "id": "ch02-q02",
+    "type": "multiple-choice",
+    "chapterId": "ch02",
+    "topic": "pressure-depth",
+    "difficulty": 2,
+    "tags": [
+      "concept"
+    ],
+    "objective": {
+      "en": "Distinguish gauge from absolute pressure.",
+      "he": "להבדיל בין לחץ מד ללחץ מוחלט."
+    },
+    "prompt": {
+      "en": "A depth gauge reads 18 m. What are the gauge and absolute pressures?",
+      "he": "מד עומק מראה 18 מטר. מהם לחץ המד והלחץ המוחלט?"
+    },
+    "options": [
+      {
+        "en": "Gauge 1.8 bar, absolute 2.8 ata",
+        "he": "לחץ מד 1.8 בר, לחץ מוחלט [[2.8 ata]]"
+      },
+      {
+        "en": "Gauge 2.8 bar, absolute 1.8 ata",
+        "he": "לחץ מד 2.8 בר, לחץ מוחלט [[1.8 ata]]"
+      },
+      {
+        "en": "Gauge 1.8 bar, absolute 1.8 ata",
+        "he": "לחץ מד 1.8 בר, לחץ מוחלט [[1.8 ata]]"
+      },
+      {
+        "en": "Gauge 18 bar, absolute 19 ata",
+        "he": "לחץ מד 18 בר, לחץ מוחלט [[19 ata]]"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 2,
+        "note": {
+          "en": "Absolute pressure is always 1 ata higher than gauge pressure, never equal to it.",
+          "he": "הלחץ המוחלט תמיד גבוה ב־1 ata מלחץ המד, לעולם לא שווה לו."
+        }
+      },
+      {
+        "optionIndex": 3,
+        "note": {
+          "en": "Depth in metres is divided by 10, not used directly: 18 m is 1.8 bar of water, not 18.",
+          "he": "מחלקים את העומק במטרים ב־10, לא משתמשים בו ישירות: 18 מטר הם 1.8 בר של מים, לא 18."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Gauge pressure counts the water only: 18 ÷ 10 = 1.8 bar. Absolute pressure adds the 1 ata of atmosphere: 2.8 ata. All gas calculations use the absolute value.",
+      "he": "לחץ המד סופר רק את המים: 18 ÷ 10 = 1.8 בר. הלחץ המוחלט מוסיף את האטמוספרה ([[1 ata]]): [[2.8 ata]]. כל חישובי הגזים משתמשים בערך המוחלט."
+    }
+  },
+  {
+    "id": "ch02-q03",
+    "type": "multiple-choice",
+    "chapterId": "ch02",
+    "topic": "daltons-law",
+    "difficulty": 1,
+    "tags": [
+      "concept"
+    ],
+    "objective": {
+      "en": "State Dalton's law.",
+      "he": "לנסח את חוק דלטון."
+    },
+    "prompt": {
+      "en": "Dalton's law says that in a gas mixture:",
+      "he": "חוק דלטון אומר שבתערובת גזים:"
+    },
+    "options": [
+      {
+        "en": "Each gas exerts the pressure it would exert alone, and the total is the sum of those pressures",
+        "he": "כל גז מפעיל את הלחץ שהיה מפעיל לבדו, והסך הכול הוא סכום הלחצים האלה"
+      },
+      {
+        "en": "The heaviest gas settles to the bottom of the cylinder",
+        "he": "הגז הכבד ביותר שוקע לתחתית המיכל"
+      },
+      {
+        "en": "Gas volume is inversely proportional to pressure",
+        "he": "נפח הגז עומד ביחס הפוך ללחץ"
+      },
+      {
+        "en": "The amount of gas dissolving into a liquid is proportional to its partial pressure",
+        "he": "כמות הגז שמתמוססת בנוזל פרופורציונית ללחץ החלקי שלו"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 2,
+        "note": {
+          "en": "That is Boyle's law, which describes volume and pressure, not mixtures.",
+          "he": "זה חוק בויל, שמתאר נפח ולחץ, לא תערובות."
+        }
+      },
+      {
+        "optionIndex": 3,
+        "note": {
+          "en": "That is Henry's law. It explains why partial pressure matters for gas absorption, but it is not Dalton's law.",
+          "he": "זה חוק הנרי. הוא מסביר למה לחץ חלקי חשוב לספיגת גזים, אבל הוא לא חוק דלטון."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Dalton's law is about mixtures: each component behaves independently and contributes its own partial pressure, and those partial pressures add up to the total pressure.",
+      "he": "חוק דלטון עוסק בתערובות: כל מרכיב מתנהג באופן עצמאי ותורם לחץ חלקי משלו, והלחצים החלקיים האלה מסתכמים ללחץ הכולל."
+    }
+  },
+  {
+    "id": "ch02-q04",
+    "type": "numeric",
+    "chapterId": "ch02",
+    "topic": "daltons-law",
+    "difficulty": 1,
+    "tags": [
+      "calculation"
+    ],
+    "objective": {
+      "en": "Apply Dalton's law at the surface.",
+      "he": "ליישם את חוק דלטון על פני המים."
+    },
+    "prompt": {
+      "en": "What is the {{PPN2}} of air at the surface, in ata?",
+      "he": "מהו ה־{{PPN2}} של אוויר על פני המים, ב־ata?"
+    },
+    "answer": 0.79,
+    "tolerance": 0.01,
+    "unit": "ata",
+    "steps": [
+      {
+        "text": {
+          "en": "Nitrogen fraction of air.",
+          "he": "חלק החנקן באוויר."
+        },
+        "math": "FN2 = 0.79"
+      },
+      {
+        "text": {
+          "en": "Multiply by the absolute pressure at the surface.",
+          "he": "מכפילים בלחץ המוחלט על פני המים."
+        },
+        "math": "0.79 × 1 = 0.79 ata"
+      }
+    ],
+    "explanation": {
+      "en": "At the surface the absolute pressure is 1 ata, so each gas's partial pressure equals its fraction. Nitrogen sits at 0.79 ata and oxygen at 0.21 ata.",
+      "he": "על פני המים הלחץ המוחלט הוא 1 ata, ולכן הלחץ החלקי של כל גז שווה לחלקו. החנקן נמצא ב־0.79 ata והחמצן ב־0.21 ata."
+    }
+  },
+  {
+    "id": "ch02-q05",
+    "type": "numeric",
+    "chapterId": "ch02",
+    "topic": "pp-at-depth",
+    "difficulty": 2,
+    "tags": [
+      "calculation"
+    ],
+    "objective": {
+      "en": "Calculate PPO2 for a mix at depth.",
+      "he": "לחשב PPO2 לתערובת בעומק."
+    },
+    "prompt": {
+      "en": "What is the {{PPO2}} of {{EAN32}} at 30 m? Answer in ata.",
+      "he": "מהו ה־{{PPO2}} של {{EAN32}} בעומק 30 מטר? ענו ב־ata."
+    },
+    "answer": 1.28,
+    "tolerance": 0.02,
+    "unit": "ata",
+    "steps": [
+      {
+        "text": {
+          "en": "Absolute pressure at 30 m.",
+          "he": "לחץ מוחלט בעומק 30 מטר."
+        },
+        "math": "30 ÷ 10 + 1 = 4.0 ata"
+      },
+      {
+        "text": {
+          "en": "Multiply the oxygen fraction by the absolute pressure.",
+          "he": "מכפילים את חלק החמצן בלחץ המוחלט."
+        },
+        "math": "0.32 × 4.0 = 1.28 ata"
+      }
+    ],
+    "explanation": {
+      "en": "PPO2 = FO2 × P_abs = 0.32 × 4.0 = 1.28 ata. This is below the commonly taught 1.4 ata working limit, so 30 m is within EAN32's normal operating range.",
+      "he": "{{PPO2 = FO2 × P_abs = 0.32 × 4.0 = 1.28 ata}}. זה מתחת לגבול העבודה המקובל של [[1.4 ata]], ולכן 30 מטר נמצאים בטווח ההפעלה הרגיל של EAN32."
+    }
+  },
+  {
+    "id": "ch02-q06",
+    "type": "numeric",
+    "chapterId": "ch02",
+    "topic": "pp-at-depth",
+    "difficulty": 2,
+    "tags": [
+      "calculation"
+    ],
+    "objective": {
+      "en": "Calculate PPN2 for a mix at depth.",
+      "he": "לחשב PPN2 לתערובת בעומק."
+    },
+    "prompt": {
+      "en": "What is the {{PPN2}} of {{EAN36}} at 25 m? Answer in ata.",
+      "he": "מהו ה־{{PPN2}} של {{EAN36}} בעומק 25 מטר? ענו ב־ata."
+    },
+    "answer": 2.24,
+    "tolerance": 0.03,
+    "unit": "ata",
+    "steps": [
+      {
+        "text": {
+          "en": "Absolute pressure at 25 m.",
+          "he": "לחץ מוחלט בעומק 25 מטר."
+        },
+        "math": "25 ÷ 10 + 1 = 3.5 ata"
+      },
+      {
+        "text": {
+          "en": "Nitrogen fraction of EAN36.",
+          "he": "חלק החנקן ב־EAN36."
+        },
+        "math": "FN2 = 1 − 0.36 = 0.64"
+      },
+      {
+        "text": {
+          "en": "Multiply.",
+          "he": "מכפילים."
+        },
+        "math": "0.64 × 3.5 = 2.24 ata"
+      }
+    ],
+    "explanation": {
+      "en": "On air at the same depth PPN2 would be 0.79 × 3.5 = 2.765 ata, so EAN36 reduces the nitrogen partial pressure by about 19%.",
+      "he": "באוויר באותו עומק {{PPN2 = 0.79 × 3.5 = 2.765 ata}}, ולכן EAN36 מפחיתה את הלחץ החלקי של החנקן בכ־19%."
+    }
+  },
+  {
+    "id": "ch02-q07",
+    "type": "multiple-choice",
+    "chapterId": "ch02",
+    "topic": "pp-at-depth",
+    "difficulty": 2,
+    "tags": [
+      "concept"
+    ],
+    "objective": {
+      "en": "Predict how partial pressures change with depth.",
+      "he": "לחזות איך לחצים חלקיים משתנים עם העומק."
+    },
+    "prompt": {
+      "en": "A diver on {{EAN32}} ascends from 30 m to 10 m. What happens to the oxygen in the breathing gas?",
+      "he": "צולל עם {{EAN32}} עולה מ־30 מטר ל־10 מטר. מה קורה לחמצן בגז הנשימה?"
+    },
+    "options": [
+      {
+        "en": "The fraction stays 32% and PPO2 falls from 1.28 to 0.64 ata",
+        "he": "החלק נשאר 32% וה־PPO2 יורד מ־[[1.28]] ל־[[0.64 ata]]"
+      },
+      {
+        "en": "The fraction falls and PPO2 stays at 1.28 ata",
+        "he": "החלק יורד וה־PPO2 נשאר [[1.28 ata]]"
+      },
+      {
+        "en": "Both the fraction and PPO2 stay the same",
+        "he": "גם החלק וגם ה־PPO2 נשארים זהים"
+      },
+      {
+        "en": "The fraction rises to 64% as the gas expands",
+        "he": "החלק עולה ל־64% כשהגז מתפשט"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "The mix recipe never changes during a dive. Only the partial pressures move, because the ambient pressure moves.",
+          "he": "מתכון התערובת לא משתנה במהלך הצלילה. רק הלחצים החלקיים זזים, כי הלחץ הסביבתי זז."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "The gas in the cylinder is still 32% oxygen wherever you are. Ascending from 30 m (4 ata) to 10 m (2 ata) halves the absolute pressure, so PPO2 halves from 1.28 to 0.64 ata.",
+      "he": "הגז במיכל הוא עדיין 32% חמצן בכל מקום שבו אתם נמצאים. עלייה מ־30 מטר (4 ata) ל־10 מטר (2 ata) מקטינה את הלחץ המוחלט בחצי, ולכן גם ה־PPO2 יורד בחצי, מ־[[1.28]] ל־[[0.64 ata]]."
+    }
+  },
+  {
+    "id": "ch02-q08",
+    "type": "true-false",
+    "chapterId": "ch02",
+    "topic": "daltons-law",
+    "difficulty": 2,
+    "tags": [
+      "concept"
+    ],
+    "objective": {
+      "en": "Recognise that the body responds to partial pressure, not percentage.",
+      "he": "להבין שהגוף מגיב ללחץ חלקי ולא לאחוז."
+    },
+    "prompt": {
+      "en": "Breathing 32% oxygen at 33 m exposes the body to roughly the same oxygen partial pressure as breathing 100% oxygen at 4 m.",
+      "he": "נשימת 32% חמצן בעומק 33 מטר חושפת את הגוף בערך לאותו לחץ חלקי של חמצן כמו נשימת 100% חמצן בעומק 4 מטר."
+    },
+    "answer": true,
+    "explanation": {
+      "en": "EAN32 at 33 m: 0.32 × 4.3 = 1.376 ata. Pure oxygen at 4 m: 1.00 × 1.4 = 1.4 ata. The body cannot tell the difference between these two exposures, which is why Nitrox planning works in partial pressures rather than percentages.",
+      "he": "EAN32 בעומק 33 מטר: {{0.32 × 4.3 = 1.376 ata}}. חמצן טהור בעומק 4 מטר: {{1.00 × 1.4 = 1.4 ata}}. הגוף לא יכול להבחין בין שתי החשיפות האלה, ולכן תכנון נייטרוקס עובד בלחצים חלקיים ולא באחוזים."
+    }
+  },
+  {
+    "id": "ch02-q09",
+    "type": "numeric",
+    "chapterId": "ch02",
+    "topic": "pp-at-depth",
+    "difficulty": 3,
+    "tags": [
+      "calculation"
+    ],
+    "objective": {
+      "en": "Invert the PPO2 formula to find a depth.",
+      "he": "להפוך את נוסחת ה־PPO2 כדי למצוא עומק."
+    },
+    "prompt": {
+      "en": "At what depth does {{EAN32}} reach a {{PPO2}} of 1.4 ata? Answer in whole metres, rounded down as agencies do.",
+      "he": "באיזה עומק {{EAN32}} מגיעה ל־{{PPO2}} של 1.4 ata? ענו במטרים שלמים, בעיגול כלפי מטה כפי שארגוני ההדרכה נוהגים."
+    },
+    "answer": 33,
+    "tolerance": 0.4,
+    "unit": "m",
+    "steps": [
+      {
+        "text": {
+          "en": "Find the absolute pressure that gives the limit.",
+          "he": "מצאו את הלחץ המוחלט שנותן את הגבול."
+        },
+        "math": "1.4 ÷ 0.32 = 4.375 ata"
+      },
+      {
+        "text": {
+          "en": "Subtract the atmosphere.",
+          "he": "מחסרים את האטמוספרה."
+        },
+        "math": "4.375 − 1 = 3.375 ata"
+      },
+      {
+        "text": {
+          "en": "Convert to metres and round down.",
+          "he": "ממירים למטרים ומעגלים כלפי מטה."
+        },
+        "math": "3.375 × 10 = 33.75 → 33 m"
+      }
+    ],
+    "explanation": {
+      "en": "This is the maximum operating depth calculation: MOD = (PPO2_limit ÷ FO2 − 1) × 10. The exact answer is 33.75 m, and agencies round down to 33 m so the limit is never exceeded.",
+      "he": "זה חישוב עומק ההפעלה המרבי: {{MOD = (PPO2_limit ÷ FO2 − 1) × 10}}. התשובה המדויקת היא 33.75 מטר, וארגוני ההדרכה מעגלים כלפי מטה ל־33 מטר כדי שהגבול לא ייחרג."
+    }
+  },
+  {
+    "id": "ch02-q10",
+    "type": "multiple-choice",
+    "chapterId": "ch02",
+    "topic": "pp-at-depth",
+    "difficulty": 2,
+    "tags": [
+      "concept",
+      "safety"
+    ],
+    "objective": {
+      "en": "Interpret the MOD as a ceiling rather than a target.",
+      "he": "לפרש את ה־MOD כתקרה ולא כיעד."
+    },
+    "prompt": {
+      "en": "A cylinder is labelled \"EAN32 · MOD 33 m\". What does that 33 m mean?",
+      "he": "מיכל מסומן {{EAN32 · MOD 33 m}}. מה פירוש ה־33 מטר?"
+    },
+    "options": [
+      {
+        "en": "The depth at which this mix reaches the planned oxygen limit, so dives are planned to stay above it",
+        "he": "העומק שבו התערובת מגיעה לגבול החמצן המתוכנן, ולכן מתכננים צלילות שנשארות מעליו"
+      },
+      {
+        "en": "The recommended depth for this dive",
+        "he": "העומק המומלץ לצלילה הזאת"
+      },
+      {
+        "en": "The depth at which the no-decompression limit expires",
+        "he": "העומק שבו הגבול ללא דקומפרסיה נגמר"
+      },
+      {
+        "en": "The deepest the cylinder may be filled to",
+        "he": "העומק המרבי שאליו מותר למלא את המיכל"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "A MOD is a ceiling, not a plan. Diving at exactly the MOD leaves no margin for gauge error, current or a moment of inattention.",
+          "he": "MOD הוא תקרה, לא תכנית. צלילה בדיוק ב־MOD לא משאירה מרווח לטעות במד, לזרם או לרגע של חוסר תשומת לב."
+        }
+      },
+      {
+        "optionIndex": 2,
+        "note": {
+          "en": "MOD is about oxygen; no-decompression limits are about nitrogen and time. They are two separate limits.",
+          "he": "MOD עוסק בחמצן; גבולות ללא דקומפרסיה עוסקים בחנקן ובזמן. אלה שני גבולות נפרדים."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "The MOD is the depth where PPO2 equals the chosen planning limit. It is an absolute maximum, and trained divers plan their profile comfortably shallower. It says nothing about how long the dive may last; that is the no-decompression limit.",
+      "he": "ה־MOD הוא העומק שבו ה־PPO2 שווה לגבול התכנון שנבחר. זהו מקסימום מוחלט, וצוללים מיומנים מתכננים פרופיל רדוד יותר, עם מרווח נוח. הוא לא אומר דבר על משך הצלילה; את זה קובע הגבול ללא דקומפרסיה."
+    }
+  },
+  {
+    "id": "ch02-q11",
+    "type": "numeric",
+    "chapterId": "ch02",
+    "topic": "pp-at-depth",
+    "difficulty": 3,
+    "tags": [
+      "calculation"
+    ],
+    "objective": {
+      "en": "Find the richest mix allowed at a target depth.",
+      "he": "למצוא את התערובת העשירה ביותר שמותרת בעומק היעד."
+    },
+    "prompt": {
+      "en": "You plan a dive to 40 m and want {{PPO2}} no higher than 1.4 ata. What is the maximum oxygen percentage you may use? Answer as a whole percentage.",
+      "he": "אתם מתכננים צלילה ל־40 מטר ורוצים {{PPO2}} שלא יעלה על 1.4 ata. מהו אחוז החמצן המרבי שמותר להשתמש בו? ענו באחוז שלם."
+    },
+    "answer": 28,
+    "tolerance": 0.6,
+    "unit": "%",
+    "steps": [
+      {
+        "text": {
+          "en": "Absolute pressure at 40 m.",
+          "he": "לחץ מוחלט בעומק 40 מטר."
+        },
+        "math": "40 ÷ 10 + 1 = 5.0 ata"
+      },
+      {
+        "text": {
+          "en": "Divide the limit by the pressure to get the fraction.",
+          "he": "מחלקים את הגבול בלחץ כדי לקבל את החלק."
+        },
+        "math": "1.4 ÷ 5.0 = 0.28"
+      },
+      {
+        "text": {
+          "en": "Express as a percentage, rounding down.",
+          "he": "מבטאים באחוזים, בעיגול כלפי מטה."
+        },
+        "math": "0.28 → 28%"
+      }
+    ],
+    "explanation": {
+      "en": "This is the best-mix calculation: FO2 = PPO2_limit ÷ P_abs. At 40 m the richest mix allowed at 1.4 ata is EAN28. Any fraction is rounded down so the limit is not exceeded.",
+      "he": "זה חישוב התערובת המיטבית: {{FO2 = PPO2_limit ÷ P_abs}}. בעומק 40 מטר התערובת העשירה ביותר שמותרת ב־1.4 ata היא EAN28. כל שבר מעוגל כלפי מטה כדי שהגבול לא ייחרג."
+    }
+  },
+  {
+    "id": "ch02-q12",
+    "type": "multiple-choice",
+    "chapterId": "ch02",
+    "topic": "pressure-depth",
+    "difficulty": 2,
+    "tags": [
+      "concept",
+      "safety"
+    ],
+    "objective": {
+      "en": "Recognise the consequence of using gauge pressure by mistake.",
+      "he": "לזהות את התוצאה של שימוש שגוי בלחץ מד."
+    },
+    "prompt": {
+      "en": "A diver calculates {{PPO2}} using gauge pressure instead of absolute pressure. What is the result?",
+      "he": "צולל מחשב {{PPO2}} בלחץ מד במקום בלחץ מוחלט. מה התוצאה?"
+    },
+    "options": [
+      {
+        "en": "PPO2 is underestimated and the calculated depth limit is dangerously deep",
+        "he": "ה־PPO2 מוערך בחסר וגבול העומק המחושב עמוק באופן מסוכן"
+      },
+      {
+        "en": "PPO2 is overestimated and the depth limit is overly conservative",
+        "he": "ה־PPO2 מוערך ביתר וגבול העומק שמרני מדי"
+      },
+      {
+        "en": "The error cancels out because both numbers scale together",
+        "he": "הטעות מתבטלת כי שני המספרים משתנים יחד"
+      },
+      {
+        "en": "It only matters below 40 m",
+        "he": "זה משנה רק מתחת ל־40 מטר"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "Gauge pressure is always 1 ata **lower** than absolute, so the error makes PPO2 look smaller, not larger.",
+          "he": "לחץ מד תמיד **נמוך** ב־1 ata מהמוחלט, ולכן הטעות גורמת ל־PPO2 להיראות קטן יותר, לא גדול יותר."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Gauge pressure omits the 1 ata of atmosphere, so a PPO2 computed from it is too low. The diver would believe there is more oxygen headroom than there is, and would calculate a maximum operating depth deeper than the real one. The error is always in the unsafe direction.",
+      "he": "לחץ מד משמיט את האטמוספרה ([[1 ata]]), ולכן PPO2 שמחושב ממנו נמוך מדי. הצולל יחשוב שיש יותר מרווח חמצן ממה שיש באמת, ויחשב עומק הפעלה מרבי עמוק מהאמיתי. הטעות היא תמיד בכיוון המסוכן."
+    }
+  },
+  {
+    "id": "ch02-q13",
+    "type": "numeric",
+    "chapterId": "ch02",
+    "topic": "pp-at-depth",
+    "difficulty": 2,
+    "tags": [
+      "calculation"
+    ],
+    "objective": {
+      "en": "Compute PPO2 on air at depth.",
+      "he": "לחשב PPO2 באוויר בעומק."
+    },
+    "prompt": {
+      "en": "What is the {{PPO2}} of air at 40 m? Answer in ata.",
+      "he": "מהו ה־{{PPO2}} של אוויר בעומק 40 מטר? ענו ב־ata."
+    },
+    "answer": 1.05,
+    "tolerance": 0.03,
+    "unit": "ata",
+    "steps": [
+      {
+        "text": {
+          "en": "Absolute pressure at 40 m.",
+          "he": "לחץ מוחלט בעומק 40 מטר."
+        },
+        "math": "40 ÷ 10 + 1 = 5.0 ata"
+      },
+      {
+        "text": {
+          "en": "Multiply by air's oxygen fraction.",
+          "he": "מכפילים בחלק החמצן של האוויר."
+        },
+        "math": "0.21 × 5.0 = 1.05 ata"
+      }
+    ],
+    "explanation": {
+      "en": "Even on air, oxygen partial pressure rises with depth: 1.05 ata at 40 m, five times the surface value. Air would not reach 1.4 ata until about 56 m, which is why oxygen rarely limits recreational air dives but usually limits Nitrox dives.",
+      "he": "גם באוויר הלחץ החלקי של החמצן עולה עם העומק: [[1.05 ata]] בעומק 40 מטר, פי חמישה מהערך על פני המים. אוויר לא היה מגיע ל־1.4 ata עד בערך 56 מטר, ולכן החמצן כמעט אף פעם לא מגביל צלילות אוויר ספורטיביות אבל בדרך כלל מגביל צלילות נייטרוקס."
+    }
+  },
+  {
+    "id": "ch02-q14",
+    "type": "multiple-choice",
+    "chapterId": "ch02",
+    "topic": "daltons-law",
+    "difficulty": 1,
+    "tags": [
+      "concept",
+      "calculation"
+    ],
+    "objective": {
+      "en": "Use the sum of partial pressures as a check.",
+      "he": "להשתמש בסכום הלחצים החלקיים כבדיקה."
+    },
+    "prompt": {
+      "en": "A diver computes {{PPO2}} = 1.28 ata and {{PPN2}} = 2.72 ata for a mix at some depth. What was the absolute pressure?",
+      "he": "צולל מחשב {{PPO2 = 1.28 ata}} ו־{{PPN2 = 2.72 ata}} לתערובת בעומק מסוים. מה היה הלחץ המוחלט?"
+    },
+    "options": [
+      {
+        "en": "4.0 ata, so the depth was 30 m",
+        "he": "4.0 ata, ולכן העומק היה 30 מטר"
+      },
+      {
+        "en": "1.44 ata, the difference between them",
+        "he": "1.44 ata, ההפרש ביניהם"
+      },
+      {
+        "en": "3.0 ata, so the depth was 20 m",
+        "he": "3.0 ata, ולכן העומק היה 20 מטר"
+      },
+      {
+        "en": "It cannot be determined without knowing the mix",
+        "he": "אי אפשר לקבוע בלי לדעת את התערובת"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 3,
+        "note": {
+          "en": "By Dalton's law the partial pressures of a two-gas mix always add up to the ambient pressure, whatever the mix is.",
+          "he": "לפי חוק דלטון, הלחצים החלקיים של תערובת שני גזים מסתכמים תמיד ללחץ הסביבתי, מה שלא תהיה התערובת."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "Partial pressures sum to the total: 1.28 + 2.72 = 4.0 ata, which corresponds to 30 m. This sum is a quick way to check any partial-pressure calculation.",
+      "he": "לחצים חלקיים מסתכמים לסך הכול: {{1.28 + 2.72 = 4.0 ata}}, שמתאים ל־30 מטר. הסכום הזה הוא דרך מהירה לבדוק כל חישוב של לחץ חלקי."
+    }
+  },
+  {
+    "id": "ch02-q15",
+    "type": "multiple-choice",
+    "chapterId": "ch02",
+    "topic": "pp-at-depth",
+    "difficulty": 3,
+    "tags": [
+      "scenario",
+      "safety"
+    ],
+    "objective": {
+      "en": "Apply partial-pressure reasoning to a real decision.",
+      "he": "ליישם חשיבה של לחץ חלקי בהחלטה אמיתית."
+    },
+    "prompt": {
+      "en": "A dive briefing sets a maximum depth of 36 m. A diver's analyzed cylinder reads 36% oxygen, and the plan uses a 1.4 ata {{PPO2}} limit. What should the diver do?",
+      "he": "תדריך צלילה קובע עומק מרבי של 36 מטר. המיכל של אחד הצוללים נותח והראה 36% חמצן, והתכנון משתמש בגבול {{PPO2}} של 1.4 ata. מה הצולל צריך לעשות?"
+    },
+    "options": [
+      {
+        "en": "Not dive this cylinder on this profile: its MOD is about 28 m, well shallower than the planned depth",
+        "he": "לא לצלול עם המיכל הזה בפרופיל הזה: ה־MOD שלו הוא כ־28 מטר, רדוד בהרבה מהעומק המתוכנן"
+      },
+      {
+        "en": "Dive it but stay alert for oxygen toxicity symptoms",
+        "he": "לצלול איתו אבל להישאר ערניים לתסמינים של רעילות חמצן"
+      },
+      {
+        "en": "Dive it and set the computer to air for extra conservatism",
+        "he": "לצלול איתו ולהגדיר את המחשב לאוויר לשמרנות נוספת"
+      },
+      {
+        "en": "Dive it; 36 m is fine because the mix is also 36%",
+        "he": "לצלול איתו; 36 מטר בסדר כי גם התערובת היא 36%"
+      }
+    ],
+    "correctIndex": 0,
+    "misconceptions": [
+      {
+        "optionIndex": 1,
+        "note": {
+          "en": "Central nervous system oxygen toxicity frequently gives no warning at all before a convulsion. Vigilance is not a substitute for respecting the MOD.",
+          "he": "רעילות חמצן למערכת העצבים המרכזית לעיתים קרובות אינה נותנת שום אזהרה לפני פרכוס. ערנות אינה תחליף לשמירה על ה־MOD."
+        }
+      },
+      {
+        "optionIndex": 2,
+        "note": {
+          "en": "Setting the computer to air makes the nitrogen plan more conservative but does nothing about oxygen; the diver would still breathe PPO2 ≈ 1.66 ata at 36 m.",
+          "he": "הגדרת המחשב לאוויר הופכת את תכנון החנקן לשמרני יותר אבל לא עושה דבר לגבי החמצן; הצולל עדיין ינשום {{PPO2}} של כ־[[1.66 ata]] בעומק 36 מטר."
+        }
+      },
+      {
+        "optionIndex": 3,
+        "note": {
+          "en": "The matching numbers are a coincidence with no physical meaning.",
+          "he": "ההתאמה בין המספרים היא צירוף מקרים בלי משמעות פיזיקלית."
+        }
+      }
+    ],
+    "explanation": {
+      "en": "At 36 m the absolute pressure is 4.6 ata, so EAN36 would give PPO2 = 0.36 × 4.6 = 1.656 ata, above even the 1.6 ata contingency ceiling. EAN36's MOD at 1.4 ata is about 28 m. The diver needs a leaner mix for this depth, or a shallower profile.",
+      "he": "בעומק 36 מטר הלחץ המוחלט הוא 4.6 ata, ולכן EAN36 תיתן {{PPO2 = 0.36 × 4.6 = 1.656 ata}}, מעל אפילו תקרת החירום של 1.6 ata. ה־MOD של EAN36 ב־1.4 ata הוא כ־28 מטר. הצולל צריך תערובת רזה יותר (פחות חמצן) לעומק הזה, או פרופיל רדוד יותר."
+    }
+  }
+]
