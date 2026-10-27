@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Direct AI coding agents against a scrum team of agents: flow, speed, tokens and bug counts.">
+<title>Agents Versus Scrum</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@400;600;800&display=swap">
+<style>
+/* Layout concept: one headline, two flow diagrams side by side, one stats ledger, one verdict. */
+:root{
+  --bg:#f5f1ea; --card:#fffdf9; --ink:#1d1a16; --mut:#6d655a; --line:#ded6c8;
+  --direct:#1c6e5a; --scrum:#b4521f; --gold:#c8902a;
+  --display:"Fraunces",Georgia,serif; --body:"Manrope",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#14110e; --card:#1d1914; --ink:#f3ece1; --mut:#a89f92; --line:#37302a;
+  --direct:#4fc4a3; --scrum:#f08a55; --gold:#e8b04a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#14110e; --card:#1d1914; --ink:#f3ece1; --mut:#a89f92; --line:#37302a;
+  --direct:#4fc4a3; --scrum:#f08a55; --gold:#e8b04a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);margin:0;
+  padding-block:28px 40px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:920px;margin:0 auto;display:grid;gap:26px;min-width:0}
+h1{font:800 clamp(30px,6vw,52px)/1.05 var(--display);margin:0;letter-spacing:-.02em;text-wrap:balance}
+h1 em{font-style:normal;color:var(--gold)}
+.sub{color:var(--mut);margin:8px 0 0;max-width:56ch}
+h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--mut);margin:0 0 12px}
+.flows{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+.card h3{margin:0 0 2px;font:800 22px/1.1 var(--display)}
+.card .tag{font-size:13px;color:var(--mut);margin:0 0 14px}
+.direct h3{color:var(--direct)} .scrum h3{color:var(--scrum)}
+.flow{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.step{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:start;position:relative;padding-bottom:12px}
+.step:last-child{padding-bottom:0}
+.step::before{content:"";position:absolute;left:16px;top:34px;bottom:-2px;width:2px;background:var(--line)}
+.step:last-child::before{display:none}
+.dot{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:800 14px var(--body);color:#fff}
+.direct .dot{background:var(--direct)} .scrum .dot{background:var(--scrum)}
+.step b{display:block;font-size:15px}
+.step span{display:block;font-size:13px;color:var(--mut)}
+.pill{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;padding:2px 8px;border-radius:99px;border:1px solid var(--line);margin-left:6px;color:var(--ink)}
+.stats{display:grid;gap:14px}
+.row{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
+.row .lab{display:flex;justify-content:space-between;gap:10px;font-weight:800}
+.row .lab small{font-weight:400;color:var(--mut)}
+.bars{display:grid;gap:5px}
+.bar{display:grid;grid-template-columns:70px minmax(0,1fr) 78px;gap:8px;align-items:center;font-size:13px}
+.track{height:16px;border-radius:8px;background:var(--line);overflow:hidden}
+.fill{height:100%;border-radius:8px}
+.bar .v{font-variant-numeric:tabular-nums;font-weight:800;text-align:right}
+.d .fill{background:var(--direct)} .s .fill{background:var(--scrum)}
+.zero{display:flex;gap:10px;flex-wrap:wrap}
+.zero .z{flex:1 1 180px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--card)}
+.zero .z strong{font:800 30px var(--display);display:block}
+.zero .z.d strong{color:var(--direct)} .zero .z.s strong{color:var(--scrum)}
+.verdict{border-left:4px solid var(--gold);padding:6px 0 6px 16px;font:600 clamp(18px,3vw,24px)/1.3 var(--display);text-wrap:balance}
+.fine{font-size:12.5px;color:var(--mut);margin:0}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Agents that <em>just work</em> beat a scrum team of agents.</h1>
+    <p class="sub">Same product, same owner, two ways to run AI coding agents for a week. What each one cost, and what it shipped.</p>
+  </header>
+
+  <section>
+    <h2>How the work flows</h2>
+    <div class="flows">
+      <article class="card direct">
+        <h3>Direct agents</h3>
+        <p class="tag">One session briefs, agents build, one session merges.</p>
+        <ol class="flow">
+          <li class="step"><i class="dot">1</i><div><b>Main session briefs</b><span>Goal, files it may touch, tests to run</span></div></li>
+          <li class="step"><i class="dot">2</i><div><b>Agent builds <span class="pill">one model</span></b><span>Own git worktree, one commit, quick tests only</span></div></li>
+          <li class="step"><i class="dot">3</i><div><b>Main session merges</b><span>Rebase, ratchet gates, fast-forward</span></div></li>
+        </ol>
+      </article>
+      <article class="card scrum">
+        <h3>Scrum team</h3>
+        <p class="tag">Seven roles hand work along a queue.</p>
+        <ol class="flow">
+          <li class="step"><i class="dot">1</i><div><b>Queue item added</b><span>A line of work waits on disk</span></div></li>
+          <li class="step"><i class="dot">2</i><div><b>Planner, architect <span class="pill">Sonnet</span></b><span>Write the brief and claim the files</span></div></li>
+          <li class="step"><i class="dot">3</i><div><b>Worker <span class="pill">Sonnet</span></b><span>Builds in its own worktree, submits</span></div></li>
+          <li class="step"><i class="dot">4</i><div><b>Reviewer <span class="pill">Fable</span></b><span>Verifies or sends it back</span></div></li>
+          <li class="step"><i class="dot">5</i><div><b>Merge gates</b><span>Python scripts wait and check, no model</span></div></li>
+        </ol>
+      </article>
+    </div>
+  </section>
+
+  <section class="stats">
+    <h2>What it produced</h2>
+
+    <div class="row">
+      <div class="lab">Commits per day <small>more is faster</small></div>
+      <div class="bars">
+        <div class="bar d"><span>Direct</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">440</span></div>
+        <div class="bar s"><span>Scrum</span><div class="track"><div class="fill" style="width:47%"></div></div><span class="v">207</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="lab">Wait from queued to merged <small>median, minutes</small></div>
+      <div class="bars">
+        <div class="bar d"><span>Direct</span><div class="track"><div class="fill" style="width:2%"></div></div><span class="v">~2</span></div>
+        <div class="bar s"><span>Scrum</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">168</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="lab">Tokens per commit <small>millions, weighted</small></div>
+      <div class="bars">
+        <div class="bar d"><span>Direct</span><div class="track"><div class="fill" style="width:16%"></div></div><span class="v">0.24</span></div>
+        <div class="bar s"><span>Scrum</span><div class="track"><div class="fill" style="width:100%"></div></div><span class="v">1.51</span></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="lab">Critical and high bugs found in review <small>later code reviews</small></div>
+      <div class="zero">
+        <div class="z d"><strong>0</strong>direct: two reviews, 57 commits</div>
+        <div class="z s"><strong>0</strong>scrum: its merged work, reviewed by a second agent</div>
+      </div>
+    </div>
+  </section>
+
+  <p class="verdict">Same quality, about twice the speed, a sixth of the tokens. A queue earns its keep only on unattended runs and on work that shares files.</p>
+
+  <p class="fine">Not a controlled experiment: the two modes ran in different weeks on different tasks. Tokens are fresh tokens plus cache writes at 1.25 and cache reads at 0.1. A 30-item pilot of identical work found the same shape: about 50 items an hour against 20, and one high-severity bug on each side. Data: the harness's token ledger and the code-review records of one product, 21 to 27 October.</p>
+</main>
+</body>
+</html>
