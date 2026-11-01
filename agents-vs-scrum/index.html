@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="author" content="Guy Eden">
-<meta name="description" content="A small case study from one product: AI coding agents briefed directly against a scrum-style queue of agents. Price per commit, price per 100 lines changed and minutes per commit, side by side, with the caveats.">
+<meta name="description" content="A small case study from one product: AI coding agents briefed directly against a scrum-style queue of agents. Average price per commit, price per 100 lines changed and commits per day, side by side, with the caveats.">
 <title>Agents Versus Scrum: a small case study</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@400;600;800&display=swap">
 <style>
@@ -91,7 +91,7 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
 <body>
 <main>
   <header>
-    <h1>Scrum team or direct agents: <em>about the same price</em> for the code.</h1>
+    <h1>Scrum team or direct agents: <em>no clear difference</em> in price for the code.</h1>
     <p class="sub">A small case study. One owner, one product: a few days of agents working through a scrum-style queue with a planner and a reviewer, then a week of agents briefed directly by one lead session. The price of each way, from the records, side by side.</p>
     <p class="by">By Guy Eden</p>
   </header>
@@ -110,24 +110,24 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
       </thead>
       <tbody>
         <tr>
-          <th scope="row">Price per commit<small>dollars spent, divided by the commits that reached main</small></th>
-          <td class="s">$0.98</td>
-          <td class="d">$1.13</td>
+          <th scope="row">Average price per commit<small>dollars spent, divided by the commits that reached main</small></th>
+          <td class="s">$1.17</td>
+          <td class="d">$1.83</td>
         </tr>
         <tr>
-          <th scope="row">Price per 100 lines changed<small>the same dollars, over lines added and deleted</small></th>
-          <td class="s">$0.76</td>
-          <td class="d">$0.79</td>
+          <th scope="row">Average price per 100 lines changed<small>the same dollars, over lines added and deleted</small></th>
+          <td class="s">$0.90</td>
+          <td class="d">$1.04</td>
         </tr>
         <tr>
-          <th scope="row">Minutes per commit<small>agent working time, divided by commits</small></th>
-          <td class="s">47 min<small>from claim to merge, which includes the review and the wait for a merge slot</small></td>
-          <td class="d">4 min<small>the agent's own run time only; nothing records the brief, the diff reading or the merge</small></td>
+          <th scope="row">Commits per day<small>commits that reached main</small></th>
+          <td class="s">176</td>
+          <td class="d">138</td>
         </tr>
       </tbody>
     </table>
-    <p class="verdictline">The two prices sit within a few cents of each other: no clear difference. The two clocks measure different things, so the minutes are not a like-for-like comparison.</p>
-    <p class="fine">Scrum: the queue's commits of 22 to 23 October, priced by the harness's own cost of every planner, architect, worker and reviewer session (n=349 commits; minutes over 235 merged items and their 301 commits). Direct: the agents' commits on main of 24 to 31 October, priced at list for the agents whose model has a list price (n=465 commits); the lead session's own briefing, diff reading and merging are not in the direct cost; minutes from the 49 agents with a recorded run time (250 commits). Lines changed exclude merge commits, lockfiles, generated and vendored files and binary files. Different periods, different tasks, different models.</p>
+    <p class="verdictline">These are averages over about a week each; depending on assumptions the gap in price per commit ranges from direct being cheaper to dearer, so we do not claim a clear difference.</p>
+    <p class="fine">Scrum: 22 to 23 October. Direct: 24 to 31 October. Non-merge commits; lines changed exclude lockfiles, generated and binary files. The direct lead session's own cost is not included; the Scrum planner and reviewer are. Different tasks, models and periods. Scrum's first day is excluded from the figures; including it raises its price per commit to up to $2.16.</p>
   </section>
 
   <section class="why">
@@ -182,7 +182,7 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
 
   <section class="why">
     <h2>What this does and does not show</h2>
-    <p>One owner, one product, a few days of each way, with no controlled comparison between the two periods. On this record neither way was clearly cheaper for the code it produced; the queue was switched off for being slow to merge an item, not for being dearer. It says nothing about agent workflows in general, other teams, other models or larger, entangled work.</p>
+    <p>One owner, one product, a few days of each way, with no controlled comparison between the two periods. On this record neither way was clearly cheaper or faster for the code it produced; the queue was switched off for being slow to merge an item, not for being dearer. It says nothing about agent workflows in general, other teams, other models or larger, entangled work.</p>
   </section>
 
   <p class="fine">Not a controlled experiment. Data: the harness's token ledger (one line per agent), the queue's item files and spawn ledger, and git history, late October.</p>
