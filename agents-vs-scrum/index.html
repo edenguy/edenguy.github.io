@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="author" content="Guy Eden">
-<meta name="description" content="Two weeks of records from one product: AI coding agents briefed directly against a scrum-style queue of agents. Items per day, time per item and price per item, with the caveats, and a 30-task replay as a check.">
-<title>Agents Versus Scrum: two weeks of records</title>
+<meta name="description" content="A small case study from one product: AI coding agents briefed directly against a scrum-style queue of agents. Price per commit, price per 100 lines changed and minutes per commit, side by side, with the caveats.">
+<title>Agents Versus Scrum: a small case study</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@400;600;800&display=swap">
 <style>
-/* Layout concept: one headline, two flow diagrams side by side, one stats ledger, one verdict. */
+/* Layout concept: one headline, one side-by-side ledger of three rows, two flow diagrams, two role maps, one verdict. */
 :root{
   --bg:#f5f1ea; --card:#fffdf9; --ink:#1d1a16; --mut:#6d655a; --line:#ded6c8;
   --direct:#1c6e5a; --scrum:#b4521f; --gold:#c8902a;
@@ -44,24 +44,19 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
 .step b{display:block;font-size:15px}
 .step span{display:block;font-size:13px;color:var(--mut)}
 .pill{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.04em;padding:2px 8px;border-radius:99px;border:1px solid var(--line);margin-left:6px;color:var(--ink)}
-.stats{display:grid;gap:14px}
-.row{display:grid;grid-template-columns:minmax(0,1fr);gap:6px}
-.row .lab{display:flex;justify-content:space-between;gap:10px;font-weight:800}
-.row .lab small{font-weight:400;color:var(--mut)}
-.bars{display:grid;gap:5px}
-.bar{display:grid;grid-template-columns:70px minmax(0,1fr) 78px;gap:8px;align-items:center;font-size:13px}
-.track{height:16px;border-radius:8px;background:var(--line);overflow:hidden}
-.fill{height:100%;border-radius:8px}
-.bar .v{font-variant-numeric:tabular-nums;font-weight:800;text-align:right}
-.d .fill{background:var(--direct)} .s .fill{background:var(--scrum)}
-.zero{display:flex;gap:10px;flex-wrap:wrap}
-.zero .z{flex:1 1 180px;border:1px solid var(--line);border-radius:12px;padding:10px 14px;background:var(--card)}
-.zero .z strong{font:800 30px var(--display);display:block}
-.zero .z.d strong{color:var(--direct)} .zero .z.s strong{color:var(--scrum)}
-.verdict{border-left:4px solid var(--gold);padding:6px 0 6px 16px;font:600 clamp(18px,3vw,24px)/1.3 var(--display);text-wrap:balance}
-.fine{font-size:12.5px;color:var(--mut);margin:0}
+/* The one ledger: three rows, two columns, big plain numbers. */
+.ledger{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.ledger th,.ledger td{padding:14px 12px;text-align:left;vertical-align:top;border-top:1px solid var(--line)}
+.ledger thead th{border-top:0;font:800 clamp(18px,3.4vw,24px)/1.1 var(--display);padding-top:16px;padding-bottom:10px}
+.ledger thead th.s{color:var(--scrum)} .ledger thead th.d{color:var(--direct)}
+.ledger tbody th{font-weight:800;font-size:15px;width:34%}
+.ledger tbody th small{display:block;font-weight:400;font-size:12.5px;color:var(--mut)}
+.ledger td{font:800 clamp(26px,5.5vw,40px)/1 var(--display);font-variant-numeric:tabular-nums}
+.ledger td.s{color:var(--scrum)} .ledger td.d{color:var(--direct)}
+.ledger td small{display:block;font:400 12.5px/1.3 var(--body);color:var(--mut);margin-top:6px}
+.verdictline{margin:14px 0 0;font:600 clamp(16px,2.6vw,20px)/1.35 var(--display);max-width:64ch;text-wrap:balance}
+.fine{font-size:12.5px;color:var(--mut);margin:10px 0 0;max-width:80ch}
 .why p{margin:0 0 10px;max-width:64ch}
-.pilot .lead{margin:0;max-width:64ch}
 .by{margin:10px 0 0;font-weight:800;font-size:14px;letter-spacing:.04em}
 /* Role map: two separate diagrams, one per shape, stacked. Each draws the work queue itself. */
 .rmaps{display:grid;gap:18px}
@@ -73,7 +68,7 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
 .rmap.narrow{display:none}
 .rmap text{text-anchor:middle;fill:var(--ink);font-family:var(--body)}
 .rmap .node{--c:var(--mut)}
-.c-own{--c:var(--gold)} .c-scr{--c:#7a7a8c} .c-son{--c:#2f7fd1} .c-fab{--c:#8e4fc9} .c-nom{--c:#d1456b} .c-nom{--c:var(--mut)}
+.c-own{--c:var(--gold)} .c-scr{--c:#7a7a8c} .c-son{--c:#2f7fd1} .c-fab{--c:#8e4fc9} .c-nom{--c:var(--mut)}
 .rmap .sh>*{fill:color-mix(in srgb,var(--c) 24%,var(--card));stroke:var(--c);stroke-width:3.5}
 .rmap .human .sh>*{stroke-dasharray:9 6} .rmap .script .sh>*{stroke-dasharray:2 5;stroke-linecap:round}
 .rmap .node{cursor:default}
@@ -91,107 +86,53 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
 .legend{font-size:12.5px;color:var(--mut);margin:12px 0 0}
 .rmap .cond .sh>*{stroke-dasharray:7 5}
 .rmap .cl{font-size:12px;font-style:italic;font-weight:600;fill:var(--mut)}
-.caveat{margin:10px 0 0;max-width:64ch;font-size:14px}
-.z small{display:block;font-size:12.5px;color:var(--mut)}
-.z .def{font-weight:800;color:var(--ink);margin-top:2px}
-.zero.pair .z{flex:1 1 260px}
-.zero.pair .z.na strong{color:var(--mut);font-size:22px;padding-top:6px}
-.measure{margin:18px 0 0}
-.measure h4{margin:0 0 8px;font:800 17px/1.2 var(--display)}
-.measure .q{font-size:13.5px;color:var(--mut);margin:0 0 8px;max-width:64ch}
-.caveats{margin:16px 0 0;padding:12px 16px;border:1px solid var(--line);border-radius:12px;background:var(--card);font-size:13.5px}
-.caveats ul{margin:6px 0 0;padding-left:18px}
-.caveats li{margin:0 0 4px}
-.verdictline{margin:14px 0 0;font:600 clamp(16px,2.6vw,20px)/1.35 var(--display);max-width:64ch;text-wrap:balance}
 </style>
 </head>
 <body>
 <main>
   <header>
-    <h1>Two weeks of records: <em>neither way</em> was clearly cheaper or faster per item.</h1>
-    <p class="sub">One owner, one product, eleven days of agent work: three days through a scrum-style queue with a planner and a reviewer, eight days of agents briefed directly by one lead session. Items per day, time per item, price per item, from the records, side by side.</p>
+    <h1>Scrum team or direct agents: <em>about the same price</em> for the code.</h1>
+    <p class="sub">A small case study. One owner, one product: a few days of agents working through a scrum-style queue with a planner and a reviewer, then a week of agents briefed directly by one lead session. The price of each way, from the records, side by side.</p>
     <p class="by">By Guy Eden</p>
   </header>
 
   <section class="why">
     <h2>What we wanted to find out</h2>
     <p>When AI agents write your software, should you copy a human scrum team: a planner, an architect, workers and an independent reviewer passing work along a queue? Or should one lead session brief plain agents and merge their work?</p>
-    <p>Our bet was that structure buys quality: a reviewer who never saw the code should catch what its author misses, at some cost. The queue ran for three days and was switched off as too slow and expensive; the direct agents ran on alone from then. This page puts the two periods' records side by side, deduplicated, with each number's definition next to it, and a 30-task replay of the same items as a second check.</p>
+    <p>Our bet was that structure buys quality: a reviewer who never saw the code should catch what its author misses, at some cost. The queue was switched off after a few days as too slow and expensive; the direct agents ran on alone from then. This page puts the two periods' records side by side.</p>
   </section>
 
-  <section class="stats">
-    <h2>The lead evidence: two weeks of records</h2>
-    <p class="lead">Scrum-style queue: 21 to 23 October, 309 merged items. Direct agents: 24 to 31 October, 732 agents briefed, 286 of them landed at least one commit on main. Different tasks, different days; the samples are large enough to average, and the caveats are in one block below.</p>
-
-    <div class="measure">
-      <h4>Delivered per day</h4>
-      <p class="q">An item is one merged queue item on one side and one briefed agent that landed a commit on the other. Commits count activity, not value: one brief can hold one commit or forty.</p>
-      <div class="zero pair">
-        <div class="z s"><strong>103</strong>merged items per day<small class="def">scrum-style queue</small><small>309 items over 3 days</small></div>
-        <div class="z d"><strong>36</strong>briefs landed per day<small class="def">direct agents</small><small>286 agents with a commit on main, over 8 days</small></div>
-        <div class="z s"><strong>129</strong>commits per day by the queue's workers<small>387 commits over 3 days, by their trailer</small></div>
-        <div class="z d"><strong>88</strong>commits per day by direct agents<small>705 commits over 8 days, from the token ledger, deduplicated; the lead session's own 130 a day are not counted</small></div>
-      </div>
-    </div>
-
-    <div class="measure">
-      <h4>Time per item</h4>
-      <p class="q">Medians, with the middle half of items in brackets. The queue records when an item was queued, claimed and merged; the direct side records an agent's run time for some agents, and nothing from brief to merge.</p>
-      <div class="zero pair">
-        <div class="z s"><strong>16 min</strong>claim to merge<small class="def">scrum-style queue</small><small>median; middle half 4 to 57 min; 309 items</small></div>
-        <div class="z d"><strong>14 min</strong>agent run time<small class="def">direct agents</small><small>median; middle half 8 to 27 min; 49 of the 286 landing agents have a recorded run time</small></div>
-        <div class="z s"><strong>132 min</strong>queued to merged<small>median; middle half 46 to 272 min; 309 items. Most of it is waiting on file claims, slots and restarts</small></div>
-        <div class="z d na"><strong>not recorded</strong>brief to merge<small>nothing records when a direct brief was sent or when its branch was merged</small></div>
-      </div>
-    </div>
-
-    <div class="measure">
-      <h4>Price</h4>
-      <p class="q">Both at list prices. The queue's figure is the harness's own cost per headless session (planner, workers, reviewer, architect all included); the direct figure prices the token ledger's deduplicated tokens at the published list table for Sonnet 5.5 ($3 in, $15 out, $0.30 cache read, $3.75 cache write per million) and Fable 5.1 ($10, $50, $0.25, $12.50). The lead session's own cost is excluded on the direct side.</p>
-      <div class="zero pair">
-        <div class="z s"><strong>$1.45</strong>per merged item<small class="def">scrum-style queue</small><small>$341 over 235 items, 22 to 23 October; the reviewer took $190 of it, the workers $128, the planner $22</small></div>
-        <div class="z d"><strong>$2.56</strong>per landed brief, mean; median $1.32<small class="def">direct agents</small><small>$527 over 206 landing agents on Sonnet 5.5 or Fable 5.1; the 80 on Opus 5.5 or Haiku 5.5 have no price in the table and are left out</small></div>
-        <div class="z s"><strong>$0.98</strong>per commit<small>349 commits, 22 to 23 October</small></div>
-        <div class="z d"><strong>$1.13</strong>per commit<small>465 commits by the priced agents</small></div>
-        <div class="z s"><strong>0.22M</strong>weighted tokens per commit<small>77M over 349 commits; every spawn counted, including the ones that ended without an item</small></div>
-        <div class="z d"><strong>0.87M</strong>weighted tokens per commit<small>614M over 705 commits; every agent counted, including the reviewers and explorers that commit nothing by design</small></div>
-      </div>
-      <p class="fine" style="margin-top:8px">Weighted tokens: input + output + 1.25 &times; cache write + 0.1 &times; cache read. The queue's first day (74 items) ran its personas inside the session with one reused reviewer, which the queue fixed the next day; those agents price at list to about $8.60 an item, and counting them the queue comes to $3.16 an item over all 309. The two-day figure above is the queue as it was designed to run.</p>
-    </div>
-
-    <p class="verdictline">On these records the queue merged more items a day; its items were small, planner-specced tasks. Per item, per commit and per minute of work the two came out within a factor of two of each other, in different directions on different measures. No clear advantage for either way.</p>
-
-    <div class="caveats">
-      <strong>What could confound this</strong>
-      <ul>
-        <li>Different tasks: the queue did small items a planner cut from the backlog (most sized small); the direct agents did whatever the lead session handed out, from cleanup sweeps of forty commits to one-line fixes.</li>
-        <li>Different models: the queue's workers were Sonnet 5.5, its reviewer Fable 5.1; the direct agents were Sonnet 5.5 most days, Opus 5.5 on 25 October (81 of 93 agents), Haiku 5.5 for a type-annotation sweep. The Opus and Haiku agents are in the item and token counts but not in the dollars.</li>
-        <li>Both ran together on 21 to 23 October, on one laptop with the owner's own builds; there is no queue-only day. The direct-only days are 24 to 31 October, so the direct figures come from those.</li>
-        <li>The lead session's briefing, diff reading and merging are not in the direct cost; it also committed 1,041 times itself in those eight days. The queue's planner and reviewer are in its cost.</li>
-        <li>A merged queue item and a landed brief are not the same unit. 74 of the queue's 205 long-run items were reclaimed after a restart and paid a fresh worker's orientation; 446 of the 732 direct agents landed nothing on main (reviewers, verifiers, explorers, dropped branches).</li>
-        <li>The harness's own cost runs 4 to 23 percent above the list table, so the queue's dollars sit slightly higher on the same tokens than the direct side's would.</li>
-      </ul>
-    </div>
+  <section>
+    <h2>Scrum against direct, from the records</h2>
+    <table class="ledger">
+      <thead>
+        <tr><th scope="col"></th><th scope="col" class="s">Scrum</th><th scope="col" class="d">Direct</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">Price per commit<small>dollars spent, divided by the commits that reached main</small></th>
+          <td class="s">$0.98</td>
+          <td class="d">$1.13</td>
+        </tr>
+        <tr>
+          <th scope="row">Price per 100 lines changed<small>the same dollars, over lines added and deleted</small></th>
+          <td class="s">$0.76</td>
+          <td class="d">$0.79</td>
+        </tr>
+        <tr>
+          <th scope="row">Minutes per commit<small>agent working time, divided by commits</small></th>
+          <td class="s">47 min<small>from claim to merge, which includes the review and the wait for a merge slot</small></td>
+          <td class="d">4 min<small>the agent's own run time only; nothing records the brief, the diff reading or the merge</small></td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="verdictline">The two prices sit within a few cents of each other: no clear difference. The two clocks measure different things, so the minutes are not a like-for-like comparison.</p>
+    <p class="fine">Scrum: the queue's commits of 22 to 23 October, priced by the harness's own cost of every planner, architect, worker and reviewer session (n=349 commits; minutes over 235 merged items and their 301 commits). Direct: the agents' commits on main of 24 to 31 October, priced at list for the agents whose model has a list price (n=465 commits); the lead session's own briefing, diff reading and merging are not in the direct cost; minutes from the 49 agents with a recorded run time (250 commits). Lines changed exclude merge commits, lockfiles, generated and vendored files and binary files. Different periods, different tasks, different models.</p>
   </section>
 
-  <section class="stats pilot">
-    <h2>Second check: the 30-task replay</h2>
-    <p class="lead">The same 30 small items, the same written spec and the same starting commit for each, on Sonnet 5.5 on both sides. A small sample; it is here as a like-for-like check, not as the lead.</p>
-    <div class="zero">
-      <div class="z s"><strong>$0.51</strong>per item, scrum-style queue<small>harness figure; workers and the reviewer's share, planner not included</small></div>
-      <div class="z d"><strong>~$0.28</strong>per item, direct agents<small>estimate at list prices; the lead session not included</small></div>
-    </div>
-    <p class="caveat">In the replay the queue cost about twice as much per item, and the difference was the reviewer: 13 reviews cost $8.93 against $6.36 for all 30 workers. The two-week record above does not repeat that gap: there the queue's per-item price is the lower of the two. A 30-item replay and an eleven-day record disagree, and this page shows both rather than pick one.</p>
-
-    <h2 style="margin-top:20px">Quality: no clear quality advantage detected</h2>
-    <p class="lead">Each side's 30 changes were graded blind, without the grader knowing which side they came from, by one reviewer model (three agents, ten items each).</p>
-    <div class="zero">
-      <div class="z d"><strong>23 of 30</strong>direct items met acceptance</div>
-      <div class="z s"><strong>23 of 30</strong>scrum-style items met acceptance</div>
-      <div class="z d"><strong>1 of 30</strong>direct items had a high-severity issue</div>
-      <div class="z s"><strong>1 of 30</strong>scrum-style items had a high-severity issue</div>
-    </div>
-    <p class="fine">Thirty items cannot tell a real difference from noise, and one reviewer model did all the grading. No clear quality advantage was detected; that is not a finding that the two are alike. The two-week periods were not reviewed in a comparable way, so they add no quality figure.</p>
+  <section class="why">
+    <h2>Quality: no clear quality advantage detected</h2>
+    <p>A small set of the same items was done both ways and graded blind by one reviewer model, which could not tell which side a change came from. It found no clear quality advantage for either way; a small blind check cannot tell a real difference from noise, and that is not a finding that the two are alike.</p>
   </section>
 
   <section>
@@ -208,7 +149,7 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
       </article>
       <article class="card scrum">
         <h3>Scrum team</h3>
-        <p class="tag">Four personas and a supervisor script hand work along a queue.</p>
+        <p class="tag">Personas and a supervisor script hand work along a queue.</p>
         <ol class="flow">
           <li class="step"><i class="dot">1</i><div><b>Queue item added</b><span>A line of work waits on disk</span></div></li>
           <li class="step"><i class="dot">2</i><div><b>Planner <span class="pill">Sonnet</span></b><span>Writes the brief and claims the files; an architect sets a contract only for items that need one</span></div></li>
@@ -231,9 +172,9 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
       </article>
       <article class="rcard scrum">
         <h3>Scrum</h3>
-        <p class="tag">Personas claim items; scripts do the waiting. Retired after two days.</p>
-        <svg class="rmap wide" viewBox="0 0 640 415" role="img" aria-label="Scrum: the owner stocks the work queue; a supervisor script claims an item, then planner, architect, worker and reviewer hand it along, and a merge gate script merges it."><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0,0 L10,5 L0,10z"/></marker></defs><path class="wire" d="M134,70 C146,70 164,70 178,70" marker-end="url(#ar)"/><path class="wire" d="M304,70 C314,70 322,70 336,70" marker-end="url(#ar)"/><path class="wire" d="M458,70 C468,70 490,70 506,70" marker-end="url(#ar)"/><path class="wire" d="M560,124 C560,160 560,180 560,214" marker-end="url(#ar)"/><path class="wire" d="M506,270 C494,270 466,270 454,270" marker-end="url(#ar)"/><path class="wire" d="M346,270 C334,270 306,270 294,270" marker-end="url(#ar)"/><path class="wire" d="M186,270 C174,270 160,270 138,270" marker-end="url(#ar)"/><path class="wire ret" d="M240,366 C250,398 390,398 400,366" marker-end="url(#ar)"/><g class="node c-own human" transform="translate(80,70)"><title>Owner: asks and decides; the main session stocks the queue</title><g class="sh"><circle r="52"/></g><text class="ico" y="-8">👤</text><text class="nm" y="18">Owner</text><g class="pill c-own"><rect x="-30.5" y="66" width="61.0" height="23" rx="11"/><text x="0" y="82">human</text></g></g><g class="queue" transform="translate(240,70)"><title>The work queue: items on disk, each with a goal, files, acceptance and tests</title><path class="qb" d="M-60,-2 C-62,-30 -30,-42 -4,-38 C22,-46 60,-32 60,-4 C64,24 32,38 4,34 C-22,42 -64,28 -60,-2Z"/><text class="qi" y="-4">📦</text><text class="qt" y="24">Work queue</text><g class="pill c-own"><rect x="-47" y="52" width="94" height="23" rx="11" style="fill:var(--card);stroke:#a87416"/><text x="0" y="68" style="fill:var(--ink)">items on disk</text></g></g><g class="node c-scr script" transform="translate(400,70)"><title>Supervisor script: polls the queue, claims items, refuses a claim on files another claim owns</title><g class="sh"><polygon points="-28,-50 28,-50 56,0 28,50 -28,50 -56,0"/></g><text class="ico" y="-8">⚙️</text><text class="nm" y="18">Supervisor</text><g class="pill c-scr"><rect x="-41.6" y="66" width="83.2" height="23" rx="11"/><text x="0" y="82">no model</text></g></g><g class="node c-son" transform="translate(560,70)"><title>Planner: writes the brief with the exact files the item owns</title><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">📝</text><text class="nm" y="18">Planner</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-son cond" transform="translate(560,270)"><title>Architect, only for items that need a contract</title><text class="cl" x="0" y="106">sometimes</text><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">📐</text><text class="nm" y="18">Architect</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-son" transform="translate(400,270)"><title>Worker: builds in its own worktree, commits, submits</title><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">🔨</text><text class="nm" y="18">Worker</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-fab cond" transform="translate(240,270)"><title>Reviewer, skipped when the planner graded the item low risk (76 of 205 items in the long run)</title><text class="cl" x="0" y="-66">sometimes</text><g class="sh"><path d="M0,-56 C30,-46 46,-46 52,-44 C52,10 40,40 0,58 C-40,40 -52,10 -52,-44 C-46,-46 -30,-46 0,-56Z"/></g><text class="ico" y="-8">🔍</text><text class="nm" y="18">Reviewer</text><g class="pill c-fab"><rect x="-30.5" y="66" width="61.0" height="23" rx="11"/><text x="0" y="82">Fable</text></g></g><g class="node c-scr script" transform="translate(80,270)"><title>Merge gate script: checks the claim and merges into main</title><g class="sh"><polygon points="-28,-50 28,-50 56,0 28,50 -28,50 -56,0"/></g><text class="ico" y="-8">🚦</text><text class="nm" y="18">Merge gate</text><g class="pill c-scr"><rect x="-41.6" y="66" width="83.2" height="23" rx="11"/><text x="0" y="82">no model</text></g></g><text class="nm" x="320" y="402" style="font-size:12.5px;font-weight:600;fill:var(--mut)">dashed: the reviewer sends it back to the worker</text></svg>
-        <svg class="rmap narrow" viewBox="0 0 360 1500" role="img" aria-label="Scrum: the owner stocks the work queue; a supervisor script claims an item, then planner, architect, worker and reviewer hand it along, and a merge gate script merges it."><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0,0 L10,5 L0,10z"/></marker></defs><path class="wire" d="M180,156 C180,186 180,180 180,210" marker-end="url(#ar)"/><path class="wire" d="M180,330 C180,360 180,348 180,378" marker-end="url(#ar)"/><path class="wire" d="M180,536 C180,566 180,538 180,568" marker-end="url(#ar)"/><path class="wire" d="M180,726 C180,756 180,728 180,758" marker-end="url(#ar)"/><path class="wire" d="M180,916 C180,946 180,918 180,948" marker-end="url(#ar)"/><path class="wire" d="M180,1106 C180,1136 180,1108 180,1138" marker-end="url(#ar)"/><path class="wire" d="M180,1296 C180,1326 180,1298 180,1328" marker-end="url(#ar)"/><path class="wire ret" d="M230,1190 C320,1140 320,1070 235,1065" marker-end="url(#ar)"/><g class="node c-own human" transform="translate(180,60)"><title>Owner: asks and decides; the main session stocks the queue</title><g class="sh"><circle r="52"/></g><text class="ico" y="-8">👤</text><text class="nm" y="18">Owner</text><g class="pill c-own"><rect x="-30.5" y="66" width="61.0" height="23" rx="11"/><text x="0" y="82">human</text></g></g><g class="queue" transform="translate(180,250)"><title>The work queue: items on disk, each with a goal, files, acceptance and tests</title><path class="qb" d="M-60,-2 C-62,-30 -30,-42 -4,-38 C22,-46 60,-32 60,-4 C64,24 32,38 4,34 C-22,42 -64,28 -60,-2Z"/><text class="qi" y="-4">📦</text><text class="qt" y="24">Work queue</text><g class="pill c-own"><rect x="-47" y="52" width="94" height="23" rx="11" style="fill:var(--card);stroke:#a87416"/><text x="0" y="68" style="fill:var(--ink)">items on disk</text></g></g><g class="node c-scr script" transform="translate(180,440)"><title>Supervisor script: polls the queue, claims items, refuses a claim on files another claim owns</title><g class="sh"><polygon points="-28,-50 28,-50 56,0 28,50 -28,50 -56,0"/></g><text class="ico" y="-8">⚙️</text><text class="nm" y="18">Supervisor</text><g class="pill c-scr"><rect x="-41.6" y="66" width="83.2" height="23" rx="11"/><text x="0" y="82">no model</text></g></g><g class="node c-son" transform="translate(180,630)"><title>Planner: writes the brief with the exact files the item owns</title><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">📝</text><text class="nm" y="18">Planner</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-son cond" transform="translate(180,820)"><title>Architect, only for items that need a contract</title><text class="cl" x="95" y="4">sometimes</text><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">📐</text><text class="nm" y="18">Architect</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-son" transform="translate(180,1010)"><title>Worker: builds in its own worktree, commits, submits</title><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">🔨</text><text class="nm" y="18">Worker</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-fab cond" transform="translate(180,1200)"><title>Reviewer, skipped when the planner graded the item low risk (76 of 205 items in the long run)</title><text class="cl" x="95" y="44">sometimes</text><g class="sh"><path d="M0,-56 C30,-46 46,-46 52,-44 C52,10 40,40 0,58 C-40,40 -52,10 -52,-44 C-46,-46 -30,-46 0,-56Z"/></g><text class="ico" y="-8">🔍</text><text class="nm" y="18">Reviewer</text><g class="pill c-fab"><rect x="-30.5" y="66" width="61.0" height="23" rx="11"/><text x="0" y="82">Fable</text></g></g><g class="node c-scr script" transform="translate(180,1390)"><title>Merge gate script: checks the claim and merges into main</title><g class="sh"><polygon points="-28,-50 28,-50 56,0 28,50 -28,50 -56,0"/></g><text class="ico" y="-8">🚦</text><text class="nm" y="18">Merge gate</text><g class="pill c-scr"><rect x="-41.6" y="66" width="83.2" height="23" rx="11"/><text x="0" y="82">no model</text></g></g></svg>
+        <p class="tag">Personas claim items; scripts do the waiting. Retired after a few days.</p>
+        <svg class="rmap wide" viewBox="0 0 640 415" role="img" aria-label="Scrum: the owner stocks the work queue; a supervisor script claims an item, then planner, architect, worker and reviewer hand it along, and a merge gate script merges it."><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0,0 L10,5 L0,10z"/></marker></defs><path class="wire" d="M134,70 C146,70 164,70 178,70" marker-end="url(#ar)"/><path class="wire" d="M304,70 C314,70 322,70 336,70" marker-end="url(#ar)"/><path class="wire" d="M458,70 C468,70 490,70 506,70" marker-end="url(#ar)"/><path class="wire" d="M560,124 C560,160 560,180 560,214" marker-end="url(#ar)"/><path class="wire" d="M506,270 C494,270 466,270 454,270" marker-end="url(#ar)"/><path class="wire" d="M346,270 C334,270 306,270 294,270" marker-end="url(#ar)"/><path class="wire" d="M186,270 C174,270 160,270 138,270" marker-end="url(#ar)"/><path class="wire ret" d="M240,366 C250,398 390,398 400,366" marker-end="url(#ar)"/><g class="node c-own human" transform="translate(80,70)"><title>Owner: asks and decides; the main session stocks the queue</title><g class="sh"><circle r="52"/></g><text class="ico" y="-8">👤</text><text class="nm" y="18">Owner</text><g class="pill c-own"><rect x="-30.5" y="66" width="61.0" height="23" rx="11"/><text x="0" y="82">human</text></g></g><g class="queue" transform="translate(240,70)"><title>The work queue: items on disk, each with a goal, files, acceptance and tests</title><path class="qb" d="M-60,-2 C-62,-30 -30,-42 -4,-38 C22,-46 60,-32 60,-4 C64,24 32,38 4,34 C-22,42 -64,28 -60,-2Z"/><text class="qi" y="-4">📦</text><text class="qt" y="24">Work queue</text><g class="pill c-own"><rect x="-47" y="52" width="94" height="23" rx="11" style="fill:var(--card);stroke:#a87416"/><text x="0" y="68" style="fill:var(--ink)">items on disk</text></g></g><g class="node c-scr script" transform="translate(400,70)"><title>Supervisor script: polls the queue, claims items, refuses a claim on files another claim owns</title><g class="sh"><polygon points="-28,-50 28,-50 56,0 28,50 -28,50 -56,0"/></g><text class="ico" y="-8">⚙️</text><text class="nm" y="18">Supervisor</text><g class="pill c-scr"><rect x="-41.6" y="66" width="83.2" height="23" rx="11"/><text x="0" y="82">no model</text></g></g><g class="node c-son" transform="translate(560,70)"><title>Planner: writes the brief with the exact files the item owns</title><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">📝</text><text class="nm" y="18">Planner</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-son cond" transform="translate(560,270)"><title>Architect, only for items that need a contract</title><text class="cl" x="0" y="106">sometimes</text><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">📐</text><text class="nm" y="18">Architect</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-son" transform="translate(400,270)"><title>Worker: builds in its own worktree, commits, submits</title><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">🔨</text><text class="nm" y="18">Worker</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-fab cond" transform="translate(240,270)"><title>Reviewer, skipped when the planner graded the item low risk</title><text class="cl" x="0" y="-66">sometimes</text><g class="sh"><path d="M0,-56 C30,-46 46,-46 52,-44 C52,10 40,40 0,58 C-40,40 -52,10 -52,-44 C-46,-46 -30,-46 0,-56Z"/></g><text class="ico" y="-8">🔍</text><text class="nm" y="18">Reviewer</text><g class="pill c-fab"><rect x="-30.5" y="66" width="61.0" height="23" rx="11"/><text x="0" y="82">Fable</text></g></g><g class="node c-scr script" transform="translate(80,270)"><title>Merge gate script: checks the claim and merges into main</title><g class="sh"><polygon points="-28,-50 28,-50 56,0 28,50 -28,50 -56,0"/></g><text class="ico" y="-8">🚦</text><text class="nm" y="18">Merge gate</text><g class="pill c-scr"><rect x="-41.6" y="66" width="83.2" height="23" rx="11"/><text x="0" y="82">no model</text></g></g><text class="nm" x="320" y="402" style="font-size:12.5px;font-weight:600;fill:var(--mut)">dashed: the reviewer sends it back to the worker</text></svg>
+        <svg class="rmap narrow" viewBox="0 0 360 1500" role="img" aria-label="Scrum: the owner stocks the work queue; a supervisor script claims an item, then planner, architect, worker and reviewer hand it along, and a merge gate script merges it."><defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrow" d="M0,0 L10,5 L0,10z"/></marker></defs><path class="wire" d="M180,156 C180,186 180,180 180,210" marker-end="url(#ar)"/><path class="wire" d="M180,330 C180,360 180,348 180,378" marker-end="url(#ar)"/><path class="wire" d="M180,536 C180,566 180,538 180,568" marker-end="url(#ar)"/><path class="wire" d="M180,726 C180,756 180,728 180,758" marker-end="url(#ar)"/><path class="wire" d="M180,916 C180,946 180,918 180,948" marker-end="url(#ar)"/><path class="wire" d="M180,1106 C180,1136 180,1108 180,1138" marker-end="url(#ar)"/><path class="wire" d="M180,1296 C180,1326 180,1298 180,1328" marker-end="url(#ar)"/><path class="wire ret" d="M230,1190 C320,1140 320,1070 235,1065" marker-end="url(#ar)"/><g class="node c-own human" transform="translate(180,60)"><title>Owner: asks and decides; the main session stocks the queue</title><g class="sh"><circle r="52"/></g><text class="ico" y="-8">👤</text><text class="nm" y="18">Owner</text><g class="pill c-own"><rect x="-30.5" y="66" width="61.0" height="23" rx="11"/><text x="0" y="82">human</text></g></g><g class="queue" transform="translate(180,250)"><title>The work queue: items on disk, each with a goal, files, acceptance and tests</title><path class="qb" d="M-60,-2 C-62,-30 -30,-42 -4,-38 C22,-46 60,-32 60,-4 C64,24 32,38 4,34 C-22,42 -64,28 -60,-2Z"/><text class="qi" y="-4">📦</text><text class="qt" y="24">Work queue</text><g class="pill c-own"><rect x="-47" y="52" width="94" height="23" rx="11" style="fill:var(--card);stroke:#a87416"/><text x="0" y="68" style="fill:var(--ink)">items on disk</text></g></g><g class="node c-scr script" transform="translate(180,440)"><title>Supervisor script: polls the queue, claims items, refuses a claim on files another claim owns</title><g class="sh"><polygon points="-28,-50 28,-50 56,0 28,50 -28,50 -56,0"/></g><text class="ico" y="-8">⚙️</text><text class="nm" y="18">Supervisor</text><g class="pill c-scr"><rect x="-41.6" y="66" width="83.2" height="23" rx="11"/><text x="0" y="82">no model</text></g></g><g class="node c-son" transform="translate(180,630)"><title>Planner: writes the brief with the exact files the item owns</title><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">📝</text><text class="nm" y="18">Planner</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-son cond" transform="translate(180,820)"><title>Architect, only for items that need a contract</title><text class="cl" x="95" y="4">sometimes</text><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">📐</text><text class="nm" y="18">Architect</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-son" transform="translate(180,1010)"><title>Worker: builds in its own worktree, commits, submits</title><g class="sh"><path d="M-48,-14 C-52,-48 -10,-58 22,-50 C58,-42 60,-4 50,22 C40,54 -2,58 -32,48 C-58,38 -46,10 -48,-14Z"/></g><text class="ico" y="-8">🔨</text><text class="nm" y="18">Worker</text><g class="pill c-son"><rect x="-34.2" y="66" width="68.4" height="23" rx="11"/><text x="0" y="82">Sonnet</text></g></g><g class="node c-fab cond" transform="translate(180,1200)"><title>Reviewer, skipped when the planner graded the item low risk</title><text class="cl" x="95" y="44">sometimes</text><g class="sh"><path d="M0,-56 C30,-46 46,-46 52,-44 C52,10 40,40 0,58 C-40,40 -52,10 -52,-44 C-46,-46 -30,-46 0,-56Z"/></g><text class="ico" y="-8">🔍</text><text class="nm" y="18">Reviewer</text><g class="pill c-fab"><rect x="-30.5" y="66" width="61.0" height="23" rx="11"/><text x="0" y="82">Fable</text></g></g><g class="node c-scr script" transform="translate(180,1390)"><title>Merge gate script: checks the claim and merges into main</title><g class="sh"><polygon points="-28,-50 28,-50 56,0 28,50 -28,50 -56,0"/></g><text class="ico" y="-8">🚦</text><text class="nm" y="18">Merge gate</text><g class="pill c-scr"><rect x="-41.6" y="66" width="83.2" height="23" rx="11"/><text x="0" y="82">no model</text></g></g></svg>
       </article>
     </div>
     <p class="legend">Both shapes consume the same queue of items; it is drawn once in each so the diagrams stay apart. Shape says the kind of role: circle the human, hexagon a script, shield the reviewer, blob an agent, rounded diamond the main session. Colour says the model (blue Sonnet, purple Fable, grey no model, not recorded, or mixed). A dashed outline marked sometimes is a step that runs only for some items. The direct agents' model varied by day (Opus, Sonnet, Haiku); the nightly review, on Fable, is not drawn. Models are the ones recorded in the agent definitions and the token ledger; where none is recorded, the block says so.</p>
@@ -241,11 +182,10 @@ h2{font:600 13px/1 var(--body);letter-spacing:.12em;text-transform:uppercase;col
 
   <section class="why">
     <h2>What this does and does not show</h2>
-    <p>One owner, one product, eleven days, about a thousand agent runs and three hundred merged queue items, with no like-for-like control between the two periods. On this record neither way was clearly cheaper or faster per item: the queue merged more items a day and spent fewer tokens per commit; the direct agents cost about the same per commit, more per item at the mean and less at the median, and worked an item in about the same minutes. The one measurement with no counterpart is the queue's two-hour median wait from queued to merged, which the direct side does not record. The 30-task replay found the queue twice the price per item; the larger record did not.</p>
-    <p>It shows nothing about large or entangled work, other models, other teams, or agent workflows in general. Leaving out the lead session's own cost on the direct side matters: every direct figure is a lower bound. Where the queue was switched off as too slow and expensive, these records support "slow to merge an item" and do not support "more expensive per item".</p>
+    <p>One owner, one product, a few days of each way, with no controlled comparison between the two periods. On this record neither way was clearly cheaper for the code it produced; the queue was switched off for being slow to merge an item, not for being dearer. It says nothing about agent workflows in general, other teams, other models or larger, entangled work.</p>
   </section>
 
-  <p class="fine">Not a controlled experiment beyond the 30-task replay, and the replay is one run of each side. Data: the harness's token ledger (deduplicated to one line per agent; a long-lived agent's earlier lines re-list its commits), the queue's item files and spawn ledger, git history, and the replay's blind grading, 21 to 31 October.</p>
+  <p class="fine">Not a controlled experiment. Data: the harness's token ledger (one line per agent), the queue's item files and spawn ledger, and git history, late October.</p>
 </main>
 </body>
 </html>
