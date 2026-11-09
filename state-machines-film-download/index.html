@@ -118,6 +118,14 @@ svg .mute { fill: var(--mute); }
     <p class="sub" style="font-weight:800">By Guy Eden</p>
   </header>
 
+  <section class="card" aria-labelledby="h">
+    <h2 id="h">How we got here</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><b>Prompt one: find them</b><q>Find all of the implicit state machines in my app.</q><small>Result: 18 found, ranked by risk</small></div>
+      <div class="step"><span class="n">2</span><b>Prompt two: pin it down, then build it</b><q>Verify each finding against the code. First write tests that pin today's behaviour, including invalid moves, duplicates, retries and crashes. Then make the state explicit, one machine at a time, and keep existing records working.</q><small>Result: 3 download bugs found and fixed, each with a failing test first</small></div>
+    </div>
+  </section>
+
   <section class="card" aria-labelledby="b">
     <span class="badge before">Before</span>
     <h2 id="b">Five places each hold part of the download</h2>
@@ -284,6 +292,33 @@ svg .mute { fill: var(--mute); }
     </div>
     <p class="sub">Graded by Claude from the evidence, not by an outside review. Five more suspects were checked against the code and ruled out.</p>
   </section>
+
+  <details class="card">
+    <summary>See the moving parts</summary>
+    <div class="src-label"><span class="badge after">Built and merged</span> 1. A run clears the flags only while it is current</div>
+    <pre class="src">} finally {
+  // A run stopped by pause() ends whenever its pending await answers,
+  // possibly after the next run began: clearing the flags then would
+  // let a tap start a second download of the same film.
+  if (this.aborter === mine) this.preparing = this.fetching = false;
+}</pre>
+    <div class="src-label"><span class="badge after">Built and merged</span> 2. The map says done only after the bytes are on disk</div>
+    <pre class="src">saveMap = () =&gt; {
+  film.flush();   // the bytes are on disk before the map says a chunk is whole
+  map.truncate(0);
+  map.write(status.map(flag =&gt; (flag === 2 ? 2 : 0)), {at: 0});
+</pre>
+    <div class="src-label"><span class="badge after">Built and merged</span> 3. The button shows one state at a time</div>
+    <pre class="src">function showProgress(element, event, verb, setLabel) {
+  element.classList.add('preparing');
+  element.classList.remove('not-ready');   // bytes are coming: the film is not refused any more
+</pre>
+    <div class="src-label"><span class="badge before">Not built yet</span> 4. The one owner of the preparer's flags</div>
+    <pre class="src">const state = moveDownload(this.state, 'tap');   // looks the move up in a table
+// an illegal move is refused; the 12 flags and the button class
+// are read from the state, never set one by one</pre>
+    <p class="sub">Parts 1 to 3 are real code in the repository, each pinned by a test that failed before the fix. Part 4 is being built now.</p>
+  </details>
 
   <section class="card" aria-labelledby="d">
     <h2 id="d">So it does not drift back</h2>
