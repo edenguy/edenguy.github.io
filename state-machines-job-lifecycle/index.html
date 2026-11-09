@@ -297,12 +297,13 @@ details.card[open] > summary::after { content: "Hide"; }
       <div class="bug"><span class="sev med">Medium</span><b>Two cancels at once</b><span class="what">The second one failed the film the first had restored.</span></div>
       <div class="bug"><span class="sev med">Medium</span><b>Dying build re-uploads</b><span class="what">An old review decision could skip the customer's review.</span></div>
       <div class="bug"><span class="sev med">Medium</span><b>Review clock races the decision</b><span class="what">When the review timer ran out as the customer decided, it could restore the old film over a film already rendering, or fail it.</span></div>
+      <div class="bug"><span class="sev low">Low</span><b>Two render slots for one film</b><span class="what">After a failed record write, the next tick could claim a second slot, and the running film was queued again when the stray one expired.</span></div>
       <div class="bug"><span class="sev low">Low</span><b>Orphan record</b><span class="what">A refused start left a record that no build owned.</span></div>
     </div>
     <div class="tally">
       <div class="hot"><strong>0</strong><small>critical</small></div>
       <div class="hot"><strong>2</strong><small>high</small></div>
-      <div><strong>4</strong><small>other</small></div>
+      <div><strong>5</strong><small>other</small></div>
     </div>
     <p class="sub">Graded by Claude from the evidence, not by an outside review. The same method found 1 bug in payments and 3 in the file download.</p>
   </section>
@@ -312,10 +313,10 @@ details.card[open] > summary::after { content: "Hide"; }
     <div class="tally">
       <div class="hot"><strong>0</strong><small>critical</small></div>
       <div class="hot"><strong>5</strong><small>high</small></div>
-      <div><strong>7</strong><small>other</small></div>
+      <div><strong>8</strong><small>other</small></div>
     </div>
     <div class="wins">
-      <div class="win"><b>Job lifecycle</b><span>2 high, 3 medium, 1 low. High: a clean build shown as failed, and a cloud start stuck for ever.</span></div>
+      <div class="win"><b>Job lifecycle</b><span>2 high, 3 medium, 2 low. High: a clean build shown as failed, and a cloud start stuck for ever.</span></div>
       <div class="win"><b>Pay screen</b><span>1 high: no way to buy again after a late failure.</span></div>
       <div class="win"><b>Film download</b><span>2 medium, 1 low. Nothing lost; a power cut could break a resume.</span></div>
       <div class="win"><b>Film availability</b><span>2 high: a failed purge was never retried, leaving a live purchase on a deleted film, and a film still being paid for could be deleted.</span></div>
@@ -394,7 +395,7 @@ self._lifecycle_move(job_id, Event.BUILD_EXITED_OK)   # checked against the tabl
       <div class="side now">
         <span class="badge after">After</span>
         <ul>
-          <li>Ten states (seven shown above), written once, with the moves between them.</li>
+          <li>Ten states (seven shown above), written once, plus small machines for the render slot and the result claim, with the moves between them.</li>
           <li>One question before any verdict: does this run still own the job?</li>
           <li>Existing job records keep their shape, so jobs in flight carry on.</li>
         </ul>
