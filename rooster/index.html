@@ -55,6 +55,7 @@ canvas{display:block;width:100%;height:100%}
 .bar button{font:700 15px var(--font-body);color:var(--text);background:var(--panel);border:1px solid var(--line);
   border-radius:6px;padding:9px 16px;cursor:pointer;min-width:84px}
 .bar button[aria-pressed="true"]{border-color:var(--alarm)}
+.bar select{font:700 14px var(--font-body);color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:8px;max-width:100%}
 .bar button:hover{border-color:var(--muted)}
 .bar button:focus-visible,.bar input:focus-visible{outline:2px solid var(--alarm);outline-offset:2px}
 .bar input[type=range]{flex:1 1 200px;min-width:0;accent-color:var(--alarm)}
@@ -80,13 +81,15 @@ canvas{display:block;width:100%;height:100%}
     <button id="play" type="button">עצור</button>
     <button id="again" type="button">מההתחלה</button>
     <button id="snd" type="button" aria-pressed="false">סאונד: כבוי</button>
+    <button id="mus" type="button" aria-pressed="true">מוזיקה: פועל</button>
+    <select id="voiceSel" hidden aria-label="בחירת קול קריינות"></select>
     <input id="seek" type="range" min="0" max="740" value="0" step="1" aria-label="מיקום בהנפשה">
     <span class="time" id="time">0:00 / 1:14</span>
   </div>
 
   <p class="note credit">יצירה והנפשה: גיא עדן. מבוסס על סיפור שסיפר יובל נוח הררי בפודקאסט.</p>
 
-  <p class="note">זו הנפשה שנכתבה בקוד ורצה ישר בדפדפן, לא סרטון שנוצר במודל וידאו. הסאונד כבוי כברירת מחדל, ואפשר להפעיל אותו בכפתור. הקריינות משתמשת בקול העברי שמובנה במכשיר שלכם, והמוזיקה והצלילים נוצרים בקוד. אפשר לבקש שינוי בקצב, בסצנות, בצבעים או בטקסט.</p>
+  <p class="note">זו הנפשה שנכתבה בקוד ורצה ישר בדפדפן, לא סרטון שנוצר במודל וידאו. הסאונד כבוי כברירת מחדל, ולחיצה על "סאונד" מתחילה את ההנפשה מההתחלה עם קריינות. הקריינות משתמשת בקול העברי שמובנה במכשיר שלכם, והמוזיקה והצלילים נוצרים בקוד. אפשר לבקש שינוי בקצב, בסצנות, בצבעים או בטקסט.</p>
   <p class="note" id="voiceNote" hidden>לא נמצא קול בעברית במכשיר הזה, אז תישמע רק המוזיקה. הכתוביות נשארות על המסך.</p>
 </div>
 
@@ -407,18 +410,19 @@ const CH=[[146.83,220,329.63,369.99],[146.83,220,277.18,349.23],[73.42,110,155.5
 const CHT=[0,7,17,26,45,53];
 const chordIdx=x=>{let k=0;CHT.forEach((v,i)=>{if(x>=v)k=i});return k};
 const HAS_TTS='speechSynthesis' in window;
-function pickVoice(){if(!HAS_TTS)return;hv=speechSynthesis.getVoices().find(v=>/^(he|iw)/i.test(v.lang))||null}
+function heVoices(){return HAS_TTS?speechSynthesis.getVoices().filter(v=>/^(he|iw)/i.test(v.lang)).sort((a,b)=>(/natural|online/i.test(b.name)?1:0)-(/natural|online/i.test(a.name)?1:0)):[]}
+function pickVoice(){const l=heVoices();if(!hv||l.indexOf(hv)<0)hv=l[0]||null;buildSel(l);showVoice()}
 if(HAS_TTS){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
 function spoken(s){
   return s.replace(/ל-5\.3%/g,'לחמש נקודה שלוש אחוזים').replace(/5\.3%/g,'חמש נקודה שלוש אחוזים')
     .replace(/אג״ח/g,'אגרות חוב').replace(/\bAI\b/g,'בינה מלאכותית');
 }
-function stopSpeech(){speaking=false;if(HAS_TTS)try{speechSynthesis.cancel()}catch(e){}}
-const SPC={n:.075,g:.075,v:.075};let cueEnd=0,holdAcc=0,sAt=0;
+function stopSpeech(){speaking=false;speakId++;if(HAS_TTS)try{speechSynthesis.cancel()}catch(e){}}
+let speakId=0;const SPC={n:.075,g:.075,v:.075};let cueEnd=0,holdAcc=0,sAt=0;
 function speak(text,who,dur,end){
   if(!HAS_TTS)return;
   try{
-    speechSynthesis.cancel();
+    speechSynthesis.cancel();speechSynthesis.resume();const my=++speakId;
     const sp=spoken(text),u=new SpeechSynthesisUtterance(sp);
     u.lang='he-IL';if(hv)u.voice=hv;
     u.pitch={n:1,g:1.8,v:.5}[who];
@@ -428,7 +432,7 @@ function speak(text,who,dur,end){
     u.onstart=()=>{speaking=true;sAt=performance.now()};
     u.onend=()=>{speaking=false;const s=(performance.now()-sAt)/1000;if(s>.3)SPC[who]=clamp(s*rate/sp.length,.03,.2)};
     u.onerror=()=>{speaking=false};
-    speechSynthesis.speak(u);
+    setTimeout(()=>{if(my===speakId)speechSynthesis.speak(u)},70);
   }catch(e){}
 }
 function slow(dt){
@@ -445,7 +449,7 @@ function initAudio(){
   const d=nbuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
   padF=AC.createBiquadFilter();padF.type='lowpass';padF.frequency.value=700;
   padG=AC.createGain();padG.gain.value=0;padF.connect(padG);padG.connect(musicBus);
-  oscs=CH[0].map((f,i)=>{const o=AC.createOscillator();o.type='sawtooth';o.frequency.value=f;o.detune.value=i%2?7:-7;o.connect(padF);o.start();return o});
+  oscs=CH[0].map((f,i)=>{const o=AC.createOscillator();o.type='triangle';o.frequency.value=f;o.detune.value=i%2?7:-7;o.connect(padF);o.start();return o});
   lfo=AC.createOscillator();lfo.frequency.value=.3;lfoG=AC.createGain();lfoG.gain.value=.006;lfo.connect(lfoG);lfoG.connect(padG.gain);lfo.start();
 }
 function tone(f,dur,type,vol,dest,att,f2){
@@ -496,21 +500,43 @@ function audioTick(){
     oscs.forEach((o,i)=>o.frequency.setTargetAtTime(ch[i],n,.5));
     const cut=[700,lerp(600,1800,seg(t,7,17)),500,600,1100,380][k];
     padF.frequency.setTargetAtTime(cut,n,.4);
-    padG.gain.setTargetAtTime(.11*(1-seg(t,71,74))*(k===3?.7:1),n,.4);
+    padG.gain.setTargetAtTime(.045*(1-seg(t,71,74))*(k===3?.7:1),n,.4);
     lfo.frequency.setTargetAtTime(k===4?7:k===1?4:.3,n,.3);
     lfoG.gain.setTargetAtTime(k===1||k===4?.03:.006,n,.3);
-    musicBus.gain.setTargetAtTime(speaking?.45:1,n,.25);
+    musicBus.gain.setTargetAtTime(musicOn?(speaking?.3:1):0,n,.25);sfxBus.gain.setTargetAtTime(speaking?.5:1,n,.25);
   }
 }
-const sndB=document.getElementById('snd'),vNote=document.getElementById('voiceNote');
+const sndB=document.getElementById('snd'),musB=document.getElementById('mus'),vSel=document.getElementById('voiceSel');
+let musicOn=true;
+function showVoice(){
+  const n=document.getElementById('voiceNote');if(!n)return;
+  if(!soundOn){n.hidden=true;return}
+  n.hidden=false;
+  n.textContent=!HAS_TTS?'הדפדפן הזה לא תומך בקריינות. נסו Chrome, Edge או Safari.':hv?'קריינות בקול: '+hv.name:'לא נמצא קול בעברית בדפדפן הזה, אז אין קריינות. נסו Chrome או Edge במחשב, או Safari באייפון ובמק, ובדקו שיש קול עברי מותקן בהגדרות המכשיר.';
+}
+function buildSel(l){
+  const s=document.getElementById('voiceSel');if(!s)return;
+  s.hidden=l.length<2;s.innerHTML='';
+  l.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.name;s.appendChild(o)});
+  s.value=Math.max(0,l.indexOf(hv));
+}
+function primeSpeech(){
+  if(!HAS_TTS)return;
+  try{const u=new SpeechSynthesisUtterance('.');u.volume=0;u.lang='he-IL';speechSynthesis.speak(u)}catch(e){}
+}
 sndB.addEventListener('click',()=>{
   soundOn=!soundOn;sndB.textContent=soundOn?'סאונד: פועל':'סאונד: כבוי';sndB.setAttribute('aria-pressed',soundOn);
   if(soundOn){
-    initAudio();pt=t;
-    setTimeout(()=>{vNote.hidden=!(soundOn&&!hv)},1200);
-  }else{vNote.hidden=true}
+    initAudio();primeSpeech();pickVoice();
+    t=0;pt=0;playing=true;lastAu=-9;
+    setTimeout(()=>{pickVoice()},800);
+  }
+  showVoice();
 });
-
+musB.addEventListener('click',()=>{
+  musicOn=!musicOn;musB.textContent=musicOn?'מוזיקה: פועל':'מוזיקה: כבוי';musB.setAttribute('aria-pressed',musicOn);lastAu=-9;
+});
+vSel.addEventListener('change',()=>{const l=heVoices();hv=l[+vSel.value]||hv;showVoice()});
 function render(){
   const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.round(cv.clientWidth*dpr)||W;
   if(w!==pw){pw=w;cv.width=w;cv.height=Math.round(w*H/W)}
