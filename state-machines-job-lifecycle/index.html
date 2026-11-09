@@ -86,6 +86,12 @@ svg .mute { fill: var(--mute); }
 </style>
 
 <style>
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.step { border-radius: 18px; background: var(--blue-bg); padding: 14px; display: grid; gap: 6px; align-content: start; }
+.step .n { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: var(--card); font-weight: 800; display: grid; place-items: center; }
+.step b { font-size: 17px; }
+.step q { font-style: italic; color: var(--ink); font-size: 14px; line-height: 1.35; }
+.step small { color: var(--mute); font-weight: 700; }
 .guard { fill: var(--green-bg); stroke: var(--green); stroke-width: 2.4; }
 </style>
 </head>
@@ -96,6 +102,16 @@ svg .mute { fill: var(--mute); }
     <p class="sub">From Create to the finished film, through review, cancel, reopen and restart. Before and after.</p>
     <p class="sub" style="font-weight:800">By Guy Eden</p>
   </header>
+
+  <section class="card" aria-labelledby="h">
+    <h2 id="h">How we got here</h2>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><b>Ask</b><q>Find all of the implicit state machines in my app.</q><small>18 found</small></div>
+      <div class="step"><span class="n">2</span><b>Brief</b><q>Improve correctness, not simply introduce explicit state machines. Verify first, test before changing, one machine at a time, no wholesale rewrite.</q><small>the rules for Claude</small></div>
+      <div class="step"><span class="n">3</span><b>Check</b><q>Trace the whole lifecycle and prove each defect.</q><small>2 real bugs, 2 cleared</small></div>
+      <div class="step"><span class="n">4</span><b>Fix</b><q>Write the failing test first, then the smallest fix.</q><small>first fix merged</small></div>
+    </div>
+  </section>
 
   <section class="card" aria-labelledby="b">
     <span class="badge before">Before</span>
