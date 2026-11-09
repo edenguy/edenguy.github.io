@@ -312,14 +312,14 @@ details.card[open] > summary::after { content: "Hide"; }
     <pre class="src">class State(str, Enum):
     ABSENT, QUEUED, BUILDING, WAITING, REVIEWING,
     RENDER_QUEUED, RENDERING, REOPENING, COMPLETE, FAILED</pre>
-    <div class="src-label"><span class="badge after">Built and merged</span> 2. The legal moves, listed once (41 in all, a few shown)</div>
+    <div class="src-label"><span class="badge after">Built and merged</span> 2. The legal moves, listed once (43 in all, a few shown)</div>
     <pre class="src">TRANSITIONS = {
   (State.BUILDING,  Event.REVIEW_READY):       State.REVIEWING,
   (State.REVIEWING, Event.DECIDED):            State.RENDER_QUEUED,
   (State.RENDERING, Event.BUILD_EXITED_OK):    State.COMPLETE,
   (State.RENDERING, Event.CANCELLED):          State.FAILED,
   (State.COMPLETE,  Event.SELECTION_REOPENED): State.REOPENING,
-  # ... 36 more
+  # ... 38 more
 }
 
 def next_state(state, event):
@@ -346,11 +346,11 @@ def next_state(state, event):
     <pre class="src">def run_still_owns_job(*, cancelled, superseded_at, started):
     return not cancelled and not (
         superseded_at is not None and superseded_at &gt;= started)</pre>
-    <div class="src-label"><span class="badge before">Not built yet</span> 5. How a caller will write a state change</div>
+    <div class="src-label"><span class="badge after">Built and merged</span> 5. How a caller writes a state change</div>
     <pre class="src">if not run_still_owns_job(...):
     return                                     # a newer run owns the job
-self._transition(job_id, Event.BUILD_EXITED_OK)   # the only writer</pre>
-    <p class="sub">Parts 1 to 4 are real code in the repository and are tested against the old behaviour. Part 5 is the next step: the one transition function that refuses an illegal move before writing.</p>
+self._lifecycle_move(job_id, Event.BUILD_EXITED_OK)   # checked against the table, then the writes</pre>
+    <p class="sub">All five parts are real code in the repository, tested against the old behaviour. Twelve modules now declare their move before writing. In tests an illegal move raises; in production it is logged and allowed, until the logs show the table is complete.</p>
   </details>
 
   <section class="card" aria-labelledby="d">
@@ -360,7 +360,7 @@ self._transition(job_id, Event.BUILD_EXITED_OK)   # the only writer</pre>
       <div class="win"><b>A table test</b><span>every state and event is tried, so a new move must be listed</span></div>
       <div class="win"><b>A commit check</b><span>a write to job state outside the owner fails the commit</span></div>
     </div>
-    <p class="sub">Planned. None of the three is built for the job lifecycle yet.</p>
+    <p class="sub">All three are built: the move function, the table test over every state and event, and a commit check that fails a job-state write outside the owner. Its list of exceptions can only shrink.</p>
   </section>
 
   <section class="card" aria-labelledby="w">
@@ -377,13 +377,13 @@ self._transition(job_id, Event.BUILD_EXITED_OK)   # the only writer</pre>
       <div class="side now">
         <span class="badge after">After</span>
         <ul>
-          <li>Seven states, written once, with the moves between them.</li>
+          <li>Ten states (seven shown above), written once, with the moves between them.</li>
           <li>One question before any verdict: does this run still own the job?</li>
           <li>Existing job records keep their shape, so jobs in flight carry on.</li>
         </ul>
       </div>
     </div>
-    <p class="sub">Five guards are built and tested. The seven-state owner is the next step, and it goes in with a failing test first.</p>
+    <p class="sub">The state machine is built and merged: the core, the readers, the writers and the commit check. Existing records are unchanged, so jobs in flight carry on.</p>
   </section>
 </main>
 <script>
