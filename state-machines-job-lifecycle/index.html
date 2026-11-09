@@ -107,6 +107,10 @@ svg .mute { fill: var(--mute); }
 .tally div.hot { background: var(--red-bg); }
 .tally strong { display: block; font-family: var(--font-display); font-size: 34px; line-height: 1; }
 .tally small { font-weight: 800; color: var(--mute); }
+.card > *, details.card > * { min-width: 0; max-width: 100%; }
+details.card { display: block; }
+details.card > * + * { margin-top: 14px; }
+.src { max-width: 100%; }
 details.card > summary { cursor: pointer; font-family: var(--font-display); font-size: 22px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
 details.card > summary::-webkit-details-marker { display: none; }
 details.card > summary::after { content: "Show"; font-family: var(--font-body); font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; background: var(--blue-bg); color: var(--blue); }
