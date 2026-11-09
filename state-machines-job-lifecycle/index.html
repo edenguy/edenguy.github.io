@@ -109,7 +109,7 @@ svg .mute { fill: var(--mute); }
     <h2 id="h">How we got here</h2>
     <div class="steps">
       <div class="step"><span class="n">1</span><b>Prompt one: find them</b><q>Find all of the implicit state machines in my app.</q><small>Result: 18 found, ranked by risk</small></div>
-      <div class="step"><span class="n">2</span><b>Prompt two: pin it down, then build it</b><q>Verify each finding against the code. First write tests that pin today's behaviour, including invalid moves, duplicates, retries and crashes. Then make the state explicit, one machine at a time, and keep existing records working.</q><small>Result: 2 bugs confirmed from the code (1 fixed and tested, 1 in progress), 2 suspected, 2 ruled out</small></div>
+      <div class="step"><span class="n">2</span><b>Prompt two: pin it down, then build it</b><q>Verify each finding against the code. First write tests that pin today's behaviour, including invalid moves, duplicates, retries and crashes. Then make the state explicit, one machine at a time, and keep existing records working.</q><small>Result: 3 bugs found and fixed so far, each with a failing test first</small></div>
     </div>
   </section>
 
@@ -259,7 +259,7 @@ svg .mute { fill: var(--mute); }
     </div>
     <div class="wins">
       <div class="win"><b>Done</b><span>a finished build no longer completes over a reopened run</span></div>
-      <div class="win"><b>Next</b><span>a mark before a cloud start, so a cut start is found again</span></div>
+      <div class="win"><b>Done</b><span>a cut cloud start is ended after 10 minutes, not left on Starting forever</span></div>
       <div class="win"><b>Next</b><span>one lock per job for cancel and reopen at the same moment</span></div>
     </div>
   </section>
@@ -284,7 +284,7 @@ svg .mute { fill: var(--mute); }
         </ul>
       </div>
     </div>
-    <p class="sub">The first guard is built and tested. The rest goes in one step at a time, each with a failing test first.</p>
+    <p class="sub">Two guards are built and tested. The rest goes in one step at a time, each with a failing test first.</p>
   </section>
 </main>
 <script>
