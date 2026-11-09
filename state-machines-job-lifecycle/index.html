@@ -310,14 +310,14 @@ details.card[open] > summary::after { content: "Hide"; }
     <h2 id="t">All the bugs, fixed, across the machines</h2>
     <div class="tally">
       <div class="hot"><strong>0</strong><small>critical</small></div>
-      <div class="hot"><strong>3</strong><small>high</small></div>
+      <div class="hot"><strong>5</strong><small>high</small></div>
       <div><strong>7</strong><small>other</small></div>
     </div>
     <div class="wins">
       <div class="win"><b>Job lifecycle</b><span>2 high, 2 medium, 1 low. High: a clean build shown as failed, and a cloud start stuck for ever.</span></div>
       <div class="win"><b>Pay screen</b><span>1 high: no way to buy again after a late failure.</span></div>
       <div class="win"><b>Film download</b><span>2 medium, 1 low. Nothing lost; a power cut could break a resume.</span></div>
-      <div class="win"><b>Found, being fixed</b><span>2 high in film availability: a failed purge never retried, and a film still being paid for could be deleted. Not counted until fixed.</span></div>
+      <div class="win"><b>Film availability</b><span>2 high: a failed purge was never retried, leaving a live purchase on a deleted film, and a film still being paid for could be deleted.</span></div>
     </div>
     <p class="sub">Every fix started with a test that failed on the old code. Graded by Claude from the evidence, with the reason beside each bug; none is critical because none lost money or a customer's film. Not an outside review. Seven more suspects were read and ruled out.</p>
   </section>
