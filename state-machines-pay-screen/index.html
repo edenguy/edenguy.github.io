@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay Screen States</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: two big pictures, before and after, with one sentence each. */
+:root {
+  --bg: #fbf7f1; --card: #ffffff; --ink: #2a2a33; --mute: #6f6a76; --line: #e7dfd3;
+  --blue: #3b6fd4; --blue-bg: #e7eefc;
+  --green: #2b9a5c; --green-bg: #dff4e7;
+  --red: #d2473b; --red-bg: #fde7e3;
+  --amber: #b9770e; --amber-bg: #fdf0d3;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1b1a21; --card: #25242d; --ink: #f1eef6; --mute: #a9a3b3; --line: #38364a;
+    --blue: #86abff; --blue-bg: #25304f;
+    --green: #5fd391; --green-bg: #1c3a2a;
+    --red: #ff8478; --red-bg: #46231f;
+    --amber: #f2b658; --amber-bg: #43331a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1b1a21; --card: #25242d; --ink: #f1eef6; --mute: #a9a3b3; --line: #38364a;
+  --blue: #86abff; --blue-bg: #25304f;
+  --green: #5fd391; --green-bg: #1c3a2a;
+  --red: #ff8478; --red-bg: #46231f;
+  --amber: #f2b658; --amber-bg: #43331a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  padding-block: 28px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 920px; margin: 0 auto; display: grid; gap: 22px; }
+h1 { font-family: var(--font-display); font-size: clamp(28px, 6vw, 42px); line-height: 1.1; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: 26px; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.sub { color: var(--mute); font-size: 17px; }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 20px; display: grid; gap: 14px; min-width: 0; }
+.badge { justify-self: start; font-weight: 800; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; }
+.badge.before { background: var(--red-bg); color: var(--red); }
+.badge.after { background: var(--green-bg); color: var(--green); }
+.diagram { overflow-x: auto; }
+.diagram svg { min-width: 720px; width: 100%; height: auto; display: block; }
+svg text { font-family: var(--font-body); fill: var(--ink); }
+svg .mute { fill: var(--mute); }
+.pill { fill: var(--amber-bg); stroke: var(--amber); stroke-width: 2; }
+.store { fill: var(--blue-bg); stroke: var(--blue); stroke-width: 2; }
+.store.srv { fill: var(--green-bg); stroke: var(--green); }
+.tangle { stroke: var(--mute); stroke-width: 1.4; opacity: .55; fill: none; }
+.node { fill: var(--card); stroke: var(--blue); stroke-width: 2.4; }
+.node.end { stroke: var(--green); fill: var(--green-bg); }
+.node.fail { stroke: var(--red); fill: var(--red-bg); }
+.node.start { stroke: var(--mute); }
+.edge { stroke: var(--blue); stroke-width: 2.4; fill: none; }
+.edge.grant { stroke: var(--green); }
+.edge.fail { stroke: var(--red); }
+.edge.new { stroke: var(--red); stroke-width: 3.2; stroke-dasharray: 7 5; }
+.bubbles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.bubble { border-radius: 18px; padding: 12px 14px; background: var(--blue-bg); display: grid; gap: 2px; }
+.bubble small { color: var(--mute); font-weight: 600; }
+.bubble b { font-size: 17px; }
+.bubble.lie { background: var(--red-bg); }
+.bubble.truth { background: var(--green-bg); }
+.punch { font-weight: 800; font-size: 18px; }
+.punch span { color: var(--red); }
+.wins { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.win { border-radius: 18px; background: var(--green-bg); padding: 14px; display: grid; gap: 4px; }
+.win b { font-size: 18px; }
+.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.side { border-radius: 18px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+.side.was { background: var(--red-bg); }
+.side.now { background: var(--green-bg); }
+.side ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: var(--mute); font-weight: 600; }
+.legend i { display: inline-block; width: 24px; border-top: 3px solid; vertical-align: middle; margin-right: 6px; }
+</style>
+</head>
+<body>
+<main>
+  <header style="display:grid;gap:6px">
+    <h1>The pay screen</h1>
+    <p class="sub">What the customer sees while paying for a film. Before and after.</p>
+  </header>
+
+  <section class="card" aria-labelledby="b">
+    <span class="badge before">Before</span>
+    <h2 id="b">Four places, each with its own idea</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 860 310" role="img" aria-label="Checkout events, the server webhook, a timer and a reload all write into four separate places: page memory, screen label, tab storage and the server record.">
+        <!-- who writes -->
+        <rect class="pill" x="10" y="20" width="200" height="56" rx="28"/><text x="110" y="54" text-anchor="middle" font-weight="800">Checkout events</text>
+        <rect class="pill" x="10" y="90" width="200" height="56" rx="28"/><text x="110" y="124" text-anchor="middle" font-weight="800">Provider webhook</text>
+        <rect class="pill" x="10" y="160" width="200" height="56" rx="28"/><text x="110" y="194" text-anchor="middle" font-weight="800">90 second timer</text>
+        <rect class="pill" x="10" y="230" width="200" height="56" rx="28"/><text x="110" y="264" text-anchor="middle" font-weight="800">Reload or Back</text>
+        <!-- tangle -->
+        <path class="tangle" d="M210 48 L560 48"/><path class="tangle" d="M210 48 L560 118"/><path class="tangle" d="M210 48 L560 188"/>
+        <path class="tangle" d="M210 118 L560 258"/><path class="tangle" d="M210 118 L560 118"/><path class="tangle" d="M210 118 L560 48"/>
+        <path class="tangle" d="M210 188 L560 118"/><path class="tangle" d="M210 188 L560 188"/>
+        <path class="tangle" d="M210 258 L560 188"/><path class="tangle" d="M210 258 L560 48"/><path class="tangle" d="M210 258 L560 258"/>
+        <!-- stores -->
+        <rect class="store" x="560" y="20" width="290" height="56" rx="16"/><text x="575" y="44" font-weight="800">Page memory</text><text x="575" y="64" class="mute" font-size="13" font-weight="600">paid? charging?</text>
+        <rect class="store" x="560" y="90" width="290" height="56" rx="16"/><text x="575" y="114" font-weight="800">Screen label</text><text x="575" y="134" class="mute" font-size="13" font-weight="600">one of 7 words</text>
+        <rect class="store" x="560" y="160" width="290" height="56" rx="16"/><text x="575" y="184" font-weight="800">Tab storage</text><text x="575" y="204" class="mute" font-size="13" font-weight="600">paid? charging? reported?</text>
+        <rect class="store srv" x="560" y="230" width="290" height="56" rx="16"/><text x="575" y="254" font-weight="800">Server record</text><text x="575" y="274" class="mute" font-size="13" font-weight="600">charged at, failed at</text>
+        <text x="385" y="302" text-anchor="middle" class="mute" font-size="13" font-weight="600">everyone writes everything</text>
+      </svg>
+    </div>
+    <p class="sub">The bad moment: the checkout says completed, then the server learns the payment failed.</p>
+    <div class="bubbles">
+      <div class="bubble lie"><small>Page memory</small><b>"I'm paid"</b></div>
+      <div class="bubble lie"><small>Screen label</small><b>"Unlocking soon"</b></div>
+      <div class="bubble lie"><small>Tab storage</small><b>"Never show Buy"</b></div>
+      <div class="bubble truth"><small>Server record</small><b>"It failed"</b></div>
+    </div>
+    <p class="punch"><span>Nobody asked the server.</span> The customer waits forever, with no film and no Buy button.</p>
+  </section>
+
+  <section class="card" aria-labelledby="a">
+    <span class="badge after">After</span>
+    <h2 id="a">One state, and the moves between them</h2>
+    <div class="diagram">
+      <svg viewBox="0 0 870 300" role="img" aria-label="State diagram: Offer, Ready, Confirming, Paid waiting, Failed, Granted">
+        <defs>
+          <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--blue)"/></marker>
+          <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--green)"/></marker>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--red)"/></marker>
+        </defs>
+        <rect class="node start" x="10" y="30" width="150" height="56" rx="28"/><text x="85" y="64" text-anchor="middle" font-weight="800">Offer</text>
+        <rect class="node" x="250" y="30" width="150" height="56" rx="28"/><text x="325" y="64" text-anchor="middle" font-weight="800">Ready</text>
+        <rect class="node" x="490" y="30" width="150" height="56" rx="28"/><text x="565" y="64" text-anchor="middle" font-weight="800">Confirming</text>
+        <rect class="node" x="710" y="30" width="150" height="56" rx="28"/><text x="785" y="64" text-anchor="middle" font-weight="800">Paid, waiting</text>
+        <rect class="node fail" x="490" y="190" width="150" height="56" rx="28"/><text x="565" y="224" text-anchor="middle" font-weight="800">Failed</text>
+        <rect class="node end" x="710" y="190" width="150" height="56" rx="28"/><text x="785" y="224" text-anchor="middle" font-weight="800">Granted</text>
+
+        <line class="edge" x1="160" y1="58" x2="248" y2="58" marker-end="url(#ab)"/>
+        <line class="edge" x1="400" y1="58" x2="488" y2="58" marker-end="url(#ab)"/>
+        <text x="444" y="46" text-anchor="middle" class="mute" font-size="13" font-weight="700">charged</text>
+        <line class="edge" x1="640" y1="58" x2="708" y2="58" marker-end="url(#ab)"/>
+        <text x="674" y="46" text-anchor="middle" class="mute" font-size="13" font-weight="700">done</text>
+
+        <line class="edge grant" x1="785" y1="86" x2="785" y2="188" marker-end="url(#ag)"/>
+        <text x="777" y="143" text-anchor="end" class="mute" font-size="13" font-weight="700">grant</text>
+        <line class="edge grant" x1="620" y1="86" x2="728" y2="188" marker-end="url(#ag)"/>
+
+        <line class="edge fail" x1="565" y1="86" x2="565" y2="188" marker-end="url(#ar)"/>
+        <text x="557" y="143" text-anchor="end" class="mute" font-size="13" font-weight="700">failed</text>
+        <line class="edge new" x1="745" y1="86" x2="632" y2="194" marker-end="url(#ar)"/>
+        <text x="668" y="118" font-size="14" font-weight="800" style="fill:var(--red)">this move was missing</text>
+
+        <path class="edge" d="M 490 218 C 390 218, 340 170, 328 88" marker-end="url(#ab)"/>
+        <text x="385" y="206" text-anchor="middle" class="mute" font-size="13" font-weight="700">Buy again</text>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i style="border-color:var(--blue)"></i>normal</span>
+      <span><i style="border-color:var(--green)"></i>server grants</span>
+      <span><i style="border-color:var(--red)"></i>payment fails</span>
+      <span><i style="border-color:var(--red);border-top-style:dashed"></i>added by the fix</span>
+    </div>
+    <div class="wins">
+      <div class="win"><b>1 state</b><span>instead of four places</span></div>
+      <div class="win"><b>No contradictions</b><span>every move is named</span></div>
+      <div class="win"><b>Late grant still works</b><span>the token is always kept</span></div>
+    </div>
+  </section>
+  <section class="card" aria-labelledby="w">
+    <h2 id="w">What changes</h2>
+    <div class="compare">
+      <div class="side was">
+        <span class="badge before">Before</span>
+        <ul>
+          <li>Seven label words, two memory flags and four stored fields describe one payment.</li>
+          <li>Each event sets the pieces it remembers to set.</li>
+          <li>"Paid on the page, failed on the server" can happen and nothing flags it.</li>
+          <li>The rule "a paid key is never given up" is spread over several checks.</li>
+        </ul>
+      </div>
+      <div class="side now">
+        <span class="badge after">After</span>
+        <ul>
+          <li>Six states, written once, with the moves between them.</li>
+          <li>One function takes the state and an event and returns the next state.</li>
+          <li>An event that is not legal in a state is ignored, and a test says so.</li>
+          <li>The held token is kept through every move, so a late grant is always honoured.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="sub">The dashed move is already in the code, with a test that fails on the old code. The one-state rewrite around it is the next step.</p>
+  </section>
+</main>
+</body>
+</html>
