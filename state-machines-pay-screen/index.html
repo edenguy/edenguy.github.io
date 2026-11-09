@@ -86,6 +86,19 @@ svg .mute { fill: var(--mute); }
 .side ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
 .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: var(--mute); font-weight: 600; }
 .legend i { display: inline-block; width: 24px; border-top: 3px solid; vertical-align: middle; margin-right: 6px; }
+.bugs { display: grid; gap: 8px; }
+.bug { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: baseline; border-radius: 16px; padding: 10px 14px; background: var(--bg); }
+.bug b { font-size: 16px; }
+.bug span.what { color: var(--mute); font-weight: 600; font-size: 14px; grid-column: 2; }
+.sev { font-weight: 800; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; min-width: 76px; text-align: center; }
+.sev.high { background: var(--red-bg); color: var(--red); }
+.sev.med { background: var(--amber-bg); color: var(--amber); }
+.sev.low { background: var(--blue-bg); color: var(--blue); }
+.tally { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tally div { border-radius: 18px; padding: 12px; text-align: center; background: var(--blue-bg); }
+.tally div.hot { background: var(--red-bg); }
+.tally strong { display: block; font-family: var(--font-display); font-size: 34px; line-height: 1; }
+.tally small { font-weight: 800; color: var(--mute); }
 </style>
 </head>
 <body>
@@ -224,6 +237,18 @@ svg .mute { fill: var(--mute); }
       <div class="win"><b>No contradictions</b><span>every move is named</span></div>
       <div class="win"><b>Late grant still works</b><span>the token is always kept</span></div>
     </div>
+  </section>
+  <section class="card" aria-labelledby="f">
+    <h2 id="f">The bug we found</h2>
+    <div class="bugs">
+      <div class="bug"><span class="sev high">High</span><b>Paid, then failed</b><span class="what">A late "payment failed" after "completed" left the screen waiting for ever, with no way to buy again. Now the server is asked again and Buy comes back, with the token still held.</span></div>
+    </div>
+    <div class="tally">
+      <div class="hot"><strong>0</strong><small>critical</small></div>
+      <div class="hot"><strong>1</strong><small>high</small></div>
+      <div><strong>0</strong><small>other</small></div>
+    </div>
+    <p class="sub">Graded by Claude: high because a customer could not complete a purchase, not critical because no charge was lost and the server never let a failure block a grant. A test that failed on the old code is kept. Not an outside review.</p>
   </section>
   <section class="card" aria-labelledby="w">
     <h2 id="w">What changes</h2>
