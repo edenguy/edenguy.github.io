@@ -298,12 +298,15 @@ details.card[open] > summary::after { content: "Hide"; }
       <div class="bug"><span class="sev med">Medium</span><b>Dying build re-uploads</b><span class="what">An old review decision could skip the customer's review.</span></div>
       <div class="bug"><span class="sev med">Medium</span><b>Review clock races the decision</b><span class="what">When the review timer ran out as the customer decided, it could restore the old film over a film already rendering, or fail it.</span></div>
       <div class="bug"><span class="sev low">Low</span><b>Two render slots for one film</b><span class="what">After a failed record write, the next tick could claim a second slot, and the running film was queued again when the stray one expired.</span></div>
+      <div class="bug"><span class="sev low">Low</span><b>Erase races a kept draft</b><span class="what">A draft saved at the moment of an erase could bring the erased review back.</span></div>
+      <div class="bug"><span class="sev low">Low</span><b>Complete beside its review</b><span class="what">An old build could end a first half as complete while its review was still open.</span></div>
+      <div class="bug"><span class="sev low">Low</span><b>Cancel during launch</b><span class="what">A cancel that landed while a build was starting found nothing to stop, so the build ran for nobody.</span></div>
       <div class="bug"><span class="sev low">Low</span><b>Orphan record</b><span class="what">A refused start left a record that no build owned.</span></div>
     </div>
     <div class="tally">
       <div class="hot"><strong>0</strong><small>critical</small></div>
       <div class="hot"><strong>2</strong><small>high</small></div>
-      <div><strong>5</strong><small>other</small></div>
+      <div><strong>8</strong><small>other</small></div>
     </div>
     <p class="sub">Graded by Claude from the evidence, not by an outside review. The same method found 1 bug in payments and 3 in the file download.</p>
   </section>
@@ -313,16 +316,17 @@ details.card[open] > summary::after { content: "Hide"; }
     <div class="tally">
       <div class="hot"><strong>0</strong><small>critical</small></div>
       <div class="hot"><strong>5</strong><small>high</small></div>
-      <div><strong>12</strong><small>other</small></div>
+      <div><strong>17</strong><small>other</small></div>
     </div>
     <div class="wins">
-      <div class="win"><b>Job lifecycle</b><span>2 high, 3 medium, 2 low. High: a clean build shown as failed, and a cloud start stuck for ever.</span></div>
+      <div class="win"><b>Job lifecycle</b><span>2 high, 3 medium, 5 low. High: a clean build shown as failed, and a cloud start stuck for ever.</span></div>
       <div class="win"><b>Pay screen</b><span>1 high: no way to buy again after a late failure.</span></div>
       <div class="win"><b>Film download</b><span>2 medium, 1 low. Nothing lost; a power cut could break a resume.</span></div>
       <div class="win"><b>Page screen</b><span>1 medium: a slow answer from an old film could redraw the new film's downloads. Now owned by one job-standing table.</span></div>
       <div class="win"><b>Upload entries</b><span>1 low: a refused file could turn back to paused and be sent again. Entry state now has one owner.</span></div>
       <div class="win"><b>Status watch</b><span>1 low: a reopened live connection waited 150 s, not 5 s, before falling back to polling.</span></div>
       <div class="win"><b>Album log</b><span>1 medium: a finished or failed film could stay "running" in the owner's console. One function now keeps the record in step.</span></div>
+      <div class="win"><b>Review cover and wizard</b><span>1 medium, 1 low: unticking every photo at once could leave the cover choice behind, and leaving the wizard kept the page it left.</span></div>
       <div class="win"><b>Film availability</b><span>2 high: a failed purge was never retried, leaving a live purchase on a deleted film, and a film still being paid for could be deleted.</span></div>
     </div>
     <p class="sub">Every fix started with a test that failed on the old code. Graded by Claude from the evidence, with the reason beside each bug; none is critical because none lost money or a customer's film. Not an outside review. Fourteen more suspects were read and ruled out, among them a shared hand-over timer, which turned out to be safe.</p>
