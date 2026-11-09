@@ -540,7 +540,7 @@ function speakCurrent(){
 const chip=document.getElementById('chip');let chipShown=true;
 chip.addEventListener('click',()=>{if(!soundOn)sndB.click()});
 sndB.addEventListener('click',()=>{
-  soundOn=!soundOn;sndB.textContent=soundOn?'סאונד: פועל':'סאונד: כבוי';sndB.setAttribute('aria-pressed',soundOn);chip.hidden=soundOn;
+  soundOn=!soundOn;sndB.textContent=soundOn?'סאונד: פועל':'סאונד: כבוי';sndB.setAttribute('aria-pressed',soundOn);chip.hidden=soundOn;if(soundOn)chip.style.display='none';
   if(soundOn){
     initAudio();primeSpeech();pickVoice();
     pt=t;lastAu=-9;speakCurrent();
@@ -557,7 +557,7 @@ function render(){
   if(w!==pw){pw=w;cv.width=w;cv.height=Math.round(w*H/W)}
   const S=cv.width/W;ctx.setTransform(S,0,0,S,0,0);
   draw(t);audioTick();
-  {const cs=!soundOn&&t<7;if(cs!==chipShown){chipShown=cs;chip.hidden=!cs}}
+  {const cs=!soundOn&&t<7;if(cs!==chipShown){chipShown=cs;chip.hidden=!cs;chip.style.display=cs?'':'none'}}
   let si=-1;for(let i=0;i<SUBS.length;i++)if(t>=SUBS[i][0]&&t<SUBS[i][1]){si=i;break}
   if(si!==lastSub){lastSub=si;subEl.textContent=si<0?'':SUBS[si][2]}
   seek.value=Math.round(t*10);
