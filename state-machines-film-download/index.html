@@ -325,11 +325,11 @@ details.card[open] > summary::after { content: "Hide"; }
   element.classList.add('preparing');
   element.classList.remove('not-ready');   // bytes are coming: the film is not refused any more
 </pre>
-    <div class="src-label"><span class="badge before">Not built yet</span> 4. The one owner of the preparer's flags</div>
+    <div class="src-label"><span class="badge after">Built and merged</span> 4. The one owner of the preparer's flags</div>
     <pre class="src">const state = moveDownload(this.state, 'tap');   // looks the move up in a table
 // an illegal move is refused; the 12 flags and the button class
 // are read from the state, never set one by one</pre>
-    <p class="sub">Parts 1 to 3 are real code in the repository, each pinned by a test that failed before the fix. Part 4 is being built now.</p>
+    <p class="sub">Parts 1 to 3 are real code in the repository, each pinned by a test that failed before the fix. Part 4 is built too: fourteen states, ten events, one table, and the old flag names read from it.</p>
   </details>
 
   <section class="card" aria-labelledby="d">
@@ -337,7 +337,7 @@ details.card[open] > summary::after { content: "Hide"; }
     <div class="wins">
       <div class="win"><b>Already there</b><span>tests that pin the three download guarantees, so a "simplification" fails the build</span></div>
       <div class="win"><b>Added now</b><span>a failing test for each of the three bugs, kept for good</span></div>
-      <div class="win"><b>Planned</b><span>one owner for the preparer's 12 flags, with a commit check against writes outside it</span></div>
+      <div class="win"><b>Built</b><span>one owner for the download's four lifecycle flags, with a commit check against writes outside it</span></div>
     </div>
   </section>
 
@@ -361,7 +361,7 @@ details.card[open] > summary::after { content: "Hide"; }
         </ul>
       </div>
     </div>
-    <p class="sub">Three fixes are built and tested. The single owner for the preparer's flags is the next step.</p>
+    <p class="sub">Three fixes and the single owner are built and tested.</p>
   </section>
 </main>
 <script>
