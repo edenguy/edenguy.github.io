@@ -106,10 +106,8 @@ svg .mute { fill: var(--mute); }
   <section class="card" aria-labelledby="h">
     <h2 id="h">How we got here</h2>
     <div class="steps">
-      <div class="step"><span class="n">1</span><b>Ask</b><q>Find all of the implicit state machines in my app.</q><small>18 found</small></div>
-      <div class="step"><span class="n">2</span><b>Brief</b><q>Improve correctness, not simply introduce explicit state machines. Verify first, test before changing, one machine at a time, no wholesale rewrite.</q><small>the rules for Claude</small></div>
-      <div class="step"><span class="n">3</span><b>Check</b><q>Trace the whole lifecycle and prove each defect.</q><small>2 real bugs, 2 cleared</small></div>
-      <div class="step"><span class="n">4</span><b>Fix</b><q>Write the failing test first, then the smallest fix.</q><small>first fix merged</small></div>
+      <div class="step"><span class="n">1</span><b>Prompt one: find them</b><q>Find all of the implicit state machines in my app.</q><small>Result: 18 found, ranked by risk</small></div>
+      <div class="step"><span class="n">2</span><b>Prompt two: pin it down, then build it</b><q>Verify each finding against the code. First write tests that pin today's behaviour, including invalid moves, duplicates, retries and crashes. Then make the state explicit, one machine at a time, and keep existing records working.</q><small>Result: 2 real bugs proven, 2 cleared, first fix merged</small></div>
     </div>
   </section>
 
