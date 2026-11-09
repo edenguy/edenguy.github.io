@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Job Lifecycle</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: two big pictures, before and after, with one sentence each. */
+:root {
+  --bg: #fbf7f1; --card: #ffffff; --ink: #2a2a33; --mute: #6f6a76; --line: #e7dfd3;
+  --blue: #3b6fd4; --blue-bg: #e7eefc;
+  --green: #2b9a5c; --green-bg: #dff4e7;
+  --red: #d2473b; --red-bg: #fde7e3;
+  --amber: #b9770e; --amber-bg: #fdf0d3;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1b1a21; --card: #25242d; --ink: #f1eef6; --mute: #a9a3b3; --line: #38364a;
+    --blue: #86abff; --blue-bg: #25304f;
+    --green: #5fd391; --green-bg: #1c3a2a;
+    --red: #ff8478; --red-bg: #46231f;
+    --amber: #f2b658; --amber-bg: #43331a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1b1a21; --card: #25242d; --ink: #f1eef6; --mute: #a9a3b3; --line: #38364a;
+  --blue: #86abff; --blue-bg: #25304f;
+  --green: #5fd391; --green-bg: #1c3a2a;
+  --red: #ff8478; --red-bg: #46231f;
+  --amber: #f2b658; --amber-bg: #43331a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  padding-block: 28px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 920px; margin: 0 auto; display: grid; gap: 22px; }
+h1 { font-family: var(--font-display); font-size: clamp(28px, 6vw, 42px); line-height: 1.1; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: 26px; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.sub { color: var(--mute); font-size: 17px; }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 20px; display: grid; gap: 14px; min-width: 0; }
+.badge { justify-self: start; font-weight: 800; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; }
+.badge.before { background: var(--red-bg); color: var(--red); }
+.badge.after { background: var(--green-bg); color: var(--green); }
+.diagram { overflow-x: auto; }
+.diagram svg { width: 100%; height: auto; display: block; }
+.diagram .tall { display: none; max-width: 460px; margin: 0 auto; }
+@media (max-width: 700px) { .diagram .wide { display: none; } .diagram .tall { display: block; } }
+svg text { font-family: var(--font-body); fill: var(--ink); }
+svg .mute { fill: var(--mute); }
+.pill { fill: var(--amber-bg); stroke: var(--amber); stroke-width: 2; }
+.store { fill: var(--blue-bg); stroke: var(--blue); stroke-width: 2; }
+.store.srv { fill: var(--green-bg); stroke: var(--green); }
+.tangle { stroke: var(--mute); stroke-width: 1.4; opacity: .55; fill: none; }
+.node { fill: var(--card); stroke: var(--blue); stroke-width: 2.4; }
+.node.end { stroke: var(--green); fill: var(--green-bg); }
+.node.fail { stroke: var(--red); fill: var(--red-bg); }
+.node.start { stroke: var(--mute); }
+.edge { stroke: var(--blue); stroke-width: 2.4; fill: none; }
+.edge.grant { stroke: var(--green); }
+.edge.fail { stroke: var(--red); }
+.edge.new { stroke: var(--red); stroke-width: 3.2; stroke-dasharray: 7 5; }
+.bubbles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.bubble { border-radius: 18px; padding: 12px 14px; background: var(--blue-bg); display: grid; gap: 2px; }
+.bubble small { color: var(--mute); font-weight: 600; }
+.bubble b { font-size: 17px; }
+.bubble.lie { background: var(--red-bg); }
+.bubble.truth { background: var(--green-bg); }
+.punch { font-weight: 800; font-size: 18px; }
+.punch span { color: var(--red); }
+.wins { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.win { border-radius: 18px; background: var(--green-bg); padding: 14px; display: grid; gap: 4px; }
+.win b { font-size: 18px; }
+.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.side { border-radius: 18px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+.side.was { background: var(--red-bg); }
+.side.now { background: var(--green-bg); }
+.side ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: var(--mute); font-weight: 600; }
+.legend i { display: inline-block; width: 24px; border-top: 3px solid; vertical-align: middle; margin-right: 6px; }
+</style>
+
+<style>
+.guard { fill: var(--green-bg); stroke: var(--green); stroke-width: 2.4; }
+</style>
+</head>
+<body>
+<main>
+  <header style="display:grid;gap:6px">
+    <h1>The life of a film job</h1>
+    <p class="sub">From Create to the finished film, through review, cancel, reopen and restart. Before and after.</p>
+  </header>
+
+  <section class="card" aria-labelledby="b">
+    <span class="badge before">Before</span>
+    <h2 id="b">The job's state is scattered, and everyone re-derives it</h2>
+    <div class="diagram">
+      <svg class="wide" viewBox="0 0 860 340" role="img" aria-label="Five kinds of actors write a job's state into five kinds of places.">
+        <rect class="pill" x="10" y="20" width="210" height="50" rx="25"/><text x="115" y="50" text-anchor="middle" font-weight="800">Customer: cancel, reopen</text>
+        <rect class="pill" x="10" y="90" width="210" height="50" rx="25"/><text x="115" y="120" text-anchor="middle" font-weight="800">The build itself</text>
+        <rect class="pill" x="10" y="160" width="210" height="50" rx="25"/><text x="115" y="190" text-anchor="middle" font-weight="800">Cloud container</text>
+        <rect class="pill" x="10" y="230" width="210" height="50" rx="25"/><text x="115" y="260" text-anchor="middle" font-weight="800">Background tick</text>
+        <rect class="pill" x="10" y="298" width="210" height="36" rx="18"/><text x="115" y="322" text-anchor="middle" font-weight="800" font-size="14">Restart recovery</text>
+        <g class="tangle">
+          <path d="M220 45 L560 40"/><path d="M220 45 L560 110"/><path d="M220 45 L560 180"/><path d="M220 45 L560 250"/>
+          <path d="M220 115 L560 40"/><path d="M220 115 L560 110"/><path d="M220 115 L560 250"/>
+          <path d="M220 185 L560 110"/><path d="M220 185 L560 180"/><path d="M220 185 L560 40"/>
+          <path d="M220 255 L560 180"/><path d="M220 255 L560 40"/><path d="M220 255 L560 312"/>
+          <path d="M220 316 L560 110"/><path d="M220 316 L560 250"/><path d="M220 316 L560 312"/>
+        </g>
+        <rect class="store" x="560" y="14" width="290" height="52" rx="16"/><text x="575" y="38" font-weight="800">Status file</text><text x="575" y="57" class="mute" font-size="13" font-weight="600">state, phase, then</text>
+        <rect class="store" x="560" y="84" width="290" height="52" rx="16"/><text x="575" y="108" font-weight="800">Flag files</text><text x="575" y="127" class="mute" font-size="13" font-weight="600">cancelled, purged</text>
+        <rect class="store" x="560" y="154" width="290" height="52" rx="16"/><text x="575" y="178" font-weight="800">About 15 record files</text><text x="575" y="197" class="mute" font-size="13" font-weight="600">pid, review wait, run, reopen, slot</text>
+        <rect class="store" x="560" y="224" width="290" height="52" rx="16"/><text x="575" y="248" font-weight="800">Files that exist or not</text><text x="575" y="267" class="mute" font-size="13" font-weight="600">review decision, before-reopen</text>
+        <rect class="store srv" x="560" y="290" width="290" height="44" rx="16"/><text x="575" y="318" font-weight="800">Memory and the process table</text>
+      </svg>
+      <svg class="tall" viewBox="0 0 400 350" role="img" aria-label="Five kinds of actors write a job's state into five kinds of places.">
+        <rect class="pill" x="10" y="10" width="150" height="40" rx="20"/><text x="85" y="35" text-anchor="middle" font-weight="800" font-size="13">Customer</text>
+        <rect class="pill" x="10" y="76" width="150" height="40" rx="20"/><text x="85" y="101" text-anchor="middle" font-weight="800" font-size="13">The build</text>
+        <rect class="pill" x="10" y="142" width="150" height="40" rx="20"/><text x="85" y="167" text-anchor="middle" font-weight="800" font-size="13">Cloud container</text>
+        <rect class="pill" x="10" y="208" width="150" height="40" rx="20"/><text x="85" y="233" text-anchor="middle" font-weight="800" font-size="13">Background tick</text>
+        <rect class="pill" x="10" y="274" width="150" height="40" rx="20"/><text x="85" y="299" text-anchor="middle" font-weight="800" font-size="13">Restart recovery</text>
+        <g class="tangle">
+          <path d="M160 30 L240 31"/><path d="M160 30 L240 97"/><path d="M160 30 L240 163"/><path d="M160 30 L240 229"/>
+          <path d="M160 96 L240 31"/><path d="M160 96 L240 97"/><path d="M160 96 L240 229"/>
+          <path d="M160 162 L240 97"/><path d="M160 162 L240 163"/><path d="M160 162 L240 31"/>
+          <path d="M160 228 L240 163"/><path d="M160 228 L240 31"/><path d="M160 228 L240 295"/>
+          <path d="M160 294 L240 97"/><path d="M160 294 L240 229"/><path d="M160 294 L240 295"/>
+        </g>
+        <rect class="store" x="240" y="4" width="150" height="54" rx="14"/><text x="250" y="28" font-weight="800" font-size="13">Status file</text><text x="250" y="47" class="mute" font-size="11.5" font-weight="600">state, phase</text>
+        <rect class="store" x="240" y="70" width="150" height="54" rx="14"/><text x="250" y="94" font-weight="800" font-size="13">Flag files</text><text x="250" y="113" class="mute" font-size="11.5" font-weight="600">cancelled, purged</text>
+        <rect class="store" x="240" y="136" width="150" height="54" rx="14"/><text x="250" y="160" font-weight="800" font-size="13">15 record files</text><text x="250" y="179" class="mute" font-size="11.5" font-weight="600">pid, run, reopen</text>
+        <rect class="store" x="240" y="202" width="150" height="54" rx="14"/><text x="250" y="226" font-weight="800" font-size="13">Files there or not</text><text x="250" y="245" class="mute" font-size="11.5" font-weight="600">decision, reopened</text>
+        <rect class="store srv" x="240" y="268" width="150" height="54" rx="14"/><text x="250" y="292" font-weight="800" font-size="13">Memory, process</text><text x="250" y="311" class="mute" font-size="11.5" font-weight="600">in-process only</text>
+        <text x="200" y="344" text-anchor="middle" class="mute" font-size="13" font-weight="700">everyone writes, everyone re-derives</text>
+      </svg>
+    </div>
+    <p class="sub">13 modules write it. 9 different checks work out "what is this job doing" again from different pieces. 7 different rules decide "this run may still write".</p>
+    <p class="sub">The bad moment: a finishing build exits cleanly just as the customer reopens the selection.</p>
+    <div class="bubbles">
+      <div class="bubble lie"><small>The finishing build</small><b>"Exited fine, so complete"</b></div>
+      <div class="bubble lie"><small>The reopened run</small><b>"I'm running again"</b></div>
+      <div class="bubble lie"><small>The film folder</small><b>"Renamed under the new run"</b></div>
+      <div class="bubble truth"><small>The customer sees</small><b>"Failed", film on disk</b></div>
+    </div>
+    <p class="punch"><span>Nobody asked who owns the job now.</span> The old run wrote its verdict over the new one.</p>
+  </section>
+
+  <section class="card" aria-labelledby="a">
+    <span class="badge after">After</span>
+    <h2 id="a">Seven states, and a run only writes while it owns the job</h2>
+    <div class="diagram">
+      <svg class="wide" viewBox="0 -28 870 392" role="img" aria-label="Job states: Queued, Building, Waiting, Reviewing, Rendering, Complete, Failed, with a check at every verdict that the run still owns the job.">
+        <defs>
+          <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--blue)"/></marker>
+          <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--green)"/></marker>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--red)"/></marker>
+        </defs>
+        <rect class="node start" x="10" y="40" width="120" height="52" rx="26"/><text x="70" y="72" text-anchor="middle" font-weight="800">Queued</text>
+        <rect class="node" x="185" y="40" width="130" height="52" rx="26"/><text x="250" y="72" text-anchor="middle" font-weight="800">Building</text>
+        <rect class="node" x="370" y="40" width="130" height="52" rx="26"/><text x="435" y="72" text-anchor="middle" font-weight="800">Reviewing</text>
+        <rect class="node" x="555" y="40" width="130" height="52" rx="26"/><text x="620" y="72" text-anchor="middle" font-weight="800">Rendering</text>
+        <rect class="node end" x="740" y="40" width="120" height="52" rx="26"/><text x="800" y="72" text-anchor="middle" font-weight="800">Complete</text>
+        <rect class="node" x="185" y="190" width="130" height="52" rx="26"/><text x="250" y="222" text-anchor="middle" font-weight="800">Waiting</text>
+        <rect class="node fail" x="555" y="190" width="130" height="52" rx="26"/><text x="620" y="222" text-anchor="middle" font-weight="800">Failed</text>
+
+        <line class="edge" x1="130" y1="66" x2="183" y2="66" marker-end="url(#ab)"/>
+        <line class="edge" x1="315" y1="66" x2="368" y2="66" marker-end="url(#ab)"/>
+        <text x="342" y="54" text-anchor="middle" class="mute" font-size="13" font-weight="700">ready</text>
+        <line class="edge" x1="500" y1="66" x2="553" y2="66" marker-end="url(#ab)"/>
+        <text x="527" y="54" text-anchor="middle" class="mute" font-size="13" font-weight="700">chosen</text>
+        <line class="edge grant" x1="685" y1="66" x2="738" y2="66" marker-end="url(#ag)"/>
+        <text x="712" y="54" text-anchor="middle" class="mute" font-size="13" font-weight="700">done</text>
+
+        <line class="edge" x1="225" y1="92" x2="225" y2="188" marker-end="url(#ab)"/>
+        <line class="edge" x1="275" y1="188" x2="275" y2="94" marker-end="url(#ab)"/>
+        <text x="217" y="145" text-anchor="end" class="mute" font-size="13" font-weight="700">waits for another build</text>
+
+        <line class="edge fail" x1="620" y1="92" x2="620" y2="188" marker-end="url(#ar)"/>
+        <text x="612" y="145" text-anchor="end" class="mute" font-size="13" font-weight="700">error or cancel</text>
+        <text x="620" y="262" text-anchor="middle" class="mute" font-size="13" font-weight="700">the earlier film comes back</text>
+
+        <path class="edge" d="M 800 40 C 800 -30, 435 -30, 435 38" marker-end="url(#ab)"/>
+        <text x="618" y="-6" text-anchor="middle" class="mute" font-size="13" font-weight="700">reopen the selection</text>
+
+        <rect class="guard" x="10" y="288" width="850" height="64" rx="20"/>
+        <text x="30" y="314" font-weight="800">Before any run writes a verdict: does it still own the job?</text>
+        <text x="30" y="337" class="mute" font-size="14" font-weight="600">Cancelled or reopened since it started? Then it writes nothing and ends quietly. Done for a finishing build.</text>
+      </svg>
+      <svg class="tall" viewBox="0 0 400 560" role="img" aria-label="Job states: Queued, Building, Waiting, Reviewing, Rendering, Complete, Failed, with a check at every verdict that the run still owns the job.">
+        <defs>
+          <marker id="tab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--blue)"/></marker>
+          <marker id="tag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--green)"/></marker>
+          <marker id="tar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--red)"/></marker>
+        </defs>
+        <rect class="node start" x="30" y="10" width="130" height="48" rx="24"/><text x="95" y="40" text-anchor="middle" font-weight="800">Queued</text>
+        <rect class="node" x="30" y="90" width="130" height="48" rx="24"/><text x="95" y="120" text-anchor="middle" font-weight="800">Building</text>
+        <rect class="node" x="30" y="170" width="130" height="48" rx="24"/><text x="95" y="200" text-anchor="middle" font-weight="800">Reviewing</text>
+        <rect class="node" x="30" y="250" width="130" height="48" rx="24"/><text x="95" y="280" text-anchor="middle" font-weight="800">Rendering</text>
+        <rect class="node end" x="30" y="330" width="130" height="48" rx="24"/><text x="95" y="360" text-anchor="middle" font-weight="800">Complete</text>
+        <rect class="node" x="260" y="90" width="120" height="48" rx="24"/><text x="320" y="120" text-anchor="middle" font-weight="800">Waiting</text>
+        <rect class="node fail" x="260" y="250" width="120" height="48" rx="24"/><text x="320" y="280" text-anchor="middle" font-weight="800">Failed</text>
+
+        <line class="edge" x1="95" y1="58" x2="95" y2="88" marker-end="url(#tab)"/>
+        <line class="edge" x1="95" y1="138" x2="95" y2="168" marker-end="url(#tab)"/>
+        <text x="106" y="158" class="mute" font-size="13" font-weight="700">ready</text>
+        <line class="edge" x1="95" y1="218" x2="95" y2="248" marker-end="url(#tab)"/>
+        <text x="106" y="238" class="mute" font-size="13" font-weight="700">chosen</text>
+        <line class="edge grant" x1="95" y1="298" x2="95" y2="328" marker-end="url(#tag)"/>
+        <text x="106" y="318" class="mute" font-size="13" font-weight="700">done</text>
+
+        <line class="edge" x1="160" y1="106" x2="258" y2="106" marker-end="url(#tab)"/>
+        <text x="209" y="96" text-anchor="middle" class="mute" font-size="13" font-weight="700">waits</text>
+        <line class="edge" x1="258" y1="124" x2="162" y2="124" marker-end="url(#tab)"/>
+        <text x="209" y="144" text-anchor="middle" class="mute" font-size="13" font-weight="700">resumes</text>
+
+        <line class="edge fail" x1="160" y1="274" x2="258" y2="274" marker-end="url(#tar)"/>
+        <text x="209" y="264" text-anchor="middle" class="mute" font-size="13" font-weight="700">error / cancel</text>
+        <text x="320" y="322" text-anchor="middle" class="mute" font-size="12" font-weight="700">the earlier film</text>
+        <text x="320" y="338" text-anchor="middle" class="mute" font-size="12" font-weight="700">comes back</text>
+
+        <path class="edge" d="M 160 354 C 232 354, 232 194, 162 194" marker-end="url(#tab)"/>
+        <text x="236" y="380" class="mute" font-size="13" font-weight="700">reopen</text>
+
+        <rect class="guard" x="10" y="408" width="380" height="132" rx="20"/>
+        <text x="26" y="436" font-weight="800" font-size="15">Before a run writes a verdict:</text>
+        <text x="26" y="458" font-weight="800" font-size="15">does it still own the job?</text>
+        <text x="26" y="486" class="mute" font-size="13" font-weight="600">Cancelled or reopened since it started?</text>
+        <text x="26" y="506" class="mute" font-size="13" font-weight="600">Then it writes nothing and ends quietly.</text>
+        <text x="26" y="526" class="mute" font-size="13" font-weight="600">Done for a finishing build.</text>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i style="border-color:var(--blue)"></i>normal</span>
+      <span><i style="border-color:var(--green)"></i>finished</span>
+      <span><i style="border-color:var(--red)"></i>stops</span>
+    </div>
+    <div class="wins">
+      <div class="win"><b>Done</b><span>a finished build no longer completes over a reopened run</span></div>
+      <div class="win"><b>Next</b><span>a mark before a cloud start, so a cut start is found again</span></div>
+      <div class="win"><b>Next</b><span>one lock per job for cancel and reopen at the same moment</span></div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="w">
+    <h2 id="w">What changes</h2>
+    <div class="compare">
+      <div class="side was">
+        <span class="badge before">Before</span>
+        <ul>
+          <li>State lives in a status file, flag files, about 15 records and files that exist or not.</li>
+          <li>Nine checks each work out the state their own way.</li>
+          <li>Seven different rules decide whether a run may still write.</li>
+        </ul>
+      </div>
+      <div class="side now">
+        <span class="badge after">After</span>
+        <ul>
+          <li>Seven states, written once, with the moves between them.</li>
+          <li>One question before any verdict: does this run still own the job?</li>
+          <li>Existing job records keep their shape, so jobs in flight carry on.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="sub">The first guard is built and tested. The rest goes in one step at a time, each with a failing test first.</p>
+  </section>
+</main>
+</body>
+</html>
