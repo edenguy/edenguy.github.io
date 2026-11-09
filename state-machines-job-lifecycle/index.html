@@ -94,6 +94,19 @@ svg .mute { fill: var(--mute); }
 .step b { font-size: 17px; }
 .step q { font-style: italic; color: var(--ink); font-size: 14px; line-height: 1.35; }
 .step small { color: var(--mute); font-weight: 700; }
+.bugs { display: grid; gap: 8px; }
+.bug { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: baseline; border-radius: 16px; padding: 10px 14px; background: var(--bg); }
+.bug b { font-size: 16px; }
+.bug span.what { color: var(--mute); font-weight: 600; font-size: 14px; grid-column: 2; }
+.sev { font-weight: 800; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; min-width: 76px; text-align: center; }
+.sev.high { background: var(--red-bg); color: var(--red); }
+.sev.med { background: var(--amber-bg); color: var(--amber); }
+.sev.low { background: var(--blue-bg); color: var(--blue); }
+.tally { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tally div { border-radius: 18px; padding: 12px; text-align: center; background: var(--blue-bg); }
+.tally div.hot { background: var(--red-bg); }
+.tally strong { display: block; font-family: var(--font-display); font-size: 34px; line-height: 1; }
+.tally small { font-weight: 800; color: var(--mute); }
 .guard { fill: var(--green-bg); stroke: var(--green); stroke-width: 2.4; }
 </style>
 </head>
@@ -109,7 +122,7 @@ svg .mute { fill: var(--mute); }
     <h2 id="h">How we got here</h2>
     <div class="steps">
       <div class="step"><span class="n">1</span><b>Prompt one: find them</b><q>Find all of the implicit state machines in my app.</q><small>Result: 18 found, ranked by risk</small></div>
-      <div class="step"><span class="n">2</span><b>Prompt two: pin it down, then build it</b><q>Verify each finding against the code. First write tests that pin today's behaviour, including invalid moves, duplicates, retries and crashes. Then make the state explicit, one machine at a time, and keep existing records working.</q><small>Result: 3 bugs found and fixed so far, each with a failing test first</small></div>
+      <div class="step"><span class="n">2</span><b>Prompt two: pin it down, then build it</b><q>Verify each finding against the code. First write tests that pin today's behaviour, including invalid moves, duplicates, retries and crashes. Then make the state explicit, one machine at a time, and keep existing records working.</q><small>Result: 5 job bugs found and fixed, each with a failing test first</small></div>
     </div>
   </section>
 
@@ -260,8 +273,35 @@ svg .mute { fill: var(--mute); }
     <div class="wins">
       <div class="win"><b>Done</b><span>a finished build no longer completes over a reopened run</span></div>
       <div class="win"><b>Done</b><span>a cut cloud start is ended after 10 minutes, not left on Starting forever</span></div>
-      <div class="win"><b>Next</b><span>one lock per job for cancel and reopen at the same moment</span></div>
+      <div class="win"><b>Done</b><span>one lock per job, so two cancels at once cannot fail a restored film</span></div>
     </div>
+  </section>
+
+  <section class="card" aria-labelledby="f">
+    <h2 id="f">The bugs we found</h2>
+    <div class="bugs">
+      <div class="bug"><span class="sev high">High</span><b>Finish over reopen</b><span class="what">A film showed "failed" after a clean build, with the film on disk.</span></div>
+      <div class="bug"><span class="sev high">High</span><b>Cut cloud start</b><span class="what">"Starting your film" stayed on screen for ever.</span></div>
+      <div class="bug"><span class="sev med">Medium</span><b>Two cancels at once</b><span class="what">The second one failed the film the first had restored.</span></div>
+      <div class="bug"><span class="sev med">Medium</span><b>Dying build re-uploads</b><span class="what">An old review decision could skip the customer's review.</span></div>
+      <div class="bug"><span class="sev low">Low</span><b>Orphan record</b><span class="what">A refused start left a record that no build owned.</span></div>
+    </div>
+    <div class="tally">
+      <div class="hot"><strong>0</strong><small>critical</small></div>
+      <div class="hot"><strong>2</strong><small>high</small></div>
+      <div><strong>3</strong><small>other</small></div>
+    </div>
+    <p class="sub">Graded by Claude from the evidence, not by an outside review. The same method found 1 bug in payments and 3 in the file download.</p>
+  </section>
+
+  <section class="card" aria-labelledby="d">
+    <h2 id="d">So it does not drift back</h2>
+    <div class="wins">
+      <div class="win"><b>One owner</b><span>one function is the only place allowed to change a job's state</span></div>
+      <div class="win"><b>A table test</b><span>every state and event is tried, so a new move must be listed</span></div>
+      <div class="win"><b>A commit check</b><span>a write to job state outside the owner fails the commit</span></div>
+    </div>
+    <p class="sub">Planned. None of the three is built for the job lifecycle yet.</p>
   </section>
 
   <section class="card" aria-labelledby="w">
@@ -284,7 +324,7 @@ svg .mute { fill: var(--mute); }
         </ul>
       </div>
     </div>
-    <p class="sub">Two guards are built and tested. The rest goes in one step at a time, each with a failing test first.</p>
+    <p class="sub">Five guards are built and tested. The seven-state owner is the next step, and it goes in with a failing test first.</p>
   </section>
 </main>
 <script>
