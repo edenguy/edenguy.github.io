@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Film Download</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: two big pictures, before and after, with one sentence each. */
+:root {
+  --bg: #fbf7f1; --card: #ffffff; --ink: #2a2a33; --mute: #6f6a76; --line: #e7dfd3;
+  --blue: #3b6fd4; --blue-bg: #e7eefc;
+  --green: #2b9a5c; --green-bg: #dff4e7;
+  --red: #d2473b; --red-bg: #fde7e3;
+  --amber: #b9770e; --amber-bg: #fdf0d3;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "Nunito", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1b1a21; --card: #25242d; --ink: #f1eef6; --mute: #a9a3b3; --line: #38364a;
+    --blue: #86abff; --blue-bg: #25304f;
+    --green: #5fd391; --green-bg: #1c3a2a;
+    --red: #ff8478; --red-bg: #46231f;
+    --amber: #f2b658; --amber-bg: #43331a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1b1a21; --card: #25242d; --ink: #f1eef6; --mute: #a9a3b3; --line: #38364a;
+  --blue: #86abff; --blue-bg: #25304f;
+  --green: #5fd391; --green-bg: #1c3a2a;
+  --red: #ff8478; --red-bg: #46231f;
+  --amber: #f2b658; --amber-bg: #43331a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+svg, svg * { -webkit-user-select: none; user-select: none; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  padding-block: 28px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+main { max-width: 920px; margin: 0 auto; display: grid; gap: 22px; }
+h1 { font-family: var(--font-display); font-size: clamp(28px, 6vw, 42px); line-height: 1.1; margin: 0; text-wrap: balance; }
+h2 { font-family: var(--font-display); font-size: 26px; margin: 0; text-wrap: balance; }
+p { margin: 0; }
+.sub { color: var(--mute); font-size: 17px; }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 22px; padding: 20px; display: grid; gap: 14px; min-width: 0; }
+.badge { justify-self: start; font-weight: 800; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; }
+.badge.before { background: var(--red-bg); color: var(--red); }
+.badge.after { background: var(--green-bg); color: var(--green); }
+.diagram { overflow-x: auto; }
+.diagram svg { width: 100%; height: auto; display: block; }
+.diagram .tall { display: none; max-width: 460px; margin: 0 auto; }
+@media (max-width: 700px) { .diagram .wide { display: none; } .diagram .tall { display: block; } }
+svg text { font-family: var(--font-body); fill: var(--ink); }
+svg .mute { fill: var(--mute); }
+.pill { fill: var(--amber-bg); stroke: var(--amber); stroke-width: 2; }
+.store { fill: var(--blue-bg); stroke: var(--blue); stroke-width: 2; }
+.store.srv { fill: var(--green-bg); stroke: var(--green); }
+.tangle { stroke: var(--mute); stroke-width: 1.4; opacity: .55; fill: none; }
+.node { fill: var(--card); stroke: var(--blue); stroke-width: 2.4; }
+.node.end { stroke: var(--green); fill: var(--green-bg); }
+.node.fail { stroke: var(--red); fill: var(--red-bg); }
+.node.start { stroke: var(--mute); }
+.edge { stroke: var(--blue); stroke-width: 2.4; fill: none; }
+.edge.grant { stroke: var(--green); }
+.edge.fail { stroke: var(--red); }
+.edge.new { stroke: var(--red); stroke-width: 3.2; stroke-dasharray: 7 5; }
+.bubbles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.bubble { border-radius: 18px; padding: 12px 14px; background: var(--blue-bg); display: grid; gap: 2px; }
+.bubble small { color: var(--mute); font-weight: 600; }
+.bubble b { font-size: 17px; }
+.bubble.lie { background: var(--red-bg); }
+.bubble.truth { background: var(--green-bg); }
+.punch { font-weight: 800; font-size: 18px; }
+.punch span { color: var(--red); }
+.wins { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+.win { border-radius: 18px; background: var(--green-bg); padding: 14px; display: grid; gap: 4px; }
+.win b { font-size: 18px; }
+.compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.side { border-radius: 18px; padding: 16px; display: grid; gap: 10px; align-content: start; }
+.side.was { background: var(--red-bg); }
+.side.now { background: var(--green-bg); }
+.side ul { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 14px; color: var(--mute); font-weight: 600; }
+.legend i { display: inline-block; width: 24px; border-top: 3px solid; vertical-align: middle; margin-right: 6px; }
+</style>
+
+<style>
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; }
+.step { border-radius: 18px; background: var(--blue-bg); padding: 14px; display: grid; gap: 6px; align-content: start; }
+.step .n { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: var(--card); font-weight: 800; display: grid; place-items: center; }
+.step b { font-size: 17px; }
+.step q { font-style: italic; color: var(--ink); font-size: 14px; line-height: 1.35; }
+.step small { color: var(--mute); font-weight: 700; }
+.bugs { display: grid; gap: 8px; }
+.bug { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; align-items: baseline; border-radius: 16px; padding: 10px 14px; background: var(--bg); }
+.bug b { font-size: 16px; }
+.bug span.what { color: var(--mute); font-weight: 600; font-size: 14px; grid-column: 2; }
+.sev { font-weight: 800; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; min-width: 76px; text-align: center; }
+.sev.high { background: var(--red-bg); color: var(--red); }
+.sev.med { background: var(--amber-bg); color: var(--amber); }
+.sev.low { background: var(--blue-bg); color: var(--blue); }
+.tally { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.tally div { border-radius: 18px; padding: 12px; text-align: center; background: var(--blue-bg); }
+.tally div.hot { background: var(--red-bg); }
+.tally strong { display: block; font-family: var(--font-display); font-size: 34px; line-height: 1; }
+.tally small { font-weight: 800; color: var(--mute); }
+.guard { fill: var(--green-bg); stroke: var(--green); stroke-width: 2.4; }
+</style>
+</head>
+<body>
+<main>
+  <header style="display:grid;gap:6px">
+    <h1>The film download</h1>
+    <p class="sub">How a film is fetched in chunks to a phone, and the state that tracks it. Before and after.</p>
+    <p class="sub" style="font-weight:800">By Guy Eden</p>
+  </header>
+
+  <section class="card" aria-labelledby="b">
+    <span class="badge before">Before</span>
+    <h2 id="b">Five places each hold part of the download</h2>
+    <div class="diagram">
+      <svg class="wide" viewBox="0 0 860 350" role="img" aria-label="Four actors write a download's state into five places.">
+        <rect class="pill" x="10" y="20" width="210" height="50" rx="25"/><text x="115" y="50" text-anchor="middle" font-weight="800">The worker</text>
+        <rect class="pill" x="10" y="95" width="210" height="50" rx="25"/><text x="115" y="125" text-anchor="middle" font-weight="800">The preparer</text>
+        <rect class="pill" x="10" y="170" width="210" height="50" rx="25"/><text x="115" y="200" text-anchor="middle" font-weight="800">The share button</text>
+        <rect class="pill" x="10" y="245" width="210" height="50" rx="25"/><text x="115" y="275" text-anchor="middle" font-weight="800">Pause, Cancel, reload</text>
+        <g class="tangle">
+          <path d="M220 45 L560 40"/><path d="M220 45 L560 110"/><path d="M220 45 L560 250"/><path d="M220 45 L560 320"/>
+          <path d="M220 120 L560 180"/><path d="M220 120 L560 110"/><path d="M220 120 L560 40"/>
+          <path d="M220 195 L560 250"/><path d="M220 195 L560 180"/><path d="M220 195 L560 110"/>
+          <path d="M220 270 L560 320"/><path d="M220 270 L560 250"/><path d="M220 270 L560 40"/><path d="M220 270 L560 180"/>
+        </g>
+        <rect class="store" x="560" y="14" width="290" height="52" rx="16"/><text x="575" y="38" font-weight="800">Chunk map</text><text x="575" y="57" class="mute" font-size="13" font-weight="600">0, 1 or 2 for every chunk</text>
+        <rect class="store" x="560" y="84" width="290" height="52" rx="16"/><text x="575" y="108" font-weight="800">Sidecar files</text><text x="575" y="127" class="mute" font-size="13" font-weight="600">.map, .partial, .partN</text>
+        <rect class="store" x="560" y="154" width="290" height="52" rx="16"/><text x="575" y="178" font-weight="800">12 preparer booleans</text><text x="575" y="197" class="mute" font-size="13" font-weight="600">preparing, fetching, finished...</text>
+        <rect class="store" x="560" y="224" width="290" height="52" rx="16"/><text x="575" y="248" font-weight="800">6 button classes</text><text x="575" y="267" class="mute" font-size="13" font-weight="600">pressed, done, not-ready...</text>
+        <rect class="store srv" x="560" y="294" width="290" height="52" rx="16"/><text x="575" y="318" font-weight="800">The stored film file</text><text x="575" y="337" class="mute" font-size="13" font-weight="600">the right size, or not</text>
+      </svg>
+      <svg class="tall" viewBox="0 0 400 390" role="img" aria-label="Four actors write a download's state into five places.">
+        <rect class="pill" x="10" y="14" width="150" height="46" rx="23"/><text x="85" y="42" text-anchor="middle" font-weight="800" font-size="13">The worker</text>
+        <rect class="pill" x="10" y="94" width="150" height="46" rx="23"/><text x="85" y="122" text-anchor="middle" font-weight="800" font-size="13">The preparer</text>
+        <rect class="pill" x="10" y="174" width="150" height="46" rx="23"/><text x="85" y="202" text-anchor="middle" font-weight="800" font-size="13">Share button</text>
+        <rect class="pill" x="10" y="254" width="150" height="46" rx="23"/><text x="85" y="282" text-anchor="middle" font-weight="800" font-size="13">Pause, reload</text>
+        <g class="tangle">
+          <path d="M160 37 L240 34"/><path d="M160 37 L240 100"/><path d="M160 37 L240 230"/>
+          <path d="M160 117 L240 166"/><path d="M160 117 L240 100"/><path d="M160 117 L240 34"/>
+          <path d="M160 197 L240 230"/><path d="M160 197 L240 166"/><path d="M160 197 L240 100"/>
+          <path d="M160 277 L240 296"/><path d="M160 277 L240 230"/><path d="M160 277 L240 34"/>
+        </g>
+        <rect class="store" x="240" y="8" width="150" height="54" rx="14"/><text x="250" y="32" font-weight="800" font-size="13">Chunk map</text><text x="250" y="51" class="mute" font-size="11.5" font-weight="600">0, 1 or 2</text>
+        <rect class="store" x="240" y="74" width="150" height="54" rx="14"/><text x="250" y="98" font-weight="800" font-size="13">Sidecar files</text><text x="250" y="117" class="mute" font-size="11.5" font-weight="600">.map .partial .partN</text>
+        <rect class="store" x="240" y="140" width="150" height="54" rx="14"/><text x="250" y="164" font-weight="800" font-size="13">12 booleans</text><text x="250" y="183" class="mute" font-size="11.5" font-weight="600">in the preparer</text>
+        <rect class="store" x="240" y="206" width="150" height="54" rx="14"/><text x="250" y="230" font-weight="800" font-size="13">6 button classes</text><text x="250" y="249" class="mute" font-size="11.5" font-weight="600">pressed, done...</text>
+        <rect class="store srv" x="240" y="272" width="150" height="54" rx="14"/><text x="250" y="296" font-weight="800" font-size="13">The film file</text><text x="250" y="315" class="mute" font-size="11.5" font-weight="600">right size or not</text>
+        <text x="200" y="360" text-anchor="middle" class="mute" font-size="13" font-weight="700">each one keeps its own idea of "running"</text>
+      </svg>
+    </div>
+    <p class="sub">The bad moment: a download is paused during its size check, then started again.</p>
+    <div class="bubbles">
+      <div class="bubble lie"><small>The old run</small><b>"I'm done, clearing the flags"</b></div>
+      <div class="bubble lie"><small>The new run</small><b>"I'm still going"</b></div>
+      <div class="bubble lie"><small>The next tap</small><b>"Nothing is running"</b></div>
+      <div class="bubble truth"><small>The phone</small><b>Two downloads of one film</b></div>
+    </div>
+    <p class="punch"><span>Nobody asked which run owns the flags.</span> The old run wiped the new run's state.</p>
+  </section>
+
+  <section class="card" aria-labelledby="a">
+    <span class="badge after">After</span>
+    <h2 id="a">Each chunk and each download has named states, and a run touches only its own</h2>
+    <div class="diagram">
+      <svg class="wide" viewBox="0 0 870 520" role="img" aria-label="A chunk goes from to fetch to in flight to done. A download goes from idle to preparing to fetching to ready, or to failed.">
+        <defs>
+          <marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--blue)"/></marker>
+          <marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--green)"/></marker>
+          <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--red)"/></marker>
+        </defs>
+        <text x="10" y="16" font-weight="800" class="mute" font-size="14">ONE CHUNK</text>
+        <rect class="node start" x="150" y="28" width="150" height="48" rx="24"/><text x="225" y="58" text-anchor="middle" font-weight="800">To fetch · 0</text>
+        <rect class="node" x="390" y="28" width="150" height="48" rx="24"/><text x="465" y="58" text-anchor="middle" font-weight="800">In flight · 1</text>
+        <rect class="node end" x="630" y="28" width="150" height="48" rx="24"/><text x="705" y="58" text-anchor="middle" font-weight="800">Done · 2</text>
+        <line class="edge" x1="300" y1="52" x2="388" y2="52" marker-end="url(#ab)"/>
+        <line class="edge grant" x1="540" y1="52" x2="628" y2="52" marker-end="url(#ag)"/>
+        <text x="584" y="42" text-anchor="middle" class="mute" font-size="13" font-weight="700">bytes in</text>
+        <path class="edge fail" d="M 440 76 C 420 118, 270 118, 240 78" marker-end="url(#ar)"/>
+        <text x="338" y="116" text-anchor="middle" class="mute" font-size="13" font-weight="700">any failure</text>
+        <text x="705" y="98" text-anchor="middle" class="mute" font-size="12" font-weight="700">saved to the map after the flush</text>
+
+        <text x="10" y="168" font-weight="800" class="mute" font-size="14">THE DOWNLOAD</text>
+        <rect class="node start" x="10" y="200" width="130" height="48" rx="24"/><text x="75" y="230" text-anchor="middle" font-weight="800">Idle</text>
+        <rect class="node" x="200" y="200" width="140" height="48" rx="24"/><text x="270" y="230" text-anchor="middle" font-weight="800">Preparing</text>
+        <rect class="node" x="400" y="200" width="140" height="48" rx="24"/><text x="470" y="230" text-anchor="middle" font-weight="800">Fetching</text>
+        <rect class="node end" x="660" y="200" width="140" height="48" rx="24"/><text x="730" y="230" text-anchor="middle" font-weight="800">Ready</text>
+        <rect class="node fail" x="400" y="330" width="140" height="48" rx="24"/><text x="470" y="360" text-anchor="middle" font-weight="800">Failed</text>
+        <line class="edge" x1="140" y1="224" x2="198" y2="224" marker-end="url(#ab)"/>
+        <text x="169" y="214" text-anchor="middle" class="mute" font-size="13" font-weight="700">tap</text>
+        <line class="edge" x1="340" y1="224" x2="398" y2="224" marker-end="url(#ab)"/>
+        <text x="369" y="214" text-anchor="middle" class="mute" font-size="13" font-weight="700">size</text>
+        <line class="edge grant" x1="540" y1="224" x2="658" y2="224" marker-end="url(#ag)"/>
+        <text x="599" y="214" text-anchor="middle" class="mute" font-size="13" font-weight="700">all chunks done</text>
+        <line class="edge fail" x1="470" y1="248" x2="470" y2="328" marker-end="url(#ar)"/>
+        <text x="478" y="292" class="mute" font-size="13" font-weight="700">file lost 3 times</text>
+        <path class="edge" d="M 400 354 C 200 354, 75 330, 75 250" marker-end="url(#ab)"/>
+        <text x="190" y="346" text-anchor="middle" class="mute" font-size="13" font-weight="700">tap to retry</text>
+        <path class="edge" d="M 500 200 C 500 150, 75 150, 75 198" marker-end="url(#ab)"/>
+        <text x="300" y="166" text-anchor="middle" class="mute" font-size="13" font-weight="700">pause or Cancel: the files are kept</text>
+
+        <rect class="guard" x="10" y="404" width="850" height="108" rx="20"/>
+        <text x="30" y="432" font-weight="800">Three rules the fixes added</text>
+        <text x="30" y="456" class="mute" font-size="14" font-weight="600">1. A run clears the flags only while it is still the current run.</text>
+        <text x="30" y="478" class="mute" font-size="14" font-weight="600">2. The button shows one state at a time.</text>
+        <text x="30" y="500" class="mute" font-size="14" font-weight="600">3. The map says "done" only after the film's bytes are flushed.</text>
+      </svg>
+      <svg class="tall" viewBox="0 0 400 700" role="img" aria-label="A chunk goes from to fetch to in flight to done. A download goes from idle to preparing to fetching to ready, or to failed.">
+        <defs>
+          <marker id="tab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--blue)"/></marker>
+          <marker id="tag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--green)"/></marker>
+          <marker id="tar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="var(--red)"/></marker>
+        </defs>
+        <text x="10" y="16" font-weight="800" class="mute" font-size="13">ONE CHUNK</text>
+        <rect class="node start" x="10" y="28" width="112" height="44" rx="22"/><text x="66" y="55" text-anchor="middle" font-weight="800" font-size="13">To fetch · 0</text>
+        <rect class="node" x="144" y="28" width="112" height="44" rx="22"/><text x="200" y="55" text-anchor="middle" font-weight="800" font-size="13">In flight · 1</text>
+        <rect class="node end" x="278" y="28" width="112" height="44" rx="22"/><text x="334" y="55" text-anchor="middle" font-weight="800" font-size="13">Done · 2</text>
+        <line class="edge" x1="122" y1="50" x2="142" y2="50" marker-end="url(#tab)"/>
+        <line class="edge grant" x1="256" y1="50" x2="276" y2="50" marker-end="url(#tag)"/>
+        <path class="edge fail" d="M 190 72 C 170 108, 90 108, 76 74" marker-end="url(#tar)"/>
+        <text x="132" y="116" text-anchor="middle" class="mute" font-size="12" font-weight="700">any failure</text>
+        <text x="334" y="92" text-anchor="middle" class="mute" font-size="11" font-weight="700">map saved after the flush</text>
+
+        <text x="10" y="156" font-weight="800" class="mute" font-size="13">THE DOWNLOAD</text>
+        <rect class="node start" x="50" y="172" width="130" height="46" rx="23"/><text x="115" y="201" text-anchor="middle" font-weight="800">Idle</text>
+        <rect class="node" x="50" y="252" width="130" height="46" rx="23"/><text x="115" y="281" text-anchor="middle" font-weight="800">Preparing</text>
+        <rect class="node" x="50" y="332" width="130" height="46" rx="23"/><text x="115" y="361" text-anchor="middle" font-weight="800">Fetching</text>
+        <rect class="node end" x="50" y="412" width="130" height="46" rx="23"/><text x="115" y="441" text-anchor="middle" font-weight="800">Ready</text>
+        <rect class="node fail" x="250" y="332" width="130" height="46" rx="23"/><text x="315" y="361" text-anchor="middle" font-weight="800">Failed</text>
+        <line class="edge" x1="115" y1="218" x2="115" y2="250" marker-end="url(#tab)"/>
+        <text x="126" y="240" class="mute" font-size="12" font-weight="700">tap</text>
+        <line class="edge" x1="115" y1="298" x2="115" y2="330" marker-end="url(#tab)"/>
+        <text x="126" y="320" class="mute" font-size="12" font-weight="700">size known</text>
+        <line class="edge grant" x1="115" y1="378" x2="115" y2="410" marker-end="url(#tag)"/>
+        <text x="126" y="400" class="mute" font-size="12" font-weight="700">all chunks done</text>
+        <line class="edge fail" x1="180" y1="355" x2="248" y2="355" marker-end="url(#tar)"/>
+        <text x="214" y="344" text-anchor="middle" class="mute" font-size="12" font-weight="700">lost x3</text>
+        <path class="edge" d="M 315 332 C 315 220, 250 195, 182 195" marker-end="url(#tab)"/>
+        <text x="270" y="250" class="mute" font-size="12" font-weight="700">tap to retry</text>
+        <path class="edge" d="M 50 355 C 6 355, 6 195, 48 195" marker-end="url(#tab)"/>
+        <text x="20" y="290" text-anchor="middle" class="mute" font-size="12" font-weight="700" transform="rotate(-90 20 290)">pause or Cancel: files kept</text>
+
+        <rect class="guard" x="10" y="488" width="380" height="200" rx="20"/>
+        <text x="26" y="518" font-weight="800" font-size="15">Three rules the fixes added</text>
+        <text x="26" y="548" class="mute" font-size="13" font-weight="600">1. A run clears the flags only</text>
+        <text x="26" y="566" class="mute" font-size="13" font-weight="600">    while it is the current run.</text>
+        <text x="26" y="598" class="mute" font-size="13" font-weight="600">2. The button shows one state</text>
+        <text x="26" y="616" class="mute" font-size="13" font-weight="600">    at a time.</text>
+        <text x="26" y="648" class="mute" font-size="13" font-weight="600">3. The map says "done" only after</text>
+        <text x="26" y="666" class="mute" font-size="13" font-weight="600">    the film's bytes are flushed.</text>
+      </svg>
+    </div>
+    <div class="legend">
+      <span><i style="border-color:var(--blue)"></i>normal</span>
+      <span><i style="border-color:var(--green)"></i>success</span>
+      <span><i style="border-color:var(--red)"></i>failure</span>
+    </div>
+    <div class="wins">
+      <div class="win"><b>Kept</b><span>16 MB chunks over 8 connections, resume from the saved map, the button as the only progress bar</span></div>
+      <div class="win"><b>Unchanged</b><span>the saved map format, so a half-finished download still resumes</span></div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="f">
+    <h2 id="f">The bugs we found</h2>
+    <div class="bugs">
+      <div class="bug"><span class="sev med">Medium</span><b>Old run wipes the new run</b><span class="what">A paused run finishing late cleared the next run's flags, so the next tap started a second download of the same film.</span></div>
+      <div class="bug"><span class="sev med">Medium</span><b>Map says done too early</b><span class="what">The saved map marked a chunk done before the film's last bytes were flushed. Only a power loss shows it.</span></div>
+      <div class="bug"><span class="sev low">Low</span><b>Two button states at once</b><span class="what">After a refusal, a retry kept "not ready" on top of "preparing".</span></div>
+    </div>
+    <div class="tally">
+      <div class="hot"><strong>0</strong><small>critical</small></div>
+      <div class="hot"><strong>0</strong><small>high</small></div>
+      <div><strong>3</strong><small>other</small></div>
+    </div>
+    <p class="sub">Graded by Claude from the evidence, not by an outside review. Five more suspects were checked against the code and ruled out.</p>
+  </section>
+
+  <section class="card" aria-labelledby="d">
+    <h2 id="d">So it does not drift back</h2>
+    <div class="wins">
+      <div class="win"><b>Already there</b><span>tests that pin the three download guarantees, so a "simplification" fails the build</span></div>
+      <div class="win"><b>Added now</b><span>a failing test for each of the three bugs, kept for good</span></div>
+      <div class="win"><b>Planned</b><span>one owner for the preparer's 12 flags, with a commit check against writes outside it</span></div>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="w">
+    <h2 id="w">What changes</h2>
+    <div class="compare">
+      <div class="side was">
+        <span class="badge before">Before</span>
+        <ul>
+          <li>A chunk map, sidecar files, 12 booleans and 6 button classes each describe the download.</li>
+          <li>Any run could clear flags that a newer run had set.</li>
+          <li>The map could say done before the bytes were safe.</li>
+        </ul>
+      </div>
+      <div class="side now">
+        <span class="badge after">After</span>
+        <ul>
+          <li>Named states for a chunk and for the download, with the moves between them.</li>
+          <li>A run only changes flags while it is current.</li>
+          <li>The map follows the flush, and the button shows one state.</li>
+        </ul>
+      </div>
+    </div>
+    <p class="sub">Three fixes are built and tested. The single owner for the preparer's flags is the next step.</p>
+  </section>
+</main>
+<script>
+['copy', 'cut', 'selectstart', 'dragstart', 'contextmenu'].forEach(function (name) {
+  document.addEventListener(name, function (event) { event.preventDefault(); });
+});
+</script>
+</body>
+</html>
