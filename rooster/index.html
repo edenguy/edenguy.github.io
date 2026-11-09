@@ -50,6 +50,7 @@ canvas{display:block;width:100%;height:100%}
 .sub{position:absolute;inset-inline:0;bottom:5%;display:flex;justify-content:center;padding-inline:4%;pointer-events:none;min-width:0}
 .sub span{background:rgba(6,7,16,.72);color:#fff;font-weight:700;line-height:1.45;text-align:center;
   font-size:clamp(14px,5.4cqw,28px);padding:.3em .8em;border-radius:6px;max-width:100%;text-wrap:balance}
+[hidden]{display:none!important}
 .sub span:empty{display:none}
 .chip{position:absolute;left:50%;bottom:21%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;white-space:nowrap;
   background:rgba(8,10,22,.84);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:9px 16px;
@@ -536,7 +537,7 @@ function speakCurrent(){
   const c=cues.find(c=>t>=c[0]-.1&&t<c[1]-.8);
   if(c)speak(c[3],c[2],c[1]-t,c[1]);
 }
-const chip=document.getElementById('chip');
+const chip=document.getElementById('chip');let chipShown=true;
 chip.addEventListener('click',()=>{if(!soundOn)sndB.click()});
 sndB.addEventListener('click',()=>{
   soundOn=!soundOn;sndB.textContent=soundOn?'סאונד: פועל':'סאונד: כבוי';sndB.setAttribute('aria-pressed',soundOn);chip.hidden=soundOn;
@@ -556,6 +557,7 @@ function render(){
   if(w!==pw){pw=w;cv.width=w;cv.height=Math.round(w*H/W)}
   const S=cv.width/W;ctx.setTransform(S,0,0,S,0,0);
   draw(t);audioTick();
+  {const cs=!soundOn&&t<7;if(cs!==chipShown){chipShown=cs;chip.hidden=!cs}}
   let si=-1;for(let i=0;i<SUBS.length;i++)if(t>=SUBS[i][0]&&t<SUBS[i][1]){si=i;break}
   if(si!==lastSub){lastSub=si;subEl.textContent=si<0?'':SUBS[si][2]}
   seek.value=Math.round(t*10);
