@@ -36,6 +36,8 @@
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
+body { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+svg, svg * { -webkit-user-select: none; user-select: none; }
 body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.45;
   padding-block: 28px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
 main { max-width: 920px; margin: 0 auto; display: grid; gap: 22px; }
@@ -107,7 +109,7 @@ svg .mute { fill: var(--mute); }
     <h2 id="h">How we got here</h2>
     <div class="steps">
       <div class="step"><span class="n">1</span><b>Prompt one: find them</b><q>Find all of the implicit state machines in my app.</q><small>Result: 18 found, ranked by risk</small></div>
-      <div class="step"><span class="n">2</span><b>Prompt two: pin it down, then build it</b><q>Verify each finding against the code. First write tests that pin today's behaviour, including invalid moves, duplicates, retries and crashes. Then make the state explicit, one machine at a time, and keep existing records working.</q><small>Result: 2 real bugs proven, 2 cleared, first fix merged</small></div>
+      <div class="step"><span class="n">2</span><b>Prompt two: pin it down, then build it</b><q>Verify each finding against the code. First write tests that pin today's behaviour, including invalid moves, duplicates, retries and crashes. Then make the state explicit, one machine at a time, and keep existing records working.</q><small>Result: 2 bugs confirmed from the code (1 fixed and tested, 1 in progress), 2 suspected, 2 ruled out</small></div>
     </div>
   </section>
 
@@ -155,7 +157,7 @@ svg .mute { fill: var(--mute); }
         <text x="200" y="344" text-anchor="middle" class="mute" font-size="13" font-weight="700">everyone writes, everyone re-derives</text>
       </svg>
     </div>
-    <p class="sub">13 modules write it. 9 different checks work out "what is this job doing" again from different pieces. 7 different rules decide "this run may still write".</p>
+    <p class="sub">Many modules write it. 13 different checks work out "what is this job doing" again from different pieces. 7 different rules decide "this run may still write".</p>
     <p class="sub">The bad moment: a finishing build exits cleanly just as the customer reopens the selection.</p>
     <div class="bubbles">
       <div class="bubble lie"><small>The finishing build</small><b>"Exited fine, so complete"</b></div>
@@ -269,7 +271,7 @@ svg .mute { fill: var(--mute); }
         <span class="badge before">Before</span>
         <ul>
           <li>State lives in a status file, flag files, about 15 records and files that exist or not.</li>
-          <li>Nine checks each work out the state their own way.</li>
+          <li>Thirteen checks each work out the state their own way.</li>
           <li>Seven different rules decide whether a run may still write.</li>
         </ul>
       </div>
@@ -285,5 +287,10 @@ svg .mute { fill: var(--mute); }
     <p class="sub">The first guard is built and tested. The rest goes in one step at a time, each with a failing test first.</p>
   </section>
 </main>
+<script>
+['copy', 'cut', 'selectstart', 'dragstart', 'contextmenu'].forEach(function (name) {
+  document.addEventListener(name, function (event) { event.preventDefault(); });
+});
+</script>
 </body>
 </html>
