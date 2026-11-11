@@ -85,25 +85,24 @@ canvas{display:block;width:100%;height:100%}
     <button id="again" type="button">מההתחלה</button>
     <button id="snd" type="button" aria-pressed="false">סאונד: כבוי</button>
     <button id="mus" type="button" aria-pressed="true">מוזיקה: פועל</button>
-    <select id="voiceSel" hidden aria-label="בחירת קול קריינות"></select>
-    <input id="seek" type="range" min="0" max="740" value="0" step="1" aria-label="מיקום בהנפשה">
-    <span class="time" id="time">0:00 / 0:59</span>
+    <input id="seek" type="range" min="0" max="1191" value="0" step="1" aria-label="מיקום בהנפשה">
+    <span class="time" id="time">0:00 / 1:59</span>
   </div>
 
   <header>
     <h1>התרנגול הכי חכם בלול</h1>
-    <p class="lede">הנפשה קצרה, כדקה, עם קריינות באנגלית, כתוביות בעברית ומוזיקה, על הסיפור מהראיון עם הררי: חברה חקלאית נסגרת, והתרנגול מנסה להבין למה.</p>
+    <p class="lede">הנפשה קצרה, כשתי דקות, עם קריינות באנגלית, כתוביות בעברית ומוזיקה, על הסיפור מהראיון עם הררי: חברה חקלאית נסגרת, והתרנגול מנסה להבין למה.</p>
   </header>
 
   <p class="note credit">יצירה והנפשה: גיא עדן. מבוסס על סיפור שסיפר יובל נוח הררי בפודקאסט.</p>
 
-  <p class="note">זו הנפשה שנכתבה בקוד ורצה ישר בדפדפן, לא סרטון שנוצר במודל וידאו. הסאונד כבוי כברירת מחדל, ולחיצה על "סאונד" מפעילה קריינות באנגלית מהרגע הנוכחי. הקריינות באנגלית משתמשת בקול האנגלי שמובנה במכשיר שלכם, והמוזיקה והצלילים נוצרים בקוד. אפשר לבקש שינוי בקצב, בסצנות, בצבעים או בטקסט.</p>
+  <p class="note">זו הנפשה שנכתבה בקוד ורצה ישר בדפדפן, לא סרטון שנוצר במודל וידאו. הסאונד כבוי כברירת מחדל, ולחיצה על "סאונד" מפעילה אותו מהרגע הנוכחי. הקריינות באנגלית הופקה מראש במודל דיבור, והמוזיקה והצלילים נוצרים בקוד.</p>
   <p class="note" id="voiceNote" hidden>לא נמצא קול באנגלית במכשיר הזה, אז תישמע רק המוזיקה. הכתוביות נשארות על המסך.</p>
 </div>
 
 <script>
 (function(){
-const W=540,H=960,GY=400,DUR=74,SPEED=1.25;
+const W=540,H=960,GY=400,DUR=85;
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
 const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
 const lerp=(a,b,t)=>a+(b-a)*t;
@@ -117,38 +116,21 @@ const R=rnd(11);
 const stars=Array.from({length:110},()=>({x:R()*W,y:R()*620,r:.5+R()*1.1,p:R()*6.28}));
 const tufts=Array.from({length:340},()=>({x:-500+R()*1900,y:GY+3+R()*420,h:4+R()*7}));
 
-let NK=0,cam={x:520,y:300,z:1};
+let RT=0,NK=0,cam={x:520,y:300,z:1};
 const NIGHT=[12,14,34];
 const shade=c=>css(mixc(typeof c==='string'?hex(c):c,NIGHT,NK*.62));
 
-const KEYS=[[0,405,257,.84],[22,405,257,.87],[26.5,635,311,1.8],[53,635,311,1.9],[57.5,470,271,.62],[74,470,271,.62]];
+const KEYS=[[0,405,257,.84],[22,405,257,.87],[26.5,635,311,1.8],[53,635,311,1.9],[57.5,470,271,.62],[85,470,271,.62]];
 function camAt(t){
   let i=0;while(i<KEYS.length-2&&t>=KEYS[i+1][0])i++;
   const a=KEYS[i],b=KEYS[i+1],e=ease(clamp((t-a[0])/(b[0]-a[0])));
   return{x:lerp(a[1],b[1],e),y:lerp(a[2],b[2],e),z:Math.exp(lerp(Math.log(a[3]),Math.log(b[3]),e))};
 }
 
-/* [start, end, Hebrew subtitle, English narration] in film time */
-const SUBS=[
- [0.5,6.5,'חברה חקלאית, ולול מלא תרנגולות.','A farming company. A coop full of chickens.'],
- [7.2,16.4,'התשואה על אג״ח ממשלת ארה״ב לעשר שנים מגיעה ל-5.3%.','Then the yield on the ten-year US government bond hits 5.3%.'],
- [17.2,22.5,'החברה פושטת רגל, והורגים את כל התרנגולות.','The company goes bankrupt. Every chicken is killed.'],
- [22.7,26.3,'וצריך להסביר לתרנגול הכי גאון בלול למה.','Someone must explain it to the smartest chicken.'],
- [45.6,49,'איך מסבירים לתרנגול מה זה אג״ח?','How do you explain a bond to a chicken?'],
- [49.2,53.6,'הוא לא מצליח להבין את המערכת שבגללה הורגים אותו.',"He can't grasp the system that's killing him."],
- [54,57.2,'הררי: בעוד עשר שנים, זה עלול להיות אנחנו.','Harari: in ten years, that could be us.'],
- [57.8,62.6,'מרחוק, זה לא נראה כל כך משנה.',"From far away, it doesn't seem to matter much."],
- [63.2,68.6,'מערכת AI תסגור לנו את העסק, ואולי לא נבין למה.',"An AI will shut down our business, and we won't understand why."],
- [69,74,'וגם אצלנו, מרחוק, זה ייראה ככה.','And for us too, from far away, it will look just like this.']
-];
-/* [start, end, who, Hebrew bubble lines, English narration] */
-const SPEECH=[
- [26.4,30.2,'g',['אני מבין, אתם רוצים','לאכול אותי.'],'I understand. You want to eat me.'],
- [30.4,34.4,'g',['שועל אוכל תרנגולת. דוב אוכל תרנגולת.','גם אתם. זה ברור לי.'],'Foxes and bears eat chickens. You too. I get it.'],
- [34.6,38.4,'v',['לא. לא נאכל אותך.','נהרוג אתכם ונקבור אתכם.'],"No. We won't eat you. We'll bury you."],
- [38.7,41.2,'g',['אז למה?'],'So why?'],
- [41.4,45.2,'v',['כי התשואה על האג״ח','הגיעה ל-5.3%.'],'Because the bond yield hit 5.3%.']
-];
+/* narration cues: s,e real seconds in the audio track; ts,te the scene time they map to */
+const CUES=[{"s":0.6,"e":4.843,"ts":0.5,"te":6.5,"who":"n","he":"אי שם, רחוק מאוד מוול סטריט, לתרנגול אחד יש יום מצוין."},{"s":5.463,"e":9.484,"ts":7.0,"te":8.5,"who":"n","he":"באותו רגע, על מסך שהוא לעולם לא יראה, מספר אחד זז."},{"s":9.701,"e":13.347,"ts":8.5,"te":10.0,"who":"n","he":"התשואה על אג״ח ממשלת ארצות הברית לעשר שנים."},{"s":13.781,"e":17.041,"ts":10.0,"te":14.2,"who":"n","he":"חמש נקודה אחת. חמש נקודה שתיים. חמש נקודה שלוש."},{"s":17.599,"e":19.681,"ts":14.3,"te":15.0,"who":"n","he":"בלול אף אחד לא מרגיש כלום."},{"s":20.239,"e":24.458,"ts":15.0,"te":15.4,"who":"n","he":"אבל כשהמספר הזה עולה, כל הלוואה בעולם מתייקרת."},{"s":24.644,"e":26.664,"ts":15.4,"te":15.6,"who":"n","he":"והחווה חיה על הלוואות."},{"s":26.881,"e":30.07,"ts":15.6,"te":16.0,"who":"n","he":"בחמש נקודה שלוש, היא חייבת יותר ממה שיהיה לה אי פעם."},{"s":30.628,"e":33.068,"ts":16.0,"te":17.4,"who":"n","he":"עד הבוקר החווה כבר לא קיימת."},{"s":33.44,"e":35.84,"ts":17.6,"te":21.5,"who":"n","he":"התרנגולות עדיין כן. וזו הבעיה."},{"s":36.522,"e":40.752,"ts":22.0,"te":25.0,"who":"n","he":"אחד מהם גאון. המוח הכי חד שהלול הזה הוציא אי פעם."},{"s":40.969,"e":42.656,"ts":25.0,"te":26.3,"who":"n","he":"והוא כבר הבין הכול."},{"s":43.151,"e":44.67,"ts":26.4,"te":30.2,"who":"g","he":["הבנתי. אתם הולכים","לאכול אותי."]},{"s":44.918,"e":48.778,"ts":30.4,"te":34.4,"who":"g","he":["השועל אוכל אותנו. הדוב אוכל אותנו.","עכשיו אתם. בסדר. ככה זה בטבע."]},{"s":49.336,"e":51.747,"ts":34.6,"te":36.4,"who":"v","he":["אף אחד לא הולך","לאכול אותך."]},{"s":52.305,"e":54.175,"ts":36.6,"te":38.4,"who":"v","he":["אנחנו הולכים","לקבור אותך."]},{"s":54.919,"e":55.553,"ts":38.7,"te":41.2,"who":"g","he":["…אז למה?"]},{"s":56.173,"e":60.237,"ts":41.4,"te":45.2,"who":"v","he":["כי התשואה על האג״ח","הגיעה ל-5.3%."]},{"s":61.105,"e":63.404,"ts":45.2,"te":45.6,"who":"n","he":"אתם הבנתם את המשפט הזה. הוא לא."},{"s":63.962,"e":67.179,"ts":45.6,"te":49.0,"who":"n","he":"הוא מכיר שועל. הוא מכיר רעב. אג״ח הוא לא מכיר."},{"s":67.427,"e":70.496,"ts":49.0,"te":51.5,"who":"n","he":"הוא לא טיפש. הוא התרנגול הכי חכם שחי."},{"s":70.744,"e":72.566,"ts":51.5,"te":53.0,"who":"n","he":"הפער פשוט גדול מדי."},{"s":73.186,"e":77.785,"ts":53.0,"te":57.8,"who":"n","he":"אז הוא עושה את הדבר היחיד שנשאר. הוא רץ. הוא מנפנף בכנפיים בכל הכוח."},{"s":78.343,"e":81.66,"ts":57.8,"te":63.0,"who":"n","he":"מכאן, מלמעלה, זה כמה שניות של נוצות. ואז שקט."},{"s":82.652,"e":88.201,"ts":63.0,"te":66.0,"who":"n","he":"עכשיו תסתכלו על הפער. בצד אחד, תרנגול. בצד השני, אנחנו, עם האג״ח והשווקים שלנו."},{"s":88.449,"e":92.305,"ts":66.0,"te":68.0,"who":"n","he":"בעיניו אנחנו לא אכזריים. אנחנו פשוט בלתי ניתנים להבנה."},{"s":92.925,"e":96.177,"ts":68.0,"te":70.0,"who":"n","he":"בעוד חמש עד עשר שנים, אותו פער בדיוק נפתח שוב."},{"s":96.425,"e":100.585,"ts":70.0,"te":72.5,"who":"n","he":"רק שהפעם ה-AI נמצא בצד הרחוק. ואנחנו בלול."},{"s":101.267,"e":104.134,"ts":72.5,"te":74.5,"who":"n","he":"יום אחד הוא יסגור לך את העסק. או יפטר אותך."},{"s":104.382,"e":106.999,"ts":74.5,"te":76.5,"who":"n","he":"אתה תשאל למה. אולי הוא אפילו ינסה להסביר."},{"s":107.557,"e":112.625,"ts":76.5,"te":79.0,"who":"n","he":"ואתה, האדם הכי חכם בחדר, תשמע כל מילה, ולא תבין כלום."},{"s":113.307,"e":116.919,"ts":79.0,"te":83.0,"who":"n","he":"אתה תנפנף בכנפיים, לזמן מה. מרחוק, זה לא ייראה כמו הרבה."}];
+const TOTAL=119.09;
+const SPEECH=CUES.filter(c=>c.who!=='n').map(c=>[c.ts,c.te,c.who,c.he]);
 const hens=[
  {x:430,y:404,s:.95,f:1,ph:0,c:'#e8d6b8'},
  {x:468,y:398,s:.9,f:-1,ph:1.3,c:'#c98b5a'},
@@ -216,7 +198,7 @@ function bubble(x,y,lines,tx,ty,a,fs){
 
 function figure(t){
   const a=ease(seg(t,32.5,34));if(a<=0)return;
-  const sw=Math.sin(t*1.1)*1.2;
+  const sw=Math.sin(RT*1.1)*1.2;
   ctx.save();ctx.globalAlpha=a;ctx.translate(752,402);
   ctx.fillStyle='#0d0c18';ctx.strokeStyle='rgba(130,120,210,.4)';ctx.lineWidth=1;
   ctx.beginPath();ctx.moveTo(-16,0);ctx.lineTo(16,0);ctx.lineTo(11+sw,-84);ctx.lineTo(-11+sw,-84);ctx.closePath();ctx.fill();ctx.stroke();
@@ -266,45 +248,45 @@ function pen(){
 
 function ticker(t){
   const a=Math.min(seg(t,7,7.7),1-seg(t,16,16.8));if(a<=0)return;
-  const p=seg(t,7.6,14.2);
-  const val=i=>3.8+1.5*ease(i/60)+.07*Math.sin(i*1.7);
-  const N=Math.max(1,Math.floor(p*60));
-  const cur=3.8+1.5*ease(p);
+  const p=seg(t,10,14.2);
+  const val=i=>i<30?4.97+.03*Math.sin(i*1.1)+.02*Math.sin(i*2.3):5+.3*((i-30)/30)+.012*Math.sin(i*1.7);
+  const N=30+Math.floor(p*30);
+  const cur=5+.3*p;
   ctx.save();ctx.globalAlpha=a;ctx.translate(0,(1-a)*-14);
   ctx.fillStyle='rgba(8,10,22,.88)';ctx.strokeStyle='rgba(255,255,255,.14)';ctx.lineWidth=1;
   ctx.beginPath();ctx.roundRect(20,44,500,262,12);ctx.fill();ctx.stroke();
   ctx.fillStyle='#d8d5e8';ctx.font='700 17px Heebo,Arial,sans-serif';ctx.direction='rtl';ctx.textAlign='right';ctx.textBaseline='alphabetic';
   ctx.fillText('אג״ח ממשלת ארה״ב, 10 שנים',500,80);
-  ctx.fillStyle=css(mixc([241,233,216],[255,90,77],seg(cur,4.2,5.2)));
+  ctx.fillStyle=css(mixc([241,233,216],[255,90,77],seg(cur,5,5.3)));
   ctx.font='900 68px Heebo,Arial,sans-serif';ctx.direction='ltr';ctx.textAlign='left';
   ctx.fillText(cur.toFixed(1)+'%',42,176);
   ctx.fillStyle='#a9a6bd';ctx.font='400 14px Heebo,Arial,sans-serif';ctx.direction='rtl';ctx.textAlign='left';ctx.fillText('תשואה שנתית',44,206);
-  const cx0=250,cx1=496,cy0=284,cy1=112,sy=v=>lerp(cy0,cy1,(v-3.5)/2.1);
+  const cx0=250,cx1=496,cy0=284,cy1=112,sy=v=>lerp(cy0,cy1,(v-4.8)/.6);
   ctx.font='400 11px Heebo,Arial,sans-serif';ctx.direction='ltr';ctx.textAlign='right';ctx.textBaseline='middle';
-  [4,5].forEach(v=>{
+  [5,5.2].forEach(v=>{
     ctx.strokeStyle='rgba(255,255,255,.14)';ctx.setLineDash([3,4]);ln(cx0,sy(v),cx1,sy(v));ctx.setLineDash([]);
-    ctx.fillStyle='#a9a6bd';ctx.fillText(v+'%',cx0-6,sy(v));
+    ctx.fillStyle='#a9a6bd';ctx.fillText(v.toFixed(1)+'%',cx0-6,sy(v));
   });
   const pts=[];for(let i=0;i<=N;i++)pts.push([lerp(cx0,cx1,i/60),sy(val(i))]);
   ctx.beginPath();ctx.moveTo(pts[0][0],cy0);pts.forEach(q=>ctx.lineTo(q[0],q[1]));ctx.lineTo(pts[pts.length-1][0],cy0);ctx.closePath();
   ctx.fillStyle='rgba(255,90,77,.16)';ctx.fill();
   ctx.beginPath();pts.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));
   ctx.strokeStyle='#ff5a4d';ctx.lineWidth=2.6;ctx.lineJoin='round';ctx.stroke();
-  const e=pts[pts.length-1];ctx.fillStyle='#ff5a4d';ctx.beginPath();ctx.arc(e[0],e[1],4+Math.sin(t*8)*1,0,6.2832);ctx.fill();
+  const e=pts[pts.length-1];ctx.fillStyle='#ff5a4d';ctx.beginPath();ctx.arc(e[0],e[1],4+Math.sin(RT*8)*1,0,6.2832);ctx.fill();
   ctx.restore();
 }
 
 function thought(t){
   const a=Math.min(seg(t,45.5,46.4),1-seg(t,52.8,53.6));if(a<=0)return;
   ctx.save();ctx.globalAlpha=a;
-  const cx=548,cy=262;ctx.fillStyle='#f6efe0';
+  const cx=592,cy=262;ctx.fillStyle='#f6efe0';
   [[-46,6,24],[-18,-8,28],[16,-10,30],[46,4,25],[0,10,32]].forEach(c=>{ctx.beginPath();ctx.arc(cx+c[0],cy+c[1],c[2],0,6.2832);ctx.fill()});
-  [[10,40,7],[2,54,4.5]].forEach(c=>{ctx.beginPath();ctx.arc(cx+c[0]+14,cy+c[1],c[2],0,6.2832);ctx.fill()});
+  [[-14,40,7],[-22,54,4.5]].forEach(c=>{ctx.beginPath();ctx.arc(cx+c[0],cy+c[1],c[2],0,6.2832);ctx.fill()});
   const G=['אג״ח','%','5.3','?','Σ','$','?'];
   ctx.textAlign='center';ctx.textBaseline='middle';ctx.direction='ltr';
   G.forEach((g,i)=>{
-    const gx=cx+Math.sin(t*1.3+i*1.7)*44,gy=cy+Math.cos(t*1.9+i*2.3)*15;
-    ctx.save();ctx.translate(gx,gy);ctx.rotate(Math.sin(t*2+i)*.6);
+    const gx=cx+Math.sin(RT*1.3+i*1.7)*44,gy=cy+Math.cos(RT*1.9+i*2.3)*15;
+    ctx.save();ctx.translate(gx,gy);ctx.rotate(Math.sin(RT*2+i)*.6);
     ctx.fillStyle=i%2?'#c2362d':'#2a2d55';ctx.font='900 '+(13+(i%3)*2)+'px Heebo,Arial,sans-serif';ctx.fillText(g,0,0);ctx.restore();
   });
   ctx.restore();
@@ -321,7 +303,7 @@ function draw(t){
   ctx.fillStyle=sg;ctx.fillRect(0,0,W,H);
   stars.forEach(s=>{
     if(s.y>hz)return;
-    const al=NK*(.45+.55*Math.sin(t*1.6+s.p))*(1-s.y/700);
+    const al=NK*(.45+.55*Math.sin(RT*1.6+s.p))*(1-s.y/700);
     if(al<=0)return;ctx.fillStyle='rgba(255,250,235,'+al.toFixed(3)+')';ctx.fillRect(s.x,s.y,s.r,s.r);
   });
 
@@ -333,7 +315,7 @@ function draw(t){
     ctx.fillStyle='rgba(255,214,150,'+(.2*sa)+')';ctx.beginPath();ctx.arc(620,sy,90,0,6.2832);ctx.fill();
     ctx.fillStyle='rgba(255,196,110,'+sa+')';ctx.beginPath();ctx.arc(620,sy,40,0,6.2832);ctx.fill();
   }
-  const ma=clamp((NK-.35)*1.8);
+  const ma=clamp((NK-.35)*1.8)*(1-seg(t,63,64)*(1-seg(t,78.4,79.2)));
   if(ma>0){
     ctx.fillStyle='rgba(220,226,255,'+(.1*ma)+')';ctx.beginPath();ctx.arc(610,-40,60,0,6.2832);ctx.fill();
     ctx.fillStyle='rgba(238,240,255,'+ma+')';ctx.beginPath();ctx.arc(610,-40,25,0,6.2832);ctx.fill();
@@ -356,23 +338,25 @@ function draw(t){
 
   barn(t);pen();
 
-  const flapAmp=t<57.8?0:t<58.1?ease(seg(t,57.8,58.1)):t<61.2?1:1-ease(seg(t,61.2,62.2));
+  const f1=t<53.4?0:t<53.8?ease(seg(t,53.4,53.8)):t<61.2?1:1-ease(seg(t,61.2,62.2));
+  const f2=Math.max(0,Math.min(ease(seg(t,79.6,80)),1-ease(seg(t,81.4,82.2))));
+  const flapAmp=Math.max(f1,f2);
   const m=1-seg(t,16.6,17.4);
   const list=hens.map(h=>{
     const g=!!h.g;
-    const peck=(t<17.4)?m*Math.pow(Math.max(0,Math.sin(t*2.6+h.ph*3)),3):0;
-    const o={t:t,peck:peck,glasses:g,tremor:(t>17.4&&!g)?Math.sin(t*23+h.ph*5)*.7:0};
+    const peck=(t<17.4)?m*Math.pow(Math.max(0,Math.sin(RT*2.6+h.ph*3)),3):0;
+    const o={t:RT,peck:peck,glasses:g,tremor:(t>17.4&&!g)?Math.sin(RT*23+h.ph*5)*.7:0};
     if(g){
-      o.flap=flapAmp;o.hop=flapAmp*Math.abs(Math.sin(t*17))*14;
+      o.flap=flapAmp;o.hop=flapAmp*Math.abs(Math.sin(RT*17))*14;
       o.brow=seg(t,17.2,19)*(1+.4*seg(t,38,41));
-      o.slump=ease(seg(t,62.4,64.2));
+      o.slump=ease(seg(t,62.4,64.2))*(1-seg(t,79.2,79.6))+ease(seg(t,82.2,83.5));
     }
     return{h:h,o:o};
   }).sort((a,b)=>a.h.y-b.h.y);
   list.forEach(e=>chicken(e.h.x,e.h.y,e.h.s,e.h.f,e.h.c,e.o));
 
   for(let i=0;i<9;i++){
-    const age=t-(58+i*.42);if(age<=0||age>3)continue;
+    const age=t-(54.5+i*.8);if(age<=0||age>3)continue;
     ctx.save();ctx.translate(548+(i%3-1)*14+age*(i%2?10:-10)+Math.sin(age*5+i)*6,350+age*26);ctx.rotate(Math.sin(age*4+i)*1.2);
     ctx.fillStyle='rgba(249,242,228,'+(1-age/3)+')';ell(0,0,7,2.6);ctx.restore();
   }
@@ -384,7 +368,7 @@ function draw(t){
     ctx.fillStyle='#ff6b5e';ctx.font='900 16px Heebo,Arial,sans-serif';ctx.textAlign='center';ctx.direction='ltr';
     [[468,338,1.1],[615,336,2.4],[690,340,3.7]].forEach(q=>{
       const al=.8*seg(t,18,19)*(1-seg(t,43,45));
-      ctx.globalAlpha=al;ctx.fillText('!',q[0],q[1]+Math.sin(t*3+q[2])*3);ctx.globalAlpha=1;
+      ctx.globalAlpha=al;ctx.fillText('!',q[0],q[1]+Math.sin(RT*3+q[2])*3);ctx.globalAlpha=1;
     });
   }
   thought(t);
@@ -402,63 +386,113 @@ function draw(t){
   ctx.fillStyle=vg;ctx.fillRect(0,0,W,H);
   const rd=seg(t,11,16.5)*(1-seg(t,16.5,19))*.18;
   if(rd>0){ctx.fillStyle='rgba(255,60,50,'+rd+')';ctx.fillRect(0,0,W,H)}
-  const fd=seg(t,66,74)*.4;
+  const fd=Math.min(.9,seg(t,63,64.5)*.45+seg(t,82.5,85)*.5);
   if(fd>0){ctx.fillStyle='rgba(4,5,14,'+fd+')';ctx.fillRect(0,0,W,H)}
+  gapOverlay(t);
 }
 
-const subEl=document.getElementById('sub'),playB=document.getElementById('play'),againB=document.getElementById('again'),seek=document.getElementById('seek'),timeEl=document.getElementById('time');
-let t=0,playing=true,last=performance.now(),lastSub=-2,pw=0;
-const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
-if(reduce){t=31;playing=false}
-const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+/* ---------- gap diagram (screen space, shown over the wide shot) ---------- */
+function person(x,y,s,col){
+  ctx.save();ctx.translate(x,y);ctx.scale(s,s);ctx.fillStyle=col;
+  ctx.beginPath();ctx.arc(0,-62,13,0,6.2832);ctx.fill();
+  ctx.beginPath();ctx.moveTo(-21,0);ctx.lineTo(-18,-34);ctx.quadraticCurveTo(0,-52,18,-34);ctx.lineTo(21,0);ctx.closePath();ctx.fill();
+  ctx.restore();
+}
+function aiBox(x,y,a){
+  ctx.save();ctx.globalAlpha*=a;ctx.translate(x,y-40);
+  const pu=.5+.5*Math.sin(RT*3);
+  ctx.fillStyle='rgba(255,90,77,'+(.12+.1*pu)+')';ctx.beginPath();ctx.arc(0,0,58+pu*6,0,6.2832);ctx.fill();
+  ctx.fillStyle='#14162b';ctx.strokeStyle='#ff5a4d';ctx.lineWidth=2.5;ctx.beginPath();ctx.roundRect(-36,-36,72,72,12);ctx.fill();ctx.stroke();
+  ctx.fillStyle='#ff6b5e';ctx.font='900 30px Heebo,Arial,sans-serif';ctx.direction='ltr';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('AI',0,2);
+  ctx.restore();
+}
+function gapRow(y,a,ra,label,leftFn,rightFn,ln1,ln2){
+  if(a<=0)return;
+  ctx.save();ctx.globalAlpha=a;
+  leftFn(112,y);
+  ctx.fillStyle='#f1e9d8';ctx.font='700 19px Heebo,Arial,sans-serif';ctx.direction='rtl';ctx.textAlign='center';ctx.textBaseline='alphabetic';
+  ctx.fillText(ln1,112,y+30);
+  if(ra>0){
+    const x0=176,x1=lerp(176,364,ease(ra));
+    ctx.strokeStyle='rgba(241,233,216,.8)';ctx.lineWidth=2;ctx.setLineDash([6,6]);ln(x0,y-40,x1,y-40);ctx.setLineDash([]);
+    ln(x0,y-40,x0+9,y-46);ln(x0,y-40,x0+9,y-34);ln(x1,y-40,x1-9,y-46);ln(x1,y-40,x1-9,y-34);
+    ctx.globalAlpha=a*ra;
+    ctx.fillStyle='#ffd9c4';ctx.font='700 17px Heebo,Arial,sans-serif';ctx.fillText(label,270,y-52);
+    rightFn(428,y,ra);
+    ctx.fillStyle='#f1e9d8';ctx.font='700 19px Heebo,Arial,sans-serif';ctx.fillText(ln2,428,y+30);
+  }
+  ctx.restore();
+}
+function gapOverlay(t){
+  const out=1-seg(t,78.4,79.2);if(t<63.2||out<=0)return;
+  const nk=NK;NK=0;
+  gapRow(232,seg(t,63.6,64.2)*out,seg(t,64.6,65.3),'הפער',
+    (x,y)=>chicken(x-4,y,1.15,1,'#f9f2e4',{t:RT,glasses:1}),
+    (x,y)=>person(x,y,1,'#f1e9d8'),'תרנגול','אנחנו');
+  gapRow(430,seg(t,68,68.6)*out,seg(t,70,70.8),'אותו פער',
+    (x,y)=>{
+      person(x,y,1,'#f1e9d8');
+      const fa=seg(t,71.4,72);
+      if(fa>0){ctx.save();ctx.globalAlpha*=fa;ctx.strokeStyle='#b98a5e';ctx.fillStyle='#b98a5e';ctx.lineWidth=3;
+        ln(x-46,y-30,x+46,y-30);ln(x-46,y-12,x+46,y-12);for(let i=0;i<5;i++)ctx.fillRect(x-47+i*23,y-42,5,44);ctx.restore()}
+    },
+    (x,y,ra)=>aiBox(x,y,ra),'אנחנו','AI');
+  NK=nk;
+}
 
-/* ---------- soundtrack: Hebrew narration (device voice) + synthesized score ---------- */
-let AC=null,musicBus=null,sfxBus=null,padF=null,padG=null,lfo=null,lfoG=null,oscs=[],nbuf=null;
-let soundOn=false,speaking=false,hv=null,pt=0,prevActive=false,lastAu=-9,lastK=-1;
+/* ---------- time map: real seconds <-> scene time ---------- */
+const TAU_END=85;
+const KN=[[0,0]];CUES.forEach(c=>{KN.push([c.s,c.ts],[c.e,c.te])});KN.push([TOTAL,TAU_END]);
+function tauOf(r){
+  let i=0;while(i<KN.length-2&&r>=KN[i+1][0])i++;
+  const a=KN[i],b=KN[i+1];return b[0]<=a[0]?b[1]:lerp(a[1],b[1],clamp((r-a[0])/(b[0]-a[0])));
+}
+function rtOf(tau){
+  for(let i=0;i<KN.length-1;i++){const a=KN[i],b=KN[i+1];if(tau<=b[1])return b[1]<=a[1]?a[0]:lerp(a[0],b[0],clamp((tau-a[1])/(b[1]-a[1])))}
+  return TOTAL;
+}
+const NARR=CUES.filter(c=>c.who==='n');
+const SUBS=NARR.map((c,i)=>{const nx=CUES[CUES.indexOf(c)+1];return[c.s-.05,Math.min(c.e+.7,nx?nx.s-.08:TOTAL),c.he]});
+
+const subEl=document.getElementById('sub'),playB=document.getElementById('play'),againB=document.getElementById('again'),seek=document.getElementById('seek'),timeEl=document.getElementById('time');
+const sndB=document.getElementById('snd'),musB=document.getElementById('mus'),chip=document.getElementById('chip'),noteEl=document.getElementById('voiceNote');
+let rt=0,playing=true,last=performance.now(),lastSub=-2,pw=0,chipShown=true;
+const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(reduce){rt=rtOf(31);playing=false}
+const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
+seek.max=Math.round(TOTAL*10);
+
+/* ---------- sound: pre-rendered narration track + synthesized score ---------- */
+let AC=null,musicBus=null,sfxBus=null,narrBus=null,padF=null,padG=null,lfo=null,lfoG=null,oscs=[],nbuf=null;
+let narrBuf=null,narrSrc=null,narrBase=0,narrAc0=0,narrFail=false;
+let soundOn=false,musicOn=true,prevActive=false,pe=0,lastAu=-9,lastK=-1;
 const CH=[[146.83,220,329.63,369.99],[146.83,220,277.18,349.23],[73.42,110,155.56,207.65],[146.83,174.61,220,293.66],[146.83,164.81,185,207.65],[98,146.83,233.08,293.66]];
 const CHT=[0,7,17,26,45,53];
 const chordIdx=x=>{let k=0;CHT.forEach((v,i)=>{if(x>=v)k=i});return k};
-const HAS_TTS='speechSynthesis' in window;
-function heVoices(){return HAS_TTS?speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang)).sort((a,b)=>(/natural|online/i.test(b.name)?1:0)-(/natural|online/i.test(a.name)?1:0)):[]}
-function pickVoice(){const l=heVoices();if(!hv||l.indexOf(hv)<0)hv=l[0]||null;buildSel(l);showVoice()}
-if(HAS_TTS){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
-function spoken(s){
-  return s.replace(/5\.3%/g,'five point three percent').replace(/\bAI\b/g,'A.I.');
-}
-function stopSpeech(){speaking=false;speakId++;if(HAS_TTS)try{speechSynthesis.cancel()}catch(e){}}
-let speakId=0;const SPC={n:.065,g:.065,v:.065};let cueEnd=0,holdAcc=0,sAt=0;
-function speak(text,who,dur,end){
-  if(!HAS_TTS)return;
-  try{
-    speechSynthesis.cancel();speechSynthesis.resume();const my=++speakId;
-    const sp=spoken(text),u=new SpeechSynthesisUtterance(sp);
-    u.lang='en-US';if(hv)u.voice=hv;
-    u.pitch={n:1,g:1.8,v:.5}[who];
-    u.rate=clamp(SPC[who]*sp.length/Math.max(.8,dur/SPEED-.3),.8,1.8);
-    u.volume=1;cueEnd=end;holdAcc=0;
-    const rate=u.rate;
-    u.onstart=()=>{speaking=true;sAt=performance.now()};
-    u.onend=()=>{speaking=false;const s=(performance.now()-sAt)/1000;if(s>.3)SPC[who]=clamp(s*rate/sp.length,.03,.2)};
-    u.onerror=()=>{speaking=false};
-    setTimeout(()=>{if(my===speakId)speechSynthesis.speak(u)},70);
-  }catch(e){}
-}
-function slow(dt){
-  if(speaking&&performance.now()-sAt>15000)speaking=false;
-  if(soundOn&&speaking&&t>cueEnd-.2&&holdAcc<3){holdAcc+=dt*.75;return .25}
-  return 1;
+const speakingAt=r=>CUES.some(c=>r>=c.s-.1&&r<=c.e+.15);
+function showNote(){noteEl.hidden=!(soundOn&&narrFail);if(narrFail)noteEl.textContent='הקריינות לא נטענה, אז תישמע רק המוזיקה. הכתוביות נשארות על המסך.'}
+function stopNarr(){if(narrSrc){try{narrSrc.stop()}catch(e){}narrSrc=null}}
+function syncNarr(){
+  stopNarr();
+  if(!soundOn||!AC||!narrBuf||rt>=TOTAL-.05)return;
+  narrSrc=AC.createBufferSource();narrSrc.buffer=narrBuf;narrSrc.connect(narrBus);
+  narrSrc.start(0,Math.min(rt,narrBuf.duration-.02));narrBase=rt;narrAc0=AC.currentTime;
 }
 function initAudio(){
   if(AC)return;
   const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
   AC=new A();
-  musicBus=AC.createGain();sfxBus=AC.createGain();musicBus.connect(AC.destination);sfxBus.connect(AC.destination);
+  musicBus=AC.createGain();sfxBus=AC.createGain();narrBus=AC.createGain();narrBus.gain.value=1.25;
+  musicBus.connect(AC.destination);sfxBus.connect(AC.destination);narrBus.connect(AC.destination);
   nbuf=AC.createBuffer(1,AC.sampleRate,AC.sampleRate);
   const d=nbuf.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;
   padF=AC.createBiquadFilter();padF.type='lowpass';padF.frequency.value=700;
   padG=AC.createGain();padG.gain.value=0;padF.connect(padG);padG.connect(musicBus);
   oscs=CH[0].map((f,i)=>{const o=AC.createOscillator();o.type='triangle';o.frequency.value=f;o.detune.value=i%2?7:-7;o.connect(padF);o.start();return o});
   lfo=AC.createOscillator();lfo.frequency.value=.3;lfoG=AC.createGain();lfoG.gain.value=.006;lfo.connect(lfoG);lfoG.connect(padG.gain);lfo.start();
+  fetch('audio/narration.mp3').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()})
+    .then(b=>new Promise((res,rej)=>AC.decodeAudioData(b,res,rej)))
+    .then(buf=>{narrBuf=buf;syncNarr()}).catch(()=>{narrFail=true;showNote()});
 }
 function tone(f,dur,type,vol,dest,att,f2){
   const n=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();
@@ -473,109 +507,83 @@ function noise(dur,vol,f,type){
   s.connect(b);b.connect(g);g.connect(sfxBus);s.start(n,Math.random()*.5);s.stop(n+dur+.02);
 }
 const pluck=(f,v)=>{tone(f,1.7,'triangle',v,musicBus,.01);tone(f*2,.8,'sine',v*.3,musicBus,.01)};
-function cluck(){tone(520,.09,'square',.025,sfxBus,.005,380);setTimeout(()=>{if(AC)tone(470,.1,'square',.02,sfxBus,.005,330)},110)}
+function cluck(){tone(520,.09,'square',.022,sfxBus,.005,380);setTimeout(()=>{if(AC)tone(470,.1,'square',.018,sfxBus,.005,330)},110)}
+/* events are scheduled in real seconds; rtOf() converts a scene moment to its real time */
 const EV=[];const at=(x,fn)=>EV.push({t:x,fn});
-[1.2,2.6,3.9,5.1,6.2,8.6,11.2,13.6].forEach(x=>at(x,cluck));
-[[1,587],[2,659],[3,740],[4,880],[5,740],[6,659]].forEach(n=>at(n[0],()=>pluck(n[1],.06)));
-for(let x=7,i=0;x<17;i++){at(x,()=>{tone(62,.22,'sine',.35,sfxBus,.004,40)});x+=lerp(.9,.45,(x-7)/10)}
-at(17,()=>{tone(90,.6,'sine',.55,sfxBus,.002,36);noise(.3,.4,320,'lowpass')});
-at(17.7,()=>tone(1300,.05,'square',.03,sfxBus,.002));
-at(32.7,()=>tone(55,1.6,'sine',.16,sfxBus,.5));
 const RB=rnd(5);
-for(let x=45.6;x<53;x+=.33){const a=400+RB()*900,b=400+RB()*900;at(x,()=>tone(a,.14,'sine',.045,sfxBus,.01,b))}
-for(let x=57.8;x<62.2;x+=.075){const d=x<61.2?1:1-(x-61.2);at(x,()=>noise(.06,.2*Math.max(d,0),1800,'highpass'))}
-at(58.5,()=>tone(900,.12,'sawtooth',.03,sfxBus,.005,500));at(59.6,()=>tone(880,.12,'sawtooth',.03,sfxBus,.005,480));
-[[63,587],[64,466],[65,392],[66,466],[67,523],[68,440],[69,392],[70.5,294],[72,392]].forEach(n=>at(n[0],()=>pluck(n[1],.07)));
-SUBS.forEach(s=>at(Math.max(.02,s[0]-.1),()=>speak(s[3],'n',s[1]-s[0],s[1])));
-SPEECH.forEach(s=>at(s[0]-.1,()=>speak(s[4],s[2],s[1]-s[0],s[1])));
+for(let x=1;x<rtOf(15.9);x+=1.3+RB()*1.6)at(x,cluck);
+[587,659,740,880,740,659].forEach((f,i)=>at(.8+i,()=>pluck(f,.06)));
+for(let x=rtOf(10),e=rtOf(17);x<e;){at(x,()=>tone(62,.22,'sine',.3,sfxBus,.004,40));x+=lerp(.95,.5,(x-rtOf(10))/(e-rtOf(10)))}
+at(rtOf(17),()=>{tone(90,.6,'sine',.55,sfxBus,.002,36);noise(.3,.4,320,'lowpass')});
+at(rtOf(18),()=>tone(1300,.05,'square',.03,sfxBus,.002));
+at(rtOf(32.7),()=>tone(55,1.6,'sine',.16,sfxBus,.5));
+for(let x=rtOf(45.7);x<rtOf(52.8);x+=.5){const a=400+RB()*900,b=400+RB()*900;at(x,()=>tone(a,.14,'sine',.03,sfxBus,.01,b))}
+function flutter(a,b){for(let x=a;x<b;x+=.075){const d=Math.min(1,(b-x)/1);at(x,()=>noise(.06,.15*d,1800,'highpass'))}}
+flutter(rtOf(53.5),rtOf(62.2));flutter(rtOf(79.7),rtOf(82.2));
+[54.5,56,58.5,60].forEach(x=>at(rtOf(x),()=>tone(900,.12,'sawtooth',.028,sfxBus,.005,500)));
+at(rtOf(63.4),()=>tone(70,1.4,'sine',.22,sfxBus,.05,50));at(rtOf(68.1),()=>tone(70,1.4,'sine',.22,sfxBus,.05,50));
+{const M=[587,466,392,466,523,440,392,294];let i=0;for(let x=rtOf(63);x<TOTAL-2.5;x+=1.2){const f=M[i++%M.length];at(x,()=>pluck(f,.055))}}
 EV.sort((a,b)=>a.t-b.t);
 
-function audioTick(){
+function audioTick(tau){
   const active=soundOn&&playing&&!!AC;
-  if(active!==prevActive){
-    prevActive=active;
-    if(AC){try{active?AC.resume():AC.suspend()}catch(e){}}
-    if(!active)stopSpeech();
-  }
-  const d=t-pt;
-  if(active&&d>0&&d<.4)EV.forEach(e=>{if(e.t>pt&&e.t<=t)e.fn()});
-  if(d<0||d>=.4)stopSpeech();
-  pt=t;
+  if(active!==prevActive){prevActive=active;if(AC){try{active?AC.resume():AC.suspend()}catch(e){}}}
+  const d=rt-pe;
+  if(active&&d>0&&d<.5)EV.forEach(e=>{if(e.t>pe&&e.t<=rt)e.fn()});
+  pe=rt;
   if(!AC||!soundOn)return;
-  const k=chordIdx(t);
-  if(k!==lastK||Math.abs(t-lastAu)>.25){
-    lastK=k;lastAu=t;const n=AC.currentTime,ch=CH[k];
+  const k=chordIdx(tau);
+  if(k!==lastK||Math.abs(rt-lastAu)>.2){
+    lastK=k;lastAu=rt;const n=AC.currentTime,ch=CH[k],sp=speakingAt(rt);
     oscs.forEach((o,i)=>o.frequency.setTargetAtTime(ch[i],n,.5));
-    const cut=[700,lerp(600,1800,seg(t,7,17)),500,600,1100,380][k];
-    padF.frequency.setTargetAtTime(cut,n,.4);
-    padG.gain.setTargetAtTime(.045*(1-seg(t,71,74))*(k===3?.7:1),n,.4);
+    padF.frequency.setTargetAtTime([700,lerp(600,1800,seg(tau,7,17)),500,600,1100,380][k],n,.4);
+    padG.gain.setTargetAtTime(.05*(1-seg(tau,82.5,85))*(k===3?.7:1),n,.4);
     lfo.frequency.setTargetAtTime(k===4?7:k===1?4:.3,n,.3);
     lfoG.gain.setTargetAtTime(k===1||k===4?.03:.006,n,.3);
-    musicBus.gain.setTargetAtTime(musicOn?(speaking?.3:1):0,n,.25);sfxBus.gain.setTargetAtTime(speaking?.5:1,n,.25);
+    musicBus.gain.setTargetAtTime(musicOn?(sp?.35:1):0,n,.2);
+    sfxBus.gain.setTargetAtTime(sp?.45:1,n,.2);
   }
 }
-const sndB=document.getElementById('snd'),musB=document.getElementById('mus'),vSel=document.getElementById('voiceSel');
-let musicOn=true;
-function showVoice(){
-  const n=document.getElementById('voiceNote');if(!n)return;
-  if(!soundOn){n.hidden=true;return}
-  n.hidden=false;
-  n.textContent=!HAS_TTS?'הדפדפן הזה לא תומך בקריינות. נסו Chrome, Edge או Safari.':hv?'קריינות בקול: '+hv.name:'לא נמצא קול באנגלית בדפדפן הזה, אז אין קריינות. נסו Chrome או Edge במחשב, או Safari באייפון ובמק.';
-}
-function buildSel(l){
-  const s=document.getElementById('voiceSel');if(!s)return;
-  s.hidden=l.length<2;s.innerHTML='';
-  l.forEach((v,i)=>{const o=document.createElement('option');o.value=i;o.textContent=v.name;s.appendChild(o)});
-  s.value=Math.max(0,l.indexOf(hv));
-}
-function primeSpeech(){
-  if(!HAS_TTS)return;
-  try{const u=new SpeechSynthesisUtterance('.');u.volume=0;u.lang='en-US';speechSynthesis.speak(u)}catch(e){}
-}
-function speakCurrent(){
-  const cues=SUBS.map(x=>[x[0],x[1],'n',x[3]]).concat(SPEECH.map(x=>[x[0],x[1],x[2],x[4]]));
-  const c=cues.find(c=>t>=c[0]-.1&&t<c[1]-.8);
-  if(c)speak(c[3],c[2],c[1]-t,c[1]);
-}
-const chip=document.getElementById('chip');let chipShown=true;
 chip.addEventListener('click',()=>{if(!soundOn)sndB.click()});
 sndB.addEventListener('click',()=>{
-  soundOn=!soundOn;sndB.textContent=soundOn?'סאונד: פועל':'סאונד: כבוי';sndB.setAttribute('aria-pressed',soundOn);chip.hidden=soundOn;if(soundOn)chip.style.display='none';
-  if(soundOn){
-    initAudio();primeSpeech();pickVoice();
-    pt=t;lastAu=-9;speakCurrent();
-    setTimeout(()=>{pickVoice()},800);
-  }
-  showVoice();
+  soundOn=!soundOn;sndB.textContent=soundOn?'סאונד: פועל':'סאונד: כבוי';sndB.setAttribute('aria-pressed',soundOn);
+  if(soundOn){initAudio();pe=rt;lastAu=-9;syncNarr()}else stopNarr();
+  showNote();
 });
 musB.addEventListener('click',()=>{
   musicOn=!musicOn;musB.textContent=musicOn?'מוזיקה: פועל':'מוזיקה: כבוי';musB.setAttribute('aria-pressed',musicOn);lastAu=-9;
 });
-vSel.addEventListener('change',()=>{const l=heVoices();hv=l[+vSel.value]||hv;showVoice()});
+
 function render(){
   const dpr=Math.min(2,window.devicePixelRatio||1),w=Math.round(cv.clientWidth*dpr)||W;
   if(w!==pw){pw=w;cv.width=w;cv.height=Math.round(w*H/W)}
   const S=cv.width/W;ctx.setTransform(S,0,0,S,0,0);
-  draw(t);audioTick();
-  {const cs=!soundOn&&t<7;if(cs!==chipShown){chipShown=cs;chip.hidden=!cs;chip.style.display=cs?'':'none'}}
-  let si=-1;for(let i=0;i<SUBS.length;i++)if(t>=SUBS[i][0]&&t<SUBS[i][1]){si=i;break}
+  RT=rt;const tau=tauOf(rt);
+  draw(tau);audioTick(tau);
+  {const cs=!soundOn&&rt<8;if(cs!==chipShown){chipShown=cs;chip.hidden=!cs;chip.style.display=cs?'':'none'}}
+  let si=-1;for(let i=0;i<SUBS.length;i++)if(rt>=SUBS[i][0]&&rt<SUBS[i][1]){si=i;break}
   if(si!==lastSub){lastSub=si;subEl.textContent=si<0?'':SUBS[si][2]}
-  seek.value=Math.round(t*10);
-  timeEl.textContent=fmt(t/SPEED)+' / '+fmt(DUR/SPEED);
-  playB.textContent=playing?'עצור':(t>=DUR?'נגן שוב':'נגן');
+  seek.value=Math.round(rt*10);
+  timeEl.textContent=fmt(rt)+' / '+fmt(TOTAL);
+  playB.textContent=playing?'עצור':(rt>=TOTAL?'נגן שוב':'נגן');
 }
 function frame(now){
   const dt=Math.min(.1,(now-last)/1000);last=now;
-  if(playing){t+=dt*SPEED*slow(dt);if(t>=DUR){t=DUR;playing=false}}
+  if(playing){
+    if(narrSrc&&AC&&AC.state==='running')rt=narrBase+(AC.currentTime-narrAc0);else rt+=dt;
+    if(rt>=TOTAL){rt=TOTAL;playing=false;stopNarr()}
+  }
   render();requestAnimationFrame(frame);
 }
 playB.addEventListener('click',()=>{
-  if(t>=DUR-.05){t=0;playing=true}else playing=!playing;
+  if(rt>=TOTAL-.05){rt=0;playing=true;syncNarr()}else playing=!playing;
 });
-againB.addEventListener('click',()=>{t=0;playing=true});
-seek.addEventListener('input',()=>{t=seek.value/10});
-window.__seek=v=>{t=v;playing=false;render()};
-['400 16px Heebo','700 16px Heebo','900 16px Heebo','400 16px "Secular One"'].forEach(f=>{try{document.fonts.load(f,'אבג')}catch(e){}});
+againB.addEventListener('click',()=>{rt=0;playing=true;syncNarr()});
+seek.addEventListener('input',()=>{rt=seek.value/10;syncNarr()});
+window.__seek=v=>{rt=v;playing=false;syncNarr();render()};
+window.__seekTau=v=>{rt=rtOf(v);playing=false;syncNarr();render()};
+window.__state=()=>({rt:rt,tau:tauOf(rt),narr:!!narrSrc,buf:!!narrBuf,ac:AC&&AC.state,base:narrBase});
+['400 16px Heebo','700 16px Heebo','900 16px Heebo'].forEach(f=>{try{document.fonts.load(f,'אבג')}catch(e){}});
 requestAnimationFrame(frame);
 })();
 </script>
