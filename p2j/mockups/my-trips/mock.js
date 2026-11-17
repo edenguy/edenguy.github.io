@@ -14,7 +14,7 @@
   var opener = null, timer = null, undoBuf = null, toastTimer = null, cdTimer = null;
 
   function apply(n) {
-    S.state = n; S.preset = PRESETS[n]; S.trips = window.TRIPS.slice(0, S.preset.n).map(function (x) { return Object.assign({}, x); });
+    S.state = n; S.preset = PRESETS[n]; S.trips = window.TRIPS.slice(0, S.preset.n).map(function (x) { return Object.assign({}, x); }).sort(function (a, b) { return a.ago - b.ago; });
     S.q = ''; S.sheet = S.preset.sheet || null; S.stage = S.preset.stage || 'empty'; S.err = false; S.cd = 52;
     S.email = (n >= 8 && n <= 11) ? 'ana.levi@example.test' : '';
     toast(null); draw(); sync();
@@ -53,11 +53,16 @@
     var layer = $('#layer'), was = layer.firstChild;
     $('#app').inert = $('#top').inert = !!S.sheet;
     clearInterval(cdTimer);
-    if (!S.sheet) { layer.innerHTML = ''; if (was && opener && document.contains(opener)) opener.focus(); return; }
+    if (!S.sheet) { layer.innerHTML = ''; if (was && opener) refocus(); return; }
     layer.innerHTML = '<div class="scrim" data-act="scrim"><div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sh-t">' + V.sheet() + '</div></div>';
     var f = $('#em', layer);
     if (S.stage === 'empty' && S.sheet === 'find' && f && !was) f.focus(); else if ($('#sh-t', layer)) $('#sh-t', layer).focus();
     if (S.sheet === 'find' && S.stage === 'sent') cdTimer = setInterval(tick, 1000);
+  }
+  /* the page was redrawn, so the opener node is gone: focus its equivalent by data-act */
+  function refocus() {
+    var el = $('#app [data-act="' + opener.dataset.act + '"]') || $('#app [data-act="open-find"]');
+    opener = null; if (el) el.focus();
   }
   function tick() {
     var b = $('#again'); if (!b) return clearInterval(cdTimer);
@@ -71,8 +76,8 @@
   }
   function openSheet(kind, from) { opener = from; S.sheet = kind; S.stage = 'empty'; S.err = false; drawSheet(); }
   function send() {
-    var v = ($('#em') || {}).value || ''; S.email = v.trim();
-    if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(S.email)) { S.err = true; drawSheet(); $('#em').focus(); return; }
+    var f = $('#em'); if (f) S.email = f.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(S.email)) { S.err = true; S.stage = 'empty'; drawSheet(); if ($('#em')) $('#em').focus(); return; }
     S.err = false; S.stage = 'sending'; drawSheet(); $('#sh-t').focus();
     timer = setTimeout(function () { S.stage = 'sent'; S.cd = 52; drawSheet(); }, 1400);
   }
