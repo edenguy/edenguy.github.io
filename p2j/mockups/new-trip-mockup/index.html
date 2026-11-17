@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" dir="ltr">
+<html lang="en" dir="ltr" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -10,6 +10,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="mock.css">
+<link rel="stylesheet" href="widgets.css">
+<link rel="stylesheet" href="flow.css">
 </head>
 <body>
 <div class="mockbar">
@@ -24,21 +26,21 @@
   <header class="hero">
     <span class="brand"><i aria-hidden="true"></i>Plan to Journal</span>
     <span class="eyebrow" data-i18n="eyebrow">New trip</span>
-    <h1 data-i18n="title">Plan a new trip</h1>
+    <h1><span data-i18n="title">Plan</span> <span class="acc" data-i18n="title2">a new trip</span></h1>
     <p class="lead" data-i18n="lead"></p>
   </header>
 
   <div id="editor">
     <div role="tablist" aria-label="Trip input" id="tabs">
-      <button role="tab" id="tab-d" aria-controls="pan-d" aria-selected="true" tabindex="0"><span data-i18n="tabD">Describe it</span><small data-i18n="tabDs"></small></button>
-      <button role="tab" id="tab-f" aria-controls="pan-f" aria-selected="false" tabindex="-1"><span data-i18n="tabF">Fill it in</span><small data-i18n="tabFs"></small></button>
+      <button role="tab" id="tab-d" aria-controls="pan-d" aria-selected="true" tabindex="0"><span class="ic" aria-hidden="true">✍️</span><span data-i18n="tabD">Describe it</span><small data-i18n="tabDs"></small></button>
+      <button role="tab" id="tab-f" aria-controls="pan-f" aria-selected="false" tabindex="-1"><span class="ic" aria-hidden="true">🎛️</span><span data-i18n="tabF">Fill it in</span><small data-i18n="tabFs"></small></button>
     </div>
 
     <!-- Tab 1: free text -->
     <section class="card" role="tabpanel" id="pan-d" aria-labelledby="tab-d">
       <form id="form-d" novalidate>
         <div class="f">
-          <label for="d-text" data-i18n="dLabel">Your trip</label>
+          <label for="d-text" data-e="💬" data-i18n="dLabel">Your trip</label>
           <textarea id="d-text" class="big" data-i18n-ph="dPh" aria-describedby="d-hint d-err"></textarea>
           <p class="err" id="d-err" role="alert" hidden data-i18n="dErr"></p>
           <button type="button" class="example" id="d-ex"><b data-i18n="exLabel">Try an example</b><span id="d-ex-t"></span></button>
@@ -46,7 +48,7 @@
           <ul class="mention"><li data-i18n="h1"></li><li data-i18n="h2"></li><li data-i18n="h3"></li><li data-i18n="h4"></li><li data-i18n="h5"></li><li data-i18n="h6"></li><li data-i18n="h7"></li></ul>
         </div>
         <div class="f">
-          <label for="d-mail" data-i18n="email">Your e-mail</label>
+          <label for="d-mail" data-e="✉️" data-i18n="email">Your e-mail</label>
           <input type="email" id="d-mail" autocomplete="email" dir="ltr" aria-describedby="d-mail-h d-mail-e">
           <p class="hint" id="d-mail-h" data-i18n="emailHint"></p>
           <p class="err" id="d-mail-e" role="alert" hidden data-i18n="emailErr"></p>
@@ -65,7 +67,7 @@
           <h2 id="wz-q" tabindex="-1"></h2>
         </div>
         <div class="f" data-wz="1">
-          <label for="f-country" data-i18n="country">Country</label>
+          <label for="f-country" data-e="🗺️" data-i18n="country">Country</label>
           <select id="f-country"></select>
           <p class="hint" id="f-city-h" data-i18n="cityNone"></p>
           <div class="picks" id="f-picks" aria-describedby="f-city-h"></div>
@@ -73,7 +75,7 @@
           <p class="route-empty" id="f-route-empty" data-i18n="routeEmpty"></p>
         </div>
 
-        <fieldset class="f" data-wz="2"><legend data-i18n="durQ">Trip length</legend>
+        <fieldset class="f" data-wz="2"><legend data-e="📅" data-i18n="durQ">Trip length</legend>
           <div class="seg" id="f-dur"></div>
           <div class="steps2" style="margin-top:12px">
             <div><span class="lbl" id="l-days" data-i18n="days">Days</span><div class="step" role="group" aria-labelledby="l-days"><button type="button" data-step="days" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-days" min="1" max="30" value="6" aria-labelledby="l-days"><button type="button" data-step="days" data-d="1" aria-label="+">+</button></div></div>
@@ -82,7 +84,7 @@
           <p class="hint" id="f-sum" aria-live="polite"></p>
         </fieldset>
 
-        <fieldset class="f" data-wz="3"><legend data-i18n="trav">Travellers</legend>
+        <fieldset class="f" data-wz="3"><legend data-e="👪" data-i18n="trav">Travellers</legend>
           <div class="steps2">
             <div><span class="lbl" id="l-ad" data-i18n="adults">Adults</span><div class="step" role="group" aria-labelledby="l-ad"><button type="button" data-step="adults" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-adults" min="1" max="12" value="2" aria-labelledby="l-ad"><button type="button" data-step="adults" data-d="1" aria-label="+">+</button></div></div>
             <div><span class="lbl" id="l-ki" data-i18n="kids">Children</span><div class="step" role="group" aria-labelledby="l-ki"><button type="button" data-step="kids" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-kids" min="0" max="8" value="0" aria-labelledby="l-ki"><button type="button" data-step="kids" data-d="1" aria-label="+">+</button></div></div>
@@ -90,20 +92,20 @@
           <div class="kids" id="f-ages"></div>
         </fieldset>
 
-        <fieldset class="f" data-wz="4"><legend data-i18n="likes">We like</legend><div data-chips="i" data-name="likes"></div></fieldset>
-        <fieldset class="f" data-wz="4"><legend data-i18n="avoid">We would rather avoid</legend><div data-chips="a" data-name="avoid" data-neg></div></fieldset>
-        <fieldset class="f" data-wz="5"><legend data-i18n="diet">Food</legend><div data-chips="d" data-name="diet"></div>
+        <fieldset class="f" data-wz="4"><legend data-e="❤️" data-i18n="likes">We like</legend><div data-chips="i" data-name="likes"></div></fieldset>
+        <fieldset class="f" data-wz="4"><legend data-e="🙅" data-i18n="avoid">We would rather avoid</legend><div data-chips="a" data-name="avoid" data-neg></div></fieldset>
+        <fieldset class="f" data-wz="5"><legend data-e="🍽️" data-i18n="diet">Food</legend><div data-chips="d" data-name="diet"></div>
           <label class="lbl" for="f-allergy" style="margin-top:8px" data-i18n="allergy"></label><input type="text" id="f-allergy" data-i18n-ph="allergyPh"></fieldset>
-        <fieldset class="f" data-wz="6"><legend data-i18n="move">Getting around</legend><div data-chips="m" data-name="move"></div></fieldset>
+        <fieldset class="f" data-wz="6"><legend data-e="🧭" data-i18n="move">Getting around</legend><div data-chips="m" data-name="move"></div></fieldset>
 
         <div class="grid2" data-wz="7">
-          <div class="f"><label for="f-pace" data-i18n="pace">Pace</label><input type="range" id="f-pace" min="1" max="3" step="1" value="2" aria-valuetext="">
+          <div class="f"><label for="f-pace" data-e="🏃" data-i18n="pace">Pace</label><input type="range" id="f-pace" min="1" max="3" step="1" value="2" aria-valuetext="">
             <div class="ticks" aria-hidden="true"><span data-i18n="relaxed"></span><span data-i18n="packed"></span></div></div>
-          <fieldset class="f"><legend data-i18n="budget">Budget</legend><div class="seg" id="f-budget"></div></fieldset>
+          <fieldset class="f"><legend data-e="💳" data-i18n="budget">Budget</legend><div class="seg" id="f-budget"></div></fieldset>
         </div>
-        <fieldset class="f" data-wz="7"><legend data-i18n="langs">Trip languages</legend><div data-chips="l" data-name="langs"></div></fieldset>
+        <fieldset class="f" data-wz="7"><legend data-e="🌐" data-i18n="langs">Trip languages</legend><div data-chips="l" data-name="langs"></div></fieldset>
         <div class="f" data-wz="8">
-          <label for="f-mail" data-i18n="email">Your e-mail</label>
+          <label for="f-mail" data-e="✉️" data-i18n="email">Your e-mail</label>
           <input type="email" id="f-mail" autocomplete="email" dir="ltr" aria-describedby="f-mail-h f-mail-e">
           <p class="hint" id="f-mail-h" data-i18n="emailHint"></p>
           <p class="err" id="f-mail-e" role="alert" hidden data-i18n="emailErr"></p>

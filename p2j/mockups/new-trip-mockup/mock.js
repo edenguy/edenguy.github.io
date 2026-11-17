@@ -3,6 +3,7 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var L = 'en', S = { tab: 'd', phase: 'edit', src: 'd', empty: false }, route = [], B = [];
+  var EM = { museums: '🏛️', nature: '🌿', food: '🍝', beaches: '🏖️', history: '🏰', kids: '🧸', nightlife: '🌙', shopping: '🛍️', crowds: '👥', drives: '🚗', early: '⏰', heat: '☀️', vegetarian: '🥗', vegan: '🌱', kosher: '🥋', halal: '🍖', glutenfree: '🌾', stroller: '👶', wheelchair: '♿', limited: '🚶', noCar: '🚌', en: '🗣️', he: '📜' };
   var CHIPS = { i: ['museums', 'nature', 'food', 'beaches', 'history', 'kids', 'nightlife', 'shopping'], a: ['museums', 'crowds', 'drives', 'early', 'heat'], d: ['vegetarian', 'vegan', 'kosher', 'halal', 'glutenfree'], m: ['stroller', 'wheelchair', 'limited', 'noCar'], l: ['en', 'he'] };
   var GROUPS = ['gDest', 'gWhen', 'gWho', 'gLike', 'gAvoid', 'gFood', 'gMove', 'gPace', 'gLang'];
   var MAIL = 'sara@example.com';
@@ -14,11 +15,11 @@
   /* build the static widgets once */
   function build() {
     $$('[data-chips]').forEach(function (box) {
-      var p = box.dataset.chips;
-      box.innerHTML = CHIPS[p].map(function (v) { return '<label class="chk' + ('neg' in box.dataset ? ' neg' : '') + '"><input type="checkbox" name="' + box.dataset.name + '" value="' + v + '"><span data-i18n="' + p + '.' + v + '"></span></label>'; }).join('');
+      var p = box.dataset.chips; box.classList.add('cat-' + p);
+      box.innerHTML = CHIPS[p].map(function (v) { return '<label class="chk"><input type="checkbox" name="' + box.dataset.name + '" value="' + v + '"><span><i aria-hidden="true">' + (EM[v] || '') + '</i><em data-i18n="' + p + '.' + v + '"></em></span></label>'; }).join('');
     });
-    $('#f-dur').innerHTML = [[3, 'wk'], [7, 'wk1'], [14, 'wk2'], [0, 'cust']].map(function (d) { return '<label><input type="radio" name="dur" value="' + d[0] + '"><span><b data-i18n="' + d[1] + '"></b>' + (d[0] ? '<small>' + d[0] + '</small>' : '') + '</span></label>'; }).join('');
-    $('#f-budget').innerHTML = [1, 2, 3].map(function (n) { return '<label><input type="radio" name="budget" value="' + n + '"' + (n === 2 ? ' checked' : '') + '><span data-i18n="b' + n + '"></span></label>'; }).join('');
+    $('#f-dur').innerHTML = [[3, 'wk'], [7, 'wk1'], [14, 'wk2'], [0, 'cust']].map(function (d) { return '<label><input type="radio" name="dur" value="' + d[0] + '"><span><i aria-hidden="true">' + { 3: '⚡', 7: '🗓️', 14: '🌍', 0: '✏️' }[d[0]] + '</i><b data-i18n="' + d[1] + '"></b>' + (d[0] ? '<small>' + d[0] + '</small>' : '') + '</span></label>'; }).join('');
+    $('#f-budget').innerHTML = [1, 2, 3].map(function (n) { return '<label><input type="radio" name="budget" value="' + n + '"' + (n === 2 ? ' checked' : '') + '><span><i aria-hidden="true">' + ['💸', '💳', '💎'][n - 1] + '</i><b data-i18n="b' + n + '"></b></span></label>'; }).join('');
     $('#f-country').innerHTML = '<option value="" data-i18n="pickCountry"></option>' + Object.keys(COUNTRIES).map(function (c) { return '<option value="' + c + '"></option>'; }).join('');
     $('#states').innerHTML = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14', 's15', 's16', 's17'].map(function (k, i) { return '<button type="button" data-state="' + (i + 1) + '" aria-pressed="false" data-i18n="' + k + '"></button>'; }).join('');
   }
@@ -93,8 +94,8 @@
   }
   function drawBrief() {
     $('#brief').innerHTML = GROUPS.map(function (g) {
-      var items = B.map(function (c, i) { return c.g === g ? '<span class="bchip' + (c.no ? ' no' : '') + '">' + c.f() + '<button type="button" data-bx="' + i + '" aria-label="' + t('remove') + ': ' + c.f() + '">&times;</button></span>' : ''; }).join('');
-      return items ? '<div class="brow"><span class="g">' + t(g) + '</span><div class="cs">' + items + '</div></div>' : '';
+      var items = B.map(function (c, i) { return c.g === g ? '<span class="bchip" data-g="' + c.g + '">' + c.f() + '<button type="button" data-bx="' + i + '" aria-label="' + t('remove') + ': ' + c.f() + '">&times;</button></span>' : ''; }).join('');
+      return items ? '<div class="brow" data-g="' + g + '"><span class="g">' + t(g) + '</span><div class="cs">' + items + '</div></div>' : '';
     }).join('');
   }
 
@@ -191,7 +192,7 @@
     $('#states').addEventListener('click', function (e) { var b = e.target.closest('[data-state]'); if (b) setState(+b.dataset.state); });
     $$('[data-lang]').forEach(function (b) { b.addEventListener('click', function () { L = b.dataset.lang; applyLang(); show(); }); });
     $$('[data-theme-set]').forEach(function (b) {
-      b.addEventListener('click', function () { var v = b.dataset.themeSet; if (v === 'auto') document.documentElement.removeAttribute('data-theme'); else document.documentElement.dataset.theme = v; $$('[data-theme-set]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); });
+      b.addEventListener('click', function () { var v = b.dataset.themeSet; document.documentElement.dataset.theme = v === 'auto' ? (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark') : v; $$('[data-theme-set]').forEach(function (x) { x.setAttribute('aria-pressed', x === b); }); });
     });
   }
 
