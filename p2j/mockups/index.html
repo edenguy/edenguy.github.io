@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Plan to Journal: mockups</title>
+<meta name="description" content="Every screen mockup of Plan to Journal in one place.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#121018;--card:#1c1925;--ink:#eeeaf7;--muted:#a59fb8;--line:#2f2a3d;--a:#a98bff;--b:#ff7aa6;--c:#4fd6c3;--d:#ffb35c;--g1:#3d1f99;--g2:#9c2a57}
+@media (prefers-color-scheme:light){:root{--bg:#f6f4fb;--card:#fff;--ink:#17151f;--muted:#625d72;--line:#e4e0ef;--a:#6d3fe0;--b:#b92a5e;--c:#0b7f70;--d:#b46605;--g1:#5b2fd0;--g2:#c42d69}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Manrope","Segoe UI",system-ui,sans-serif}
+.hero{background:radial-gradient(900px 300px at 80% -20%,rgba(255,255,255,.18),transparent),linear-gradient(135deg,var(--g1),var(--g2));color:#fff;padding:44px 16px 56px}
+.in{max-width:900px;margin:0 auto}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+h1{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:clamp(34px,8vw,56px);line-height:1.1;margin:8px 0 10px}
+h1 em{color:#ffd9a0}
+.hero p{max-width:34em;margin:0;opacity:.95}
+.pills{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+.pill{font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;background:rgba(255,255,255,.18)}
+main{max-width:900px;margin:-28px auto 0;padding:0 16px 56px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px 18px 16px;text-decoration:none;color:inherit;box-shadow:0 10px 30px rgba(20,10,60,.25);transition:transform .15s,border-color .15s}
+a.card:hover,a.card:focus-visible{transform:translateY(-3px);border-color:var(--a);outline:none}
+.tag{align-self:flex-start;font-size:12px;font-weight:800;padding:2px 10px;border-radius:999px;color:#10211e;background:var(--c)}
+.tag.soon{background:var(--d);color:#2a1700}
+.card h2{font-family:"Fraunces",Georgia,serif;font-weight:600;font-size:22px;margin:4px 0 0}
+.card p{margin:0;color:var(--muted);font-size:14.5px}
+.url{margin-top:auto;padding-top:8px;font-size:12.5px;color:var(--a);word-break:break-all;direction:ltr}
+.card.off{opacity:.72;box-shadow:none}
+h3{margin:34px 0 12px;font-size:13px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+footer{max-width:900px;margin:0 auto;padding:0 16px 40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<header class="hero"><div class="in">
+<div class="eyebrow">Plan to Journal · Beta</div>
+<h1>All the <em>mockups</em>, in one place</h1>
+<p>Open any screen on your phone or desktop. Each mock has its own controls for language, theme and state.</p>
+<div class="pills"><span class="pill">Hebrew and English</span><span class="pill">Light and dark</span><span class="pill">Phone first</span></div>
+</div></header>
+<main>
+<h3>Ready to look at</h3>
+<div class="grid">
+<a class="card" href="new-trip-mockup/">
+<span class="tag">Live</span><h2>New trip</h2>
+<p>Describe it in free text, fill it in with widgets, or let the guide ask a few questions. Seventeen states.</p>
+<span class="url">/p2j/mockups/new-trip-mockup/</span></a>
+<a class="card" href="hungary-journal/">
+<span class="tag">Live</span><h2>Trip journal (Hungary)</h2>
+<p>The finished keepsake page for the sample trip: four days, the small moments and the summary, in Hebrew.</p>
+<span class="url">/p2j/mockups/hungary-journal/</span></a>
+<a class="card" href="admin/" id="admin">
+<span class="tag soon">Being built</span><h2>Admin console</h2>
+<p>Overview, logs, trips and their actions, jobs, cost and kill switches, build a trip from a prompt, audit. For the three admins only.</p>
+<span class="url">/p2j/mockups/admin/</span></a>
+</div>
+<h3>Not mocked yet</h3>
+<div class="grid">
+<div class="card off"><span class="tag soon">To do</span><h2>Trip summary</h2>
+<p>The one-screen summary of a trip: dates, route, who, what is booked and what is left.</p></div>
+<div class="card off"><span class="tag soon">To do</span><h2>Landing page</h2>
+<p>The product's front page for a visitor who has no trip yet.</p></div>
+<div class="card off"><span class="tag soon">To do</span><h2>Entry and sign-in</h2>
+<p>What a person sees when they arrive: the home page, the e-mailed owner link and the recovery screens.</p></div>
+</div>
+</main>
+<footer>Mockups are pictures of what the product will do. Nothing here saves or sends anything.</footer>
+</body>
+</html>
