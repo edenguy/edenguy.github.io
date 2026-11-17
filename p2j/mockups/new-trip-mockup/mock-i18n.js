@@ -1,0 +1,57 @@
+/* Mockup text: English and Hebrew only. Real strings would live in lang/<l>/ui.yaml (newtrip.*). */
+window.I18N = {
+en: {
+ title:"Plan a new trip", lead:"Tell us about it in your own words, or pick the details. Either way you get a draft you can edit.", mock:"Mockup controls", lang:"Language", theme:"Theme",
+ tabD:"Describe it", tabDs:"In your own words", tabF:"Fill it in", tabFs:"Pick the details",
+ dLabel:"Your trip", dPh:"Where do you want to go, when, and with whom?", exLabel:"Try an example", ex:"A tour in Italy for 6 days, 4 of us: 2 adults and 2 children. We have a stroller, we don't like museums, and we're vegetarian.",
+ hintLead:"Worth mentioning:", h1:"where", h2:"when", h3:"who", h4:"pace", h5:"food", h6:"mobility", h7:"dislikes",
+ email:"Your e-mail", emailHint:"We mail you the owner link and the link to share with your travellers. Not shown to anyone.", emailErr:"Please enter an e-mail address so we can send your links.", dErr:"Write a few words about the trip first.",
+ draft:"Draft my trip", emptyTrip:"Create empty trip",
+ wTitle:"Drafting your trip", wLead:"This takes a few minutes and runs in the background. You can close this page; we will e-mail", wTo:"when it is ready.", w1:"Read your description", w2:"Choose places and days", w3:"Write the plan, meals and notes", w4:"Check opening hours (marked unverified)", wClose:"Close, e-mail me", wMock:"Mockup: finish drafting",
+ rTitle:"This is what we understood", rLead:"One brief, whichever way you filled it in. Remove or add details, then create.", ok:"Looks right, create", fix:"Fix", addPh:"Add a detail, e.g. no early mornings", add:"Add", remove:"Remove",
+ gDest:"Where", gWhen:"How long", gWho:"Who", gLike:"We like", gAvoid:"We avoid", gFood:"Food", gMove:"Getting around", gPace:"Pace and budget", gLang:"Languages",
+ cTitle:"Trip created", cLead:"We sent two links to", cLead2:"the owner link (keep it private) and the link to share with travellers.", cEmpty:"An empty trip with the days you chose is ready to fill in.", cOpen:"Open the trip", cAgain:"Plan another",
+ country:"Country", pickCountry:"Choose a country", cityHint:"Tap places to add them to the route, in the order you want to visit.", cityNone:"Choose a country to see its places.", routeEmpty:"No places yet. Tap one above.", nights:"nights", up:"Move earlier", down:"Move later", rm:"Remove",
+ start:"Start date", days:"Days", durQ:"Trip length", wk:"Weekend", wk1:"A week", wk2:"Two weeks", cust:"Custom", nightsSum:"nights in the route",
+ trav:"Travellers", adults:"Adults", kids:"Children", age:"Age of child", yrs:"years",
+ likes:"We like", avoid:"We would rather avoid", diet:"Food", allergy:"Allergies (optional)", allergyPh:"e.g. nuts, shellfish", move:"Getting around", pace:"Pace", relaxed:"Relaxed", packed:"Packed", budget:"Budget", b1:"Thrifty", b2:"Comfortable", b3:"Generous", langs:"Trip languages",
+ "i.museums":"Museums","i.nature":"Nature","i.food":"Food and markets","i.beaches":"Beaches","i.history":"History","i.kids":"Kids' activities","i.nightlife":"Nightlife","i.shopping":"Shopping",
+ "a.museums":"Museums","a.crowds":"Crowds","a.drives":"Long drives","a.early":"Early mornings","a.heat":"Hot afternoons",
+ "d.vegetarian":"Vegetarian","d.vegan":"Vegan","d.kosher":"Kosher","d.halal":"Halal","d.glutenfree":"Gluten-free",
+ "m.stroller":"Stroller","m.wheelchair":"Wheelchair","m.limited":"Limited walking","m.noCar":"No car",
+ "l.en":"English","l.he":"Hebrew", pc:"Pace", "p.1":"relaxed","p.2":"balanced","p.3":"packed",
+ "bb.1":"thrifty","bb.2":"comfortable","bb.3":"generous",
+ nAdults:"{n} adults", nAdults1:"1 adult", nKids:"{n} children", nKids1:"1 child", nDays:"{n} days", no:"no {x}", ages:"ages {a}", nLeft:"{n} nights",
+ s1:"Describe: empty", s2:"Describe: filled", s3:"Drafting", s4:"Result", s5:"Fill: empty", s6:"Fill: filled", s7:"Fill: result", s8:"Created", s9:"Created (empty)", sPlace:"Italy", brandName:"Plan to Journal"
+},
+he: {
+ title:"תכנון טיול חדש", lead:"ספרו לנו במילים שלכם, או בחרו את הפרטים. בכל מקרה תקבלו טיוטה שאפשר לערוך.", mock:"בקרות מוקאפ", lang:"שפה", theme:"ערכת צבעים",
+ tabD:"לתאר במילים", tabDs:"בטקסט חופשי", tabF:"למלא פרטים", tabFs:"לבחור מתוך אפשרויות",
+ dLabel:"הטיול שלכם", dPh:"לאן רוצים לנסוע, מתי ועם מי?", exLabel:"לדוגמה", ex:"טיול באיטליה לשישה ימים, ארבעה אנשים: שני מבוגרים ושני ילדים. יש לנו עגלה, אנחנו לא אוהבים מוזיאונים, ואנחנו צמחונים.",
+ hintLead:"כדאי לציין:", h1:"לאן", h2:"מתי", h3:"מי נוסע", h4:"קצב", h5:"אוכל", h6:"ניידות", h7:"מה לא אוהבים",
+ email:"האימייל שלכם", emailHint:"נשלח אליו את קישור הבעלים ואת הקישור לשיתוף עם המטיילים. הוא לא מוצג לאף אחד.", emailErr:"נא להזין כתובת אימייל כדי שנוכל לשלוח את הקישורים.", dErr:"כתבו כמה מילים על הטיול קודם.",
+ draft:"לנסח לי טיוטה", emptyTrip:"ליצור טיול ריק",
+ wTitle:"מנסחים את הטיול", wLead:"זה לוקח כמה דקות ורץ ברקע. אפשר לסגור את הדף; נשלח אימייל אל", wTo:"כשהטיוטה מוכנה.", w1:"קראנו את התיאור", w2:"בחירת מקומות וימים", w3:"כתיבת התוכנית, הארוחות וההערות", w4:"בדיקת שעות פתיחה (יסומנו כלא מאומתים)", wClose:"לסגור ולחכות למייל", wMock:"מוקאפ: סיום הניסוח",
+ rTitle:"כך הבנו אתכם", rLead:"תקציר אחד, לא משנה איך מילאתם. אפשר להסיר או להוסיף פרטים ואז ליצור.", ok:"נראה טוב, ליצור", fix:"לתקן", addPh:"להוסיף פרט, למשל בלי קימה מוקדמת", add:"הוספה", remove:"הסרה",
+ gDest:"לאן", gWhen:"כמה זמן", gWho:"מי", gLike:"אוהבים", gAvoid:"נמנעים", gFood:"אוכל", gMove:"תנועה", gPace:"קצב ותקציב", gLang:"שפות",
+ cTitle:"הטיול נוצר", cLead:"שלחנו שני קישורים אל", cLead2:"קישור הבעלים (לשמור פרטי) והקישור לשיתוף עם המטיילים.", cEmpty:"טיול ריק עם הימים שבחרתם מוכן למילוי.", cOpen:"לפתוח את הטיול", cAgain:"לתכנן עוד טיול",
+ country:"מדינה", pickCountry:"בחרו מדינה", cityHint:"הקישו על מקומות כדי להוסיף אותם למסלול, לפי סדר הביקור.", cityNone:"בחרו מדינה כדי לראות את המקומות שלה.", routeEmpty:"עדיין אין מקומות. הקישו על אחד למעלה.", nights:"לילות", up:"להקדים", down:"לאחר", rm:"הסרה",
+ start:"תאריך התחלה", days:"ימים", durQ:"אורך הטיול", wk:"סוף שבוע", wk1:"שבוע", wk2:"שבועיים", cust:"מותאם", nightsSum:"לילות במסלול",
+ trav:"מטיילים", adults:"מבוגרים", kids:"ילדים", age:"גיל ילד", yrs:"שנים",
+ likes:"מה אנחנו אוהבים", avoid:"ממה נעדיף להימנע", diet:"אוכל", allergy:"אלרגיות (לא חובה)", allergyPh:"למשל אגוזים, פירות ים", move:"תנועה", pace:"קצב", relaxed:"רגוע", packed:"עמוס", budget:"תקציב", b1:"חסכוני", b2:"נוח", b3:"נדיב", langs:"שפות הטיול",
+ "i.museums":"מוזיאונים","i.nature":"טבע","i.food":"אוכל ושווקים","i.beaches":"חופים","i.history":"היסטוריה","i.kids":"פעילויות לילדים","i.nightlife":"חיי לילה","i.shopping":"קניות",
+ "a.museums":"מוזיאונים","a.crowds":"ציבור גדול","a.drives":"נסיעות ארוכות","a.early":"קימה מוקדמת","a.heat":"חום אחר הצהריים",
+ "d.vegetarian":"צמחוני","d.vegan":"טבעוני","d.kosher":"כשר","d.halal":"חלאל","d.glutenfree":"ללא גלוטן",
+ "m.stroller":"עגלה","m.wheelchair":"כיסא גלגלים","m.limited":"הליכה מוגבלת","m.noCar":"בלי רכב",
+ "l.en":"אנגלית","l.he":"עברית", pc:"קצב", "p.1":"רגוע","p.2":"מאוזן","p.3":"עמוס",
+ "bb.1":"חסכוני","bb.2":"נוח","bb.3":"נדיב",
+ nAdults:"{n} מבוגרים", nAdults1:"מבוגר אחד", nKids:"{n} ילדים", nKids1:"ילד אחד", nDays:"{n} ימים", no:"בלי {x}", ages:"גילאי {a}", nLeft:"{n} לילות",
+ s1:"תיאור: ריק", s2:"תיאור: מלא", s3:"בניסוח", s4:"תוצאה", s5:"פרטים: ריק", s6:"פרטים: מלא", s7:"פרטים: תוצאה", s8:"נוצר", s9:"נוצר (ריק)", sPlace:"איטליה", brandName:"Plan to Journal"
+}};
+window.COUNTRIES = {
+ it:{en:"Italy",he:"איטליה",c:[["rome","Rome","רומא"],["florence","Florence","פירנצה"],["venice","Venice","ונציה"],["milan","Milan","מילאנו"],["naples","Naples","נאפולי"],["verona","Verona","ורונה"]]},
+ hu:{en:"Hungary",he:"הונגריה",c:[["budapest","Budapest","בודפשט"],["eger","Eger","אגר"],["pecs","Pécs","פץ'"]]},
+ gr:{en:"Greece",he:"יוון",c:[["athens","Athens","אתונה"],["crete","Crete","כרתים"],["santorini","Santorini","סנטוריני"]]},
+ pt:{en:"Portugal",he:"פורטוגל",c:[["lisbon","Lisbon","ליסבון"],["porto","Porto","פורטו"],["faro","Faro","פארו"]]},
+ de:{en:"Germany",he:"גרמניה",c:[["berlin","Berlin","ברלין"],["munich","Munich","מינכן"],["hamburg","Hamburg","המבורג"]]}
+};

@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>New trip (mockup)</title>
+<link rel="stylesheet" href="mock.css">
+</head>
+<body>
+<div class="mockbar">
+  <details>
+    <summary data-i18n="mock">Mockup controls</summary>
+    <div class="row" id="states" role="group" aria-label="State"></div>
+    <div class="row" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">English</button><button type="button" data-lang="he" aria-pressed="false">עברית</button></div>
+    <div class="row" role="group" aria-label="Theme"><button type="button" data-theme-set="auto" aria-pressed="true">Auto</button><button type="button" data-theme-set="light" aria-pressed="false">Light</button><button type="button" data-theme-set="dark" aria-pressed="false">Dark</button></div>
+  </details>
+</div>
+<main>
+  <span class="brand">Plan to Journal</span>
+  <h1 data-i18n="title">Plan a new trip</h1>
+  <p class="lead" data-i18n="lead"></p>
+
+  <div id="editor">
+    <div role="tablist" aria-label="Trip input" id="tabs">
+      <button role="tab" id="tab-d" aria-controls="pan-d" aria-selected="true" tabindex="0"><span data-i18n="tabD">Describe it</span><small data-i18n="tabDs"></small></button>
+      <button role="tab" id="tab-f" aria-controls="pan-f" aria-selected="false" tabindex="-1"><span data-i18n="tabF">Fill it in</span><small data-i18n="tabFs"></small></button>
+    </div>
+
+    <!-- Tab 1: free text -->
+    <section class="card" role="tabpanel" id="pan-d" aria-labelledby="tab-d">
+      <form id="form-d" novalidate>
+        <div class="f">
+          <label for="d-text" data-i18n="dLabel">Your trip</label>
+          <textarea id="d-text" class="big" data-i18n-ph="dPh" aria-describedby="d-hint d-err"></textarea>
+          <p class="err" id="d-err" role="alert" hidden data-i18n="dErr"></p>
+          <button type="button" class="example" id="d-ex"><b data-i18n="exLabel">Try an example</b><span id="d-ex-t"></span></button>
+          <p class="hint" id="d-hint"><span data-i18n="hintLead">Worth mentioning:</span></p>
+          <ul class="mention"><li data-i18n="h1"></li><li data-i18n="h2"></li><li data-i18n="h3"></li><li data-i18n="h4"></li><li data-i18n="h5"></li><li data-i18n="h6"></li><li data-i18n="h7"></li></ul>
+        </div>
+        <div class="f">
+          <label for="d-mail" data-i18n="email">Your e-mail</label>
+          <input type="email" id="d-mail" autocomplete="email" dir="ltr" aria-describedby="d-mail-h d-mail-e">
+          <p class="hint" id="d-mail-h" data-i18n="emailHint"></p>
+          <p class="err" id="d-mail-e" role="alert" hidden data-i18n="emailErr"></p>
+        </div>
+        <div class="actions"><button type="submit" class="btn primary" data-i18n="draft">Draft my trip</button></div>
+      </form>
+    </section>
+
+    <!-- Tab 2: widgets -->
+    <section class="card" role="tabpanel" id="pan-f" aria-labelledby="tab-f" hidden>
+      <form id="form-f" novalidate>
+        <div class="f">
+          <label for="f-country" data-i18n="country">Country</label>
+          <select id="f-country"></select>
+          <p class="hint" id="f-city-h" data-i18n="cityNone"></p>
+          <div class="picks" id="f-picks" aria-describedby="f-city-h"></div>
+          <ol class="route" id="f-route" aria-live="polite"></ol>
+          <p class="route-empty" id="f-route-empty" data-i18n="routeEmpty"></p>
+        </div>
+
+        <fieldset class="f"><legend data-i18n="durQ">Trip length</legend>
+          <div class="seg" id="f-dur"></div>
+          <div class="steps2" style="margin-top:12px">
+            <div><span class="lbl" id="l-days" data-i18n="days">Days</span><div class="step" role="group" aria-labelledby="l-days"><button type="button" data-step="days" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-days" min="1" max="30" value="6" aria-labelledby="l-days"><button type="button" data-step="days" data-d="1" aria-label="+">+</button></div></div>
+            <div><label class="lbl" for="f-start" data-i18n="start">Start date</label><input type="date" id="f-start" value="2027-04-12" dir="ltr"></div>
+          </div>
+          <p class="hint" id="f-sum" aria-live="polite"></p>
+        </fieldset>
+
+        <fieldset class="f"><legend data-i18n="trav">Travellers</legend>
+          <div class="steps2">
+            <div><span class="lbl" id="l-ad" data-i18n="adults">Adults</span><div class="step" role="group" aria-labelledby="l-ad"><button type="button" data-step="adults" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-adults" min="1" max="12" value="2" aria-labelledby="l-ad"><button type="button" data-step="adults" data-d="1" aria-label="+">+</button></div></div>
+            <div><span class="lbl" id="l-ki" data-i18n="kids">Children</span><div class="step" role="group" aria-labelledby="l-ki"><button type="button" data-step="kids" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-kids" min="0" max="8" value="0" aria-labelledby="l-ki"><button type="button" data-step="kids" data-d="1" aria-label="+">+</button></div></div>
+          </div>
+          <div class="kids" id="f-ages"></div>
+        </fieldset>
+
+        <fieldset class="f"><legend data-i18n="likes">We like</legend><div data-chips="i" data-name="likes"></div></fieldset>
+        <fieldset class="f"><legend data-i18n="avoid">We would rather avoid</legend><div data-chips="a" data-name="avoid" data-neg></div></fieldset>
+        <fieldset class="f"><legend data-i18n="diet">Food</legend><div data-chips="d" data-name="diet"></div>
+          <label class="lbl" for="f-allergy" style="margin-top:8px" data-i18n="allergy"></label><input type="text" id="f-allergy" data-i18n-ph="allergyPh"></fieldset>
+        <fieldset class="f"><legend data-i18n="move">Getting around</legend><div data-chips="m" data-name="move"></div></fieldset>
+
+        <div class="grid2">
+          <div class="f"><label for="f-pace" data-i18n="pace">Pace</label><input type="range" id="f-pace" min="1" max="3" step="1" value="2" aria-valuetext="">
+            <div class="ticks" aria-hidden="true"><span data-i18n="relaxed"></span><span data-i18n="packed"></span></div></div>
+          <fieldset class="f"><legend data-i18n="budget">Budget</legend><div class="seg" id="f-budget"></div></fieldset>
+        </div>
+        <fieldset class="f"><legend data-i18n="langs">Trip languages</legend><div data-chips="l" data-name="langs"></div></fieldset>
+        <div class="f">
+          <label for="f-mail" data-i18n="email">Your e-mail</label>
+          <input type="email" id="f-mail" autocomplete="email" dir="ltr" aria-describedby="f-mail-h f-mail-e">
+          <p class="hint" id="f-mail-h" data-i18n="emailHint"></p>
+          <p class="err" id="f-mail-e" role="alert" hidden data-i18n="emailErr"></p>
+        </div>
+        <div class="actions"><button type="submit" class="btn primary" data-i18n="draft">Draft my trip</button><button type="button" class="btn" id="f-empty" data-i18n="emptyTrip">Create empty trip</button></div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Drafting: background job -->
+  <section class="card solo" id="working" hidden aria-live="polite">
+    <h2 data-i18n="wTitle">Drafting your trip</h2>
+    <p class="lead"><span data-i18n="wLead"></span> <b class="mailto" dir="ltr"></b> <span data-i18n="wTo"></span></p>
+    <div class="bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"><i></i></div>
+    <ul class="stp"><li data-s="done"><span class="m">&#10003;</span><span data-i18n="w1"></span></li><li data-s="now"><span class="m">&bull;</span><span data-i18n="w2"></span></li><li><span class="m"></span><span data-i18n="w3"></span></li><li><span class="m"></span><span data-i18n="w4"></span></li></ul>
+    <div class="actions"><button type="button" class="btn primary" id="w-close" data-i18n="wClose"></button><button type="button" class="btn ghost" id="w-mock" data-i18n="wMock"></button></div>
+  </section>
+
+  <!-- Result: the one shared brief -->
+  <section class="card solo" id="result" hidden>
+    <h2 data-i18n="rTitle">This is what we understood</h2>
+    <p class="lead" data-i18n="rLead"></p>
+    <div class="brief" id="brief"></div>
+    <form class="addrow" id="add-form"><label class="sr" for="add-in" hidden></label><input type="text" id="add-in" data-i18n-ph="addPh"><button type="submit" class="btn sm" data-i18n="add">Add</button></form>
+    <div class="actions"><button type="button" class="btn primary" id="r-ok" data-i18n="ok">Looks right, create</button><button type="button" class="btn" id="r-fix" data-i18n="fix">Fix</button></div>
+  </section>
+
+  <!-- Created -->
+  <section class="card solo" id="created" hidden aria-live="polite">
+    <div class="ok"><span class="dot"></span><h2 style="margin:0" data-i18n="cTitle">Trip created</h2></div>
+    <p class="lead"><span data-i18n="cLead"></span> <b class="mailto" dir="ltr"></b>: <span data-i18n="cLead2"></span></p>
+    <p class="note" id="c-empty" data-i18n="cEmpty" hidden></p>
+    <div class="actions"><button type="button" class="btn primary" data-i18n="cOpen"></button><button type="button" class="btn" id="c-again" data-i18n="cAgain"></button></div>
+  </section>
+</main>
+<script src="mock-i18n.js"></script>
+<script src="mock.js"></script>
+</body>
+</html>
