@@ -1,13 +1,13 @@
 /* Labels of the admin mock in English and Hebrew (the fake data stays English). A missing Hebrew key falls back to English. */
 window.I18N = {
 en: {
-'brand.admin': 'Admin', 'brand.beta': 'Beta', 'who.title': 'Signed in through Cloudflare Access', 'common.copy': 'Copy', 'common.copied': 'Copied to the clipboard.', 'common.close': 'Close', 'common.cancel': 'Cancel', 'common.back': 'Back',
+'brand.admin': 'Supervisor', 'brand.beta': 'Beta', 'who.title': 'Signed in through Cloudflare Access', 'common.copy': 'Copy', 'common.copied': 'Copied to the clipboard.', 'common.close': 'Close', 'common.cancel': 'Cancel', 'common.back': 'Back',
 'common.stale': 'not read for 2 min', 'common.min': '{n} min ago', 'common.hr': '{n} h ago', 'common.day': '{n} d ago',
-'nav.label': 'Admin', 'nav.overview': 'Overview', 'nav.logs': 'Logs', 'nav.trips': 'Trips', 'nav.build': 'Build a trip', 'nav.jobs': 'Jobs', 'nav.drafts': 'Drafts and cost', 'nav.audit': 'Audit', 'nav.system': 'System', 'nav.more': 'More',
+'nav.label': 'Supervisor', 'nav.overview': 'Overview', 'nav.logs': 'Logs', 'nav.trips': 'Trips', 'nav.build': 'Build a trip', 'nav.jobs': 'Jobs', 'nav.drafts': 'Drafts and cost', 'nav.audit': 'Audit', 'nav.system': 'System', 'nav.more': 'More',
 'nav.note': 'Every action asks for a reason and lands in the audit.',
 'ctl.title': 'Mockup controls (not part of the product)', 'ctl.screen': 'Screen', 'ctl.env': 'Environment', 'ctl.theme': 'Theme', 'ctl.lang': 'Language', 'ctl.dark': 'Dark', 'ctl.light': 'Light', 'ctl.data': 'Data', 'ctl.fresh': 'Fresh', 'ctl.stale': 'Stale', 'ctl.signin': 'Sign-in', 'ctl.build': 'Build',
 'env.sb': 'Sandbox environment', 'env.dev': 'Development environment', 'env.production': 'Production: no pill', 'env.prodshort': 'production',
-'si.k': 'Admins only', 'si.title': 'Admin console', 'si.lead': 'This console is for the three people on the admin list. Sign-in is done by Cloudflare Access: no password is typed here.', 'si.cta': 'Continue with Cloudflare Access', 'si.fine': 'Without Access settings this page does not exist: /admin answers 404.',
+'si.k': 'Admins only', 'si.title': 'Supervisor console', 'si.lead': 'This console is for the three people on the admin list. Sign-in is done by Cloudflare Access: no password is typed here.', 'si.cta': 'Continue with Cloudflare Access', 'si.fine': 'Without Access settings this page does not exist: /admin answers 404.',
 'si.checking': 'Handing you over to Cloudflare Access and verifying the answer.', 'si.s1': 'Access one-time code accepted', 'si.s2': 'Token verified: audience, issuer, expiry', 'si.s3': 'E-mail checked against the admin list', 'si.next': 'Show the signed-in result',
 'si.denied': 'Not an admin', 'si.deniedsub': '{e} passed Access but is not on the admin list. The refusal is logged as auth.admin_refused, never as an audit row.', 'si.ok': 'You are signed in as', 'si.session': 'Session 8 h', 'si.2fa': 'Second factor by Access', 'si.enter': 'Enter the console',
 'si.st.start': 'Hand-off', 'si.st.checking': 'Verifying', 'si.st.ok': 'Signed in', 'si.st.denied': 'Refused',
@@ -49,13 +49,13 @@ en: {
 'sy.signout': 'Sign out everywhere', 'sy.signoutintro': 'Ends every admin session of yours, on every device.', 'sy.signedout': 'Signed out.'
 },
 he: {
-'brand.admin': 'ניהול', 'brand.beta': 'בטא', 'who.title': 'מחובר דרך Cloudflare Access', 'common.copy': 'העתק', 'common.copied': 'הועתק ללוח.', 'common.close': 'סגור', 'common.cancel': 'ביטול', 'common.back': 'חזרה',
+'brand.admin': 'פיקוח', 'brand.beta': 'בטא', 'who.title': 'מחובר דרך Cloudflare Access', 'common.copy': 'העתק', 'common.copied': 'הועתק ללוח.', 'common.close': 'סגור', 'common.cancel': 'ביטול', 'common.back': 'חזרה',
 'common.stale': 'לא נקרא מזה דקות', 'common.min': 'לפני {n} דק׳', 'common.hr': 'לפני {n} שע׳', 'common.day': 'לפני {n} ימים',
-'nav.label': 'ניהול', 'nav.overview': 'סקירה', 'nav.logs': 'לוגים', 'nav.trips': 'טיולים', 'nav.build': 'בניית טיול', 'nav.jobs': 'משימות', 'nav.drafts': 'טיוטות ועלות', 'nav.audit': 'יומן ביקורת', 'nav.system': 'מערכת', 'nav.more': 'עוד',
+'nav.label': 'פיקוח', 'nav.overview': 'סקירה', 'nav.logs': 'לוגים', 'nav.trips': 'טיולים', 'nav.build': 'בניית טיול', 'nav.jobs': 'משימות', 'nav.drafts': 'טיוטות ועלות', 'nav.audit': 'יומן ביקורת', 'nav.system': 'מערכת', 'nav.more': 'עוד',
 'nav.note': 'כל פעולה דורשת סיבה ונכתבת ביומן הביקורת.',
 'ctl.title': 'בקרי המוקאאפ (לא חלק מהמוצר)', 'ctl.screen': 'מסך', 'ctl.env': 'סביבה', 'ctl.theme': 'ערכה', 'ctl.lang': 'שפה', 'ctl.dark': 'כהה', 'ctl.light': 'בהיר', 'ctl.data': 'נתונים', 'ctl.fresh': 'טריים', 'ctl.stale': 'ישנים', 'ctl.signin': 'כניסה', 'ctl.build': 'בנייה',
 'env.sb': 'סביבת האובקס', 'env.dev': 'סביבת פיתוח', 'env.production': 'ייצור: בלי תגית', 'env.prodshort': 'ייצור',
-'si.k': 'למנהלים בלבד', 'si.title': 'קונסולת ניהול', 'si.lead': 'הקונסולה מיועדת לשלושת האנשים ברשימת המנהלים. הכניסה דרך Cloudflare Access, בלי סיסמה.', 'si.cta': 'המשך עם Cloudflare Access', 'si.fine': 'בלי הגדרות Access העמוד לא קיים: /admin מחזיר 404.',
+'si.k': 'למנהלים בלבד', 'si.title': 'קונסולת פיקוח', 'si.lead': 'הקונסולה מיועדת לשלושת האנשים ברשימת המנהלים. הכניסה דרך Cloudflare Access, בלי סיסמה.', 'si.cta': 'המשך עם Cloudflare Access', 'si.fine': 'בלי הגדרות Access העמוד לא קיים: /admin מחזיר 404.',
 'si.checking': 'מעבירים אותך ל-Cloudflare Access ומאמתים את התשובה.', 'si.s1': 'קוד חד-פעמי התקבל', 'si.s2': 'האסימון אומת', 'si.s3': 'הדוא"ל נבדק מול רשימת המנהלים', 'si.next': 'הצג את תוצאת הכניסה',
 'si.denied': 'לא מנהל', 'si.ok': 'מחובר בתור', 'si.session': 'סשן של 8 שעות', 'si.2fa': 'אימות שני דרך Access', 'si.enter': 'כניסה לקונסולה',
 'si.st.start': 'העברה', 'si.st.checking': 'באימות', 'si.st.ok': 'מחובר', 'si.st.denied': 'נדחה',
