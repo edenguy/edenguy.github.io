@@ -20,7 +20,7 @@
     $('#f-dur').innerHTML = [[3, 'wk'], [7, 'wk1'], [14, 'wk2'], [0, 'cust']].map(function (d) { return '<label><input type="radio" name="dur" value="' + d[0] + '"><span><b data-i18n="' + d[1] + '"></b>' + (d[0] ? '<small>' + d[0] + '</small>' : '') + '</span></label>'; }).join('');
     $('#f-budget').innerHTML = [1, 2, 3].map(function (n) { return '<label><input type="radio" name="budget" value="' + n + '"' + (n === 2 ? ' checked' : '') + '><span data-i18n="b' + n + '"></span></label>'; }).join('');
     $('#f-country').innerHTML = '<option value="" data-i18n="pickCountry"></option>' + Object.keys(COUNTRIES).map(function (c) { return '<option value="' + c + '"></option>'; }).join('');
-    $('#states').innerHTML = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9'].map(function (k, i) { return '<button type="button" data-state="' + (i + 1) + '" aria-pressed="false" data-i18n="' + k + '"></button>'; }).join('');
+    $('#states').innerHTML = ['s1', 's2', 's3', 's4', 's5', 's6', 's7', 's8', 's9', 's10', 's11', 's12', 's13', 's14', 's15', 's16', 's17'].map(function (k, i) { return '<button type="button" data-state="' + (i + 1) + '" aria-pressed="false" data-i18n="' + k + '"></button>'; }).join('');
   }
 
   /* text, direction, dynamic parts */
@@ -131,11 +131,13 @@
     S.phase = 'edit'; S.empty = false;
     if (n <= 4 || n === 8) { S.src = 'd'; S.tab = 'd'; resetD(); }
     if (n >= 5 && n !== 8) { S.src = 'f'; S.tab = 'f'; }
+    WIZ.close();
     if (n === 2 || n >= 3 && n <= 4 || n === 8) { setField('#d-text', t('ex')); setField('#d-mail', MAIL); }
     if (n === 3) S.phase = 'working';
     if (n === 4) { S.phase = 'result'; B = briefFromText(); }
     if (n === 5) resetF();
     if (n >= 6 && n !== 8) fillF();
+    if (n >= 10) { if (n === 10) resetF(); WIZ.open(n - 9); }
     if (n === 7) { S.phase = 'result'; B = briefFromForm(); }
     if (n === 8) S.phase = 'created';
     if (n === 9) { S.phase = 'created'; S.empty = true; }

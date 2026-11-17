@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>New trip (mockup)</title>
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap">
 <link rel="stylesheet" href="mock.css">
 </head>
 <body>
@@ -17,9 +21,12 @@
   </details>
 </div>
 <main>
-  <span class="brand">Plan to Journal</span>
-  <h1 data-i18n="title">Plan a new trip</h1>
-  <p class="lead" data-i18n="lead"></p>
+  <header class="hero">
+    <span class="brand"><i aria-hidden="true"></i>Plan to Journal</span>
+    <span class="eyebrow" data-i18n="eyebrow">New trip</span>
+    <h1 data-i18n="title">Plan a new trip</h1>
+    <p class="lead" data-i18n="lead"></p>
+  </header>
 
   <div id="editor">
     <div role="tablist" aria-label="Trip input" id="tabs">
@@ -51,7 +58,13 @@
     <!-- Tab 2: widgets -->
     <section class="card" role="tabpanel" id="pan-f" aria-labelledby="tab-f" hidden>
       <form id="form-f" novalidate>
-        <div class="f">
+        <div class="guide" id="wz-start-box"><p data-i18n="wzIntro"></p><button type="button" class="btn" id="wz-start"><span data-i18n="wzStart">Guide me</span> <span class="flip" aria-hidden="true">&rarr;</span></button></div>
+        <div class="wz-top" id="wz-top" hidden>
+          <div class="wz-meta"><span class="k" id="wz-count" aria-live="polite"></span><button type="button" class="btn ghost sm" id="wz-all" data-i18n="wzAll"></button></div>
+          <div class="bar" id="wz-bar" role="progressbar" aria-valuemin="1" aria-valuemax="8" aria-label="Progress"><i></i></div>
+          <h2 id="wz-q" tabindex="-1"></h2>
+        </div>
+        <div class="f" data-wz="1">
           <label for="f-country" data-i18n="country">Country</label>
           <select id="f-country"></select>
           <p class="hint" id="f-city-h" data-i18n="cityNone"></p>
@@ -60,7 +73,7 @@
           <p class="route-empty" id="f-route-empty" data-i18n="routeEmpty"></p>
         </div>
 
-        <fieldset class="f"><legend data-i18n="durQ">Trip length</legend>
+        <fieldset class="f" data-wz="2"><legend data-i18n="durQ">Trip length</legend>
           <div class="seg" id="f-dur"></div>
           <div class="steps2" style="margin-top:12px">
             <div><span class="lbl" id="l-days" data-i18n="days">Days</span><div class="step" role="group" aria-labelledby="l-days"><button type="button" data-step="days" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-days" min="1" max="30" value="6" aria-labelledby="l-days"><button type="button" data-step="days" data-d="1" aria-label="+">+</button></div></div>
@@ -69,7 +82,7 @@
           <p class="hint" id="f-sum" aria-live="polite"></p>
         </fieldset>
 
-        <fieldset class="f"><legend data-i18n="trav">Travellers</legend>
+        <fieldset class="f" data-wz="3"><legend data-i18n="trav">Travellers</legend>
           <div class="steps2">
             <div><span class="lbl" id="l-ad" data-i18n="adults">Adults</span><div class="step" role="group" aria-labelledby="l-ad"><button type="button" data-step="adults" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-adults" min="1" max="12" value="2" aria-labelledby="l-ad"><button type="button" data-step="adults" data-d="1" aria-label="+">+</button></div></div>
             <div><span class="lbl" id="l-ki" data-i18n="kids">Children</span><div class="step" role="group" aria-labelledby="l-ki"><button type="button" data-step="kids" data-d="-1" aria-label="-">&minus;</button><input type="number" id="f-kids" min="0" max="8" value="0" aria-labelledby="l-ki"><button type="button" data-step="kids" data-d="1" aria-label="+">+</button></div></div>
@@ -77,25 +90,30 @@
           <div class="kids" id="f-ages"></div>
         </fieldset>
 
-        <fieldset class="f"><legend data-i18n="likes">We like</legend><div data-chips="i" data-name="likes"></div></fieldset>
-        <fieldset class="f"><legend data-i18n="avoid">We would rather avoid</legend><div data-chips="a" data-name="avoid" data-neg></div></fieldset>
-        <fieldset class="f"><legend data-i18n="diet">Food</legend><div data-chips="d" data-name="diet"></div>
+        <fieldset class="f" data-wz="4"><legend data-i18n="likes">We like</legend><div data-chips="i" data-name="likes"></div></fieldset>
+        <fieldset class="f" data-wz="4"><legend data-i18n="avoid">We would rather avoid</legend><div data-chips="a" data-name="avoid" data-neg></div></fieldset>
+        <fieldset class="f" data-wz="5"><legend data-i18n="diet">Food</legend><div data-chips="d" data-name="diet"></div>
           <label class="lbl" for="f-allergy" style="margin-top:8px" data-i18n="allergy"></label><input type="text" id="f-allergy" data-i18n-ph="allergyPh"></fieldset>
-        <fieldset class="f"><legend data-i18n="move">Getting around</legend><div data-chips="m" data-name="move"></div></fieldset>
+        <fieldset class="f" data-wz="6"><legend data-i18n="move">Getting around</legend><div data-chips="m" data-name="move"></div></fieldset>
 
-        <div class="grid2">
+        <div class="grid2" data-wz="7">
           <div class="f"><label for="f-pace" data-i18n="pace">Pace</label><input type="range" id="f-pace" min="1" max="3" step="1" value="2" aria-valuetext="">
             <div class="ticks" aria-hidden="true"><span data-i18n="relaxed"></span><span data-i18n="packed"></span></div></div>
           <fieldset class="f"><legend data-i18n="budget">Budget</legend><div class="seg" id="f-budget"></div></fieldset>
         </div>
-        <fieldset class="f"><legend data-i18n="langs">Trip languages</legend><div data-chips="l" data-name="langs"></div></fieldset>
-        <div class="f">
+        <fieldset class="f" data-wz="7"><legend data-i18n="langs">Trip languages</legend><div data-chips="l" data-name="langs"></div></fieldset>
+        <div class="f" data-wz="8">
           <label for="f-mail" data-i18n="email">Your e-mail</label>
           <input type="email" id="f-mail" autocomplete="email" dir="ltr" aria-describedby="f-mail-h f-mail-e">
           <p class="hint" id="f-mail-h" data-i18n="emailHint"></p>
           <p class="err" id="f-mail-e" role="alert" hidden data-i18n="emailErr"></p>
         </div>
-        <div class="actions"><button type="submit" class="btn primary" data-i18n="draft">Draft my trip</button><button type="button" class="btn" id="f-empty" data-i18n="emptyTrip">Create empty trip</button></div>
+        <div class="wz-nav" id="wz-nav" hidden>
+          <button type="button" class="btn" id="wz-back"><span class="flip" aria-hidden="true">&larr;</span> <span data-i18n="wzBack"></span></button>
+          <button type="button" class="btn ghost" id="wz-skip" data-i18n="wzSkip"></button>
+          <button type="button" class="btn primary" id="wz-next"><span id="wz-next-t"></span> <span class="flip" aria-hidden="true" id="wz-arrow">&rarr;</span></button>
+        </div>
+        <div class="actions" data-wz="0"><button type="submit" class="btn primary" data-i18n="draft">Draft my trip</button><button type="button" class="btn" id="f-empty" data-i18n="emptyTrip">Create empty trip</button></div>
       </form>
     </section>
   </div>
@@ -127,6 +145,7 @@
   </section>
 </main>
 <script src="mock-i18n.js"></script>
+<script src="wiz.js"></script>
 <script src="mock.js"></script>
 </body>
 </html>

@@ -1,7 +1,10 @@
 /* Mockup text: English and Hebrew only. Real strings would live in lang/<l>/ui.yaml (newtrip.*). */
 window.I18N = {
 en: {
- title:"Plan a new trip", lead:"Tell us about it in your own words, or pick the details. Either way you get a draft you can edit.", mock:"Mockup controls", lang:"Language", theme:"Theme",
+ wzIntro:"Too many questions at once? Answer one step at a time.", wzStart:"Guide me", wzAll:"Show all questions", wzBack:"Back", wzSkip:"Skip", wzNext:"Next", wzNeed:"Choose a country to continue", wzCount:"Step {n} of {m}",
+ wq1:"Where are you going?", wq2:"When, and for how long?", wq3:"Who is travelling?", wq4:"What do you like, and what would you rather avoid?", wq5:"Anything about food?", wq6:"How will you get around?", wq7:"Pace, budget and languages", wq8:"Where should we send your links?",
+ s10:"Guide 1: where", s11:"Guide 2: when", s12:"Guide 3: who", s13:"Guide 4: likes", s14:"Guide 5: food", s15:"Guide 6: moving", s16:"Guide 7: pace", s17:"Guide 8: e-mail",
+ title:"Plan a new trip", eyebrow:"New trip", lead:"Tell us about it in your own words, or pick the details. Either way you get a draft you can edit.", mock:"Mockup controls", lang:"Language", theme:"Theme",
  tabD:"Describe it", tabDs:"In your own words", tabF:"Fill it in", tabFs:"Pick the details",
  dLabel:"Your trip", dPh:"Where do you want to go, when, and with whom?", exLabel:"Try an example", ex:"A tour in Italy for 6 days, 4 of us: 2 adults and 2 children. We have a stroller, we don't like museums, and we're vegetarian.",
  hintLead:"Worth mentioning:", h1:"where", h2:"when", h3:"who", h4:"pace", h5:"food", h6:"mobility", h7:"dislikes",
@@ -25,7 +28,10 @@ en: {
  s1:"Describe: empty", s2:"Describe: filled", s3:"Drafting", s4:"Result", s5:"Fill: empty", s6:"Fill: filled", s7:"Fill: result", s8:"Created", s9:"Created (empty)", sPlace:"Italy", brandName:"Plan to Journal"
 },
 he: {
- title:"תכנון טיול חדש", lead:"ספרו לנו במילים שלכם, או בחרו את הפרטים. בכל מקרה תקבלו טיוטה שאפשר לערוך.", mock:"בקרות מוקאפ", lang:"שפה", theme:"ערכת צבעים",
+ wzIntro:"יותר מדי שאלות בבת אחת? אפשר לענות שלב אחרי שלב.", wzStart:"ללוות אותי", wzAll:"להציג את כל השאלות", wzBack:"הקודם", wzSkip:"לדלג", wzNext:"הבא", wzNeed:"בחרו מדינה כדי להמשיך", wzCount:"שלב {n} מתוך {m}",
+ wq1:"לאן נוסעים?", wq2:"מתי, ולכמה זמן?", wq3:"מי נוסע?", wq4:"מה אתם אוהבים, ומה עדיף להימנע ממנו?", wq5:"משהו בנוגע לאוכל?", wq6:"איך תנועו בדרכים?", wq7:"קצב, תקציב ושפות", wq8:"לאן לשלוח את הקישורים?",
+ s10:"מדריך 1: לאן", s11:"מדריך 2: מתי", s12:"מדריך 3: מי", s13:"מדריך 4: העדפות", s14:"מדריך 5: אוכל", s15:"מדריך 6: תנועה", s16:"מדריך 7: קצב", s17:"מדריך 8: אימייל",
+ title:"תכנון טיול חדש", eyebrow:"טיול חדש", lead:"ספרו לנו במילים שלכם, או בחרו את הפרטים. בכל מקרה תקבלו טיוטה שאפשר לערוך.", mock:"בקרות מוקאפ", lang:"שפה", theme:"ערכת צבעים",
  tabD:"לתאר במילים", tabDs:"בטקסט חופשי", tabF:"למלא פרטים", tabFs:"לבחור מתוך אפשרויות",
  dLabel:"הטיול שלכם", dPh:"לאן רוצים לנסוע, מתי ועם מי?", exLabel:"לדוגמה", ex:"טיול באיטליה לשישה ימים, ארבעה אנשים: שני מבוגרים ושני ילדים. יש לנו עגלה, אנחנו לא אוהבים מוזיאונים, ואנחנו צמחונים.",
  hintLead:"כדאי לציין:", h1:"לאן", h2:"מתי", h3:"מי נוסע", h4:"קצב", h5:"אוכל", h6:"ניידות", h7:"מה לא אוהבים",
