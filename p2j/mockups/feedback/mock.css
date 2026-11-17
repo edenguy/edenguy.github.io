@@ -1,0 +1,71 @@
+/* Mockup base: the TaleMontage look, dark first (the reference's index page leads with near-black, a gold gradient pill,
+   Fraunces headlines with an italic gold accent, violet/magenta/teal accents, glows). The light theme keeps the same
+   saturated palette on a warm paper ground. Widgets are in widgets.css, the flow states in flow.css. */
+:root,:root[data-theme=dark]{--bg:#07070a;--bg2:#0d0d14;--surface:#14141c;--surface2:#1b1b26;--ink:#f6f3ec;--ink2:#d2cec6;--mut:#a29faf;--line:rgba(255,255,255,.1);--line2:rgba(255,255,255,.2);
+--a:#b49cff;--b:#ff7aa6;--c:#4fd6c3;--d:#f4b95f;--a-soft:rgba(180,156,255,.14);--b-soft:rgba(255,122,166,.14);--c-soft:rgba(79,214,195,.14);--d-soft:rgba(244,185,95,.14);
+--p1:#f6c36d;--p2:#cf8a2b;--on-p:#16110a;--focus:#f6c36d;--glow:rgba(244,185,95,.5);--tick:#f6c36d;--sel-on:#0c0b12;--ph:#8f8c9c;
+--hero-bg:transparent;--hero-ink:#fff;--acc1:#f6c36d;--acc2:#e2873d;--hero-line:rgba(246,195,109,.45);
+--shadow:0 1px 0 rgba(255,255,255,.05) inset,0 18px 40px -18px rgba(0,0,0,.8);--page:radial-gradient(760px 520px at 6% -6%,rgba(244,185,95,.2),transparent 62%),radial-gradient(760px 620px at 104% 2%,rgba(141,123,245,.26),transparent 58%),radial-gradient(700px 520px at 50% 108%,rgba(255,92,150,.14),transparent 60%);
+--r:24px;--rm:16px;--pill:999px;--fh:"Fraunces",Georgia,"Times New Roman",serif;--fb:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;--fm:"JetBrains Mono",ui-monospace,Consolas,monospace}
+:root[data-theme=light]{--bg:#fbf6ec;--bg2:#f3ebfa;--surface:#fff;--surface2:#f4ecff;--ink:#16121f;--ink2:#38314d;--mut:#5c566f;--line:#e2d9f0;--line2:#b9aedb;
+--a:#5a2fd0;--b:#c0245f;--c:#0a7566;--d:#a35500;--a-soft:#eadfff;--b-soft:#ffdbe8;--c-soft:#cdf2ec;--d-soft:#ffe6bd;
+--p1:#6a35e8;--p2:#c0245f;--on-p:#fff;--focus:#5a2fd0;--glow:rgba(106,53,232,.5);--tick:#5a2fd0;--sel-on:#fff;--ph:#6e6882;
+--hero-bg:radial-gradient(520px 300px at 100% -10%,rgba(255,200,120,.55),transparent 65%),radial-gradient(420px 320px at -5% 110%,rgba(255,92,150,.5),transparent 65%),linear-gradient(135deg,#4a1fc0,#8a2bb5 58%,#d02a72);
+--hero-ink:#fff;--acc1:#ffe08a;--acc2:#ffa3c4;--hero-line:rgba(255,255,255,.55);
+--shadow:0 2px 0 rgba(90,47,208,.07),0 22px 44px -22px rgba(74,31,192,.4);--page:radial-gradient(700px 480px at 0 -6%,rgba(255,175,90,.32),transparent 62%),radial-gradient(700px 560px at 100% 4%,rgba(124,92,255,.28),transparent 58%),radial-gradient(620px 460px at 50% 105%,rgba(255,92,150,.2),transparent 60%)}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;color:var(--ink);font:400 16px/1.6 var(--fb);padding-bottom:64px;-webkit-font-smoothing:antialiased;background:var(--page),var(--bg);overflow-x:clip}
+::selection{background:var(--p1);color:var(--on-p)}
+main,.mockbar{max-width:760px;margin:0 auto;padding-inline:16px}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
+h1,h2{font-family:var(--fh);font-weight:600;letter-spacing:-.015em}
+:lang(he) h1,:lang(he) h2{font-family:var(--fb);font-weight:800;letter-spacing:0}
+h2{font-size:1.7rem;line-height:1.12;margin:0 0 .5rem}
+.lead{margin:0 0 14px;color:var(--ink2);font-size:1.05rem}
+[hidden]{display:none!important}
+b.mailto{font-family:var(--fm);font-size:.9em;font-weight:500;color:var(--a)}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes drift{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-6px,-8px) scale(1.08)}}
+@keyframes pop{0%{transform:scale(.9)}55%{transform:scale(1.07)}100%{transform:scale(1)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+/* mockup-only controls, kept visually apart from the product screen */
+.mockbar{padding-top:10px;padding-bottom:0}
+.mockbar details{border:1px dashed var(--line2);border-radius:var(--rm);padding:8px 14px;background:var(--surface2)}
+.mockbar summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--mut)}
+.mockbar .row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.mockbar button{border:1px solid var(--line2);background:var(--surface);border-radius:var(--pill);padding:3px 12px;font-size:12.5px;font-weight:600;cursor:pointer}
+.mockbar button[aria-pressed=true]{background:var(--a);color:var(--bg);border-color:var(--a)}
+
+.k{display:block;color:var(--d);font-weight:800;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase}
+:root[data-theme=light] .k{color:var(--a)}
+:lang(he) .k{letter-spacing:0;font-size:.9rem}
+
+/* fields */
+.f{margin:0 0 26px;border:0;padding:0;min-width:0}
+.f>label,.f>legend,.lbl{display:block;font-weight:800;font-size:1rem;margin-bottom:8px;padding:0}
+.f>legend::before{content:attr(data-e);margin-inline-end:8px;font-size:1.15rem}
+.hint{font-size:.88rem;color:var(--mut);margin:6px 0 0}
+.err{font-size:.9rem;color:var(--b);font-weight:800;margin:6px 0 0}
+input[type=text],input[type=email],input[type=date],input[type=number],select,textarea{width:100%;border:1.5px solid var(--line2);background:var(--bg);border-radius:var(--rm);padding:11px 15px;min-height:50px;transition:border-color .15s,box-shadow .15s}
+:root[data-theme=light] :is(input,select,textarea):not([type=range]){background:#fff}
+input:focus,select:focus,textarea:focus{border-color:var(--focus);box-shadow:0 0 0 4px var(--glow);outline:none}
+::placeholder{color:var(--ph);opacity:1}
+textarea{min-height:200px;resize:vertical;line-height:1.6;font-size:1.08rem}
+.big{border-radius:var(--rm);padding:15px 17px}
+input[aria-invalid=true],textarea[aria-invalid=true]{border-color:var(--b)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* buttons: big gradient primary with glow, lifts on hover, presses in */
+.btn{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1.5px solid var(--line2);background:var(--surface2);color:var(--ink);border-radius:var(--pill);min-height:52px;padding:10px 28px;font-weight:800;cursor:pointer;transition:transform .15s,box-shadow .2s,border-color .15s,filter .2s}
+.btn:hover{border-color:var(--p1);transform:translateY(-1px)}
+.btn:active{transform:translateY(1px) scale(.97)}
+.btn.primary{border-color:transparent;color:var(--on-p);font-size:1.08rem;min-height:58px;padding-inline:34px;background:linear-gradient(135deg,var(--p1),var(--p2));box-shadow:0 14px 34px -10px var(--glow),0 1px 0 rgba(255,255,255,.35) inset}
+.btn.primary::after{content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.4) 50%,transparent 65%);transform:translateX(-120%);transition:transform .6s}
+.btn.primary:hover{transform:translateY(-3px);box-shadow:0 20px 40px -10px var(--glow),0 1px 0 rgba(255,255,255,.35) inset;filter:saturate(1.15)}
+.btn.primary:hover::after{transform:translateX(120%)}
+.btn.primary:active{transform:translateY(1px) scale(.97);box-shadow:0 6px 16px -8px var(--glow)}
+.btn.ghost{border-color:transparent;background:none;color:var(--ink2);font-weight:700;text-decoration:underline}
+.btn.sm{min-height:44px;padding:6px 22px;font-size:.92rem}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}

@@ -1,0 +1,49 @@
+/* Host screens: light stand-ins of the real pages, each with its own top bar. The Suggestions pill is the product element;
+   everything else here is scenery. */
+.host{max-width:820px;margin:0 auto;padding:0 16px 120px;min-height:70vh}
+.top{display:flex;align-items:center;gap:8px;padding:10px 0 0}
+.top .brand{white-space:nowrap;margin-inline-end:auto;font:600 1.05rem var(--fh);color:var(--ink);display:inline-flex;align-items:center;gap:9px}
+:lang(he) .top .brand{white-space:nowrap;font-family:var(--fb);font-weight:800}
+.top .brand i{width:26px;height:26px;border-radius:9px;background:linear-gradient(135deg,var(--acc1),var(--acc2));box-shadow:0 0 14px var(--glow)}
+.badges{display:flex;align-items:center;gap:6px}
+.bp{font:800 10px/17px var(--fb);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line2);border-radius:var(--pill);padding:0 8px;color:var(--mut)}
+:lang(he) .bp{letter-spacing:0}
+.bp.sb{color:var(--d);border-color:var(--d)}
+.bp.dev{color:var(--c);border-color:var(--c)}
+.chip{min-width:44px;min-height:44px;padding:0 14px;border:1.5px solid var(--line2);border-radius:var(--pill);background:var(--surface2);color:var(--ink);font-weight:800;line-height:1}
+
+/* the pill: a 44 px hit area around a 28 px visual; icon plus word, so colour is never the only signal */
+.fb-pill{display:inline-flex;align-items:center;min-height:44px;min-width:44px;padding:8px 0;border:0;background:none;color:var(--ink);cursor:pointer}
+.fb-pill .in{display:inline-flex;align-items:center;gap:6px;height:28px;padding-inline:10px 12px;border:1.5px solid var(--a);border-radius:var(--pill);background:var(--a-soft);font:800 12px/1 var(--fb);transition:transform .15s,box-shadow .2s}
+.fb-pill svg{width:14px;height:14px;flex:none}
+.fb-pill:hover .in{transform:translateY(-1px);box-shadow:0 8px 18px -8px var(--glow)}
+.fb-pill:active .in{transform:scale(.97)}
+.fb-pill:focus-visible{outline:none}
+.fb-pill:focus-visible .in{outline:3px solid var(--focus);outline-offset:3px}
+.fb-pill[aria-expanded=true] .in{background:var(--a);color:var(--bg)}
+/* fixed variant: above the bottom nav (64 px) and below the mode toast and the photo viewer (z 48, 50) */
+.fb-fixed{position:fixed;inset-inline-end:12px;bottom:calc(var(--nav,0px) + 12px);z-index:44}
+.fb-fixed .in{box-shadow:var(--shadow);background:var(--surface);border-color:var(--p1)}
+.has-nav{--nav:64px}
+
+/* scenery */
+.sc h1{font-size:clamp(2.2rem,9vw,3.4rem);margin:26px 0 8px;line-height:1.05}
+.sc h1 .acc{font-style:italic;font-weight:500;background:linear-gradient(95deg,var(--acc1),var(--acc2));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--acc1)}
+:root[data-theme=light] .sc h1 .acc{background:linear-gradient(95deg,var(--p1),var(--p2));-webkit-background-clip:text;background-clip:text}
+:lang(he) .sc h1 .acc{font-style:normal;font-weight:800}
+.sc h1{font-weight:600}
+.sc .lead{color:var(--ink2);max-width:520px}
+.sc .card{padding:18px;margin-top:16px;background:linear-gradient(180deg,var(--surface),var(--bg2));border:1px solid var(--line2);border-radius:var(--r);box-shadow:var(--shadow)}
+.sc .card h3{margin:0 0 4px;font-size:1.05rem}
+.sc .card p{margin:0;color:var(--ink2)}
+.sc .row3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sc .ph{height:120px;border-radius:var(--rm);background:linear-gradient(135deg,var(--a-soft),var(--b-soft),var(--d-soft));border:1px solid var(--line)}
+.sc .cap{font-size:.9rem;color:var(--mut);margin-top:6px}
+.sc .tabs{position:fixed;inset-inline:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);height:64px;background:var(--surface);border-top:1px solid var(--line2)}
+.sc .tabs span{display:grid;place-items:center;font-size:.78rem;font-weight:700;color:var(--mut)}
+.sc .tabs span:first-child{color:var(--a)}
+.sc .cover{font:600 4rem/1 var(--fh);color:var(--acc1)}
+:root[data-theme=light] .sc .cover{color:var(--p1)}
+/* the new-trip bar also carries theme and language chips: at phone width the brand keeps its mark and drops its word on every host */
+@media (max-width:440px){.bt{display:none}.host.nt .chip{padding:0}}
+@media (max-width:600px){.sc .row3{grid-template-columns:1fr}.host{padding-bottom:140px}}

@@ -1,0 +1,45 @@
+/* Mockup text: English and Hebrew only. In the product these are lang/<l>/ui.yaml keys (feedback.*). */
+window.I18N = {
+en: {
+ mock:"Mockup controls", cState:"Sheet state", cHost:"Host screen", cLang:"Language", cTheme:"Theme", cEnv:"Environment pill", cFloat:"Pill while scrolling",
+ hHome:"Home", hLanding:"Landing", hNewtrip:"New trip", hJournal:"Journal", hCaptions:"Captions",
+ fRow:"Scrolls away", fFix:"Stays on screen", auto:"Auto", light:"Light", dark:"Dark", eNone:"none (production)",
+ s1:"1 Pill only", s2:"2 Empty", s3:"3 Filled", s4:"4 Image", s5:"5 Shrunk", s6:"6 Refused", s7:"7 Sending", s8:"8 Sent", s9:"9 Offline", s10:"10 Too many", s11:"11 Server error", s12:"12 Closed", s13:"13 Near limit", s14:"14 Over limit",
+ brand:"Plan to Journal", beta:"Beta", pill:"Suggestions", pillLabel:"Suggestions and requests: open the form", theme:"Theme", langChip:"עברית",
+ eyebrow:"Suggestions", title:"Tell us", title2:"what to change", close:"Close",
+ tLabel:"Your suggestion", tPh:"What should be different, or what went wrong? Say which screen if it helps.", tErr:"Write a few words first, so we know what to look at.",
+ tCount:"{n} of {max}", tOver:"That is {n} characters too many. Shorten it, or send the rest as a second suggestion.",
+ nLabel:"Your name (optional)", nPh:"Anonymous is fine", nCount:"{n} of {max}",
+ iLabel:"A picture (optional)", iHint:"A screenshot or a photo, png, jpeg or webp, one image, up to 1.5 MB.", iPick:"Choose a picture", iRemove:"Remove", iPrev:"Preview of the attached picture",
+ iShrunk:"We made it smaller: {from} to {to}.", iBadType:"This file is not a png, jpeg or webp picture. Choose a screenshot or a photo.", iBig:"This picture is still over 1.5 MB after shrinking. Crop it, or take a screenshot of just the part that matters.",
+ sentWith:"Sent with it:", sentWithT:"this page, the language, light or dark, the screen size. Never your link or password.",
+ send:"Send", cancel:"Cancel", sending:"Sending", retry:"Try again",
+ okTitle:"Thank", okTitle2:"you", okLead:"We read every one.", okAgain:"Send another", okClose:"Close",
+ netT:"No connection", netL:"Nothing was sent. Your text and picture are still here. Check the connection and try again.",
+ rateT:"Too many suggestions", rateL:"Please wait about {min} minutes, then try again. Your text and picture are kept.",
+ srvT:"Something went wrong on our side", srvL:"Nothing was lost on your screen. Try again in a moment.",
+ offT:"Suggestions are", offT2:"paused", offL:"We are not taking suggestions right now. Please come back a little later.",
+ sample:"On the day screen the map button is hard to find on my phone. Could it sit next to the date?"
+},
+he: {
+ mock:"בקרי המוק", cState:"מצב הטופס", cHost:"מסך מארח", cLang:"שפה", cTheme:"ערכת נושא", cEnv:"תג סביבה", cFloat:"הכפתור בגלילה",
+ hHome:"בית", hLanding:"דף נחיתה", hNewtrip:"טיול חדש", hJournal:"יומן", hCaptions:"כיתובים",
+ fRow:"נגלל החוצה", fFix:"נשאר על המסך", auto:"אוטומטי", light:"בהיר", dark:"כהה", eNone:"ללא (ייצור)",
+ s1:"1 כפתור בלבד", s2:"2 ריק", s3:"3 מלא", s4:"4 תמונה", s5:"5 הוקטנה", s6:"6 נדחתה", s7:"7 שולח", s8:"8 נשלח", s9:"9 אין חיבור", s10:"10 יותר מדי", s11:"11 תקלת שרת", s12:"12 סגור", s13:"13 ליד המגבלה", s14:"14 מעל המגבלה",
+ brand:"Plan to Journal", beta:"בטא", pill:"הצעות", pillLabel:"הצעות ובקשות: פתיחת הטופס", theme:"ערכת נושא", langChip:"English",
+ eyebrow:"הצעות", title:"ספרו לנו", title2:"מה לשנות", close:"סגירה",
+ tLabel:"ההצעה שלכם", tPh:"מה צריך להיות אחרת, או מה השתבש? אפשר לציין באיזה מסך.", tErr:"כתבו כמה מילים קודם, כדי שנדע על מה להסתכל.",
+ tCount:"{n} מתוך {max}", tOver:"יש {n} תווים יותר מדי. קצרו, או שלחו את השאר כהצעה שנייה.",
+ nLabel:"השם שלכם (לא חובה)", nPh:"אפשר להישאר אנונימיים", nCount:"{n} מתוך {max}",
+ iLabel:"תמונה (לא חובה)", iHint:"צילום מסך או תמונה, png, jpeg או webp, תמונה אחת, עד 1.5 מ״ב.", iPick:"בחירת תמונה", iRemove:"הסרה", iPrev:"תצוגה מקדימה של התמונה המצורפת",
+ iShrunk:"הקטנו אותה: {from} ל־{to}.", iBadType:"הקובץ הזה אינו תמונת png, jpeg או webp. בחרו צילום מסך או תמונה.", iBig:"התמונה עדיין גדולה מ־1.5 מ״ב גם אחרי ההקטנה. חתכו אותה, או צלמו רק את החלק החשוב.",
+ sentWith:"נשלח יחד איתה:", sentWithT:"העמוד הזה, השפה, בהיר או כהה, גודל המסך. לעולם לא הקישור או הסיסמה שלכם.",
+ send:"שליחה", cancel:"ביטול", sending:"שולח", retry:"לנסות שוב",
+ okTitle:"תודה", okTitle2:"רבה", okLead:"אנחנו קוראים כל הצעה.", okAgain:"שליחת הצעה נוספת", okClose:"סגירה",
+ netT:"אין חיבור", netL:"שום דבר לא נשלח. הטקסט והתמונה עדיין כאן. בדקו את החיבור ונסו שוב.",
+ rateT:"יותר מדי הצעות", rateL:"אנא המתינו כ־{min} דקות ונסו שוב. הטקסט והתמונה נשמרים.",
+ srvT:"משהו השתבש אצלנו", srvL:"שום דבר לא אבד במסך שלכם. נסו שוב בעוד רגע.",
+ offT:"ההצעות", offT2:"מושהות", offL:"כרגע איננו מקבלים הצעות. חזרו מעט מאוחר יותר.",
+ sample:"במסך היום קשה למצוא את כפתור המפה בטלפון. אפשר שיהיה ליד התאריך?"
+}
+};
