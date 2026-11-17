@@ -1,0 +1,37 @@
+/* The bottom sheet: full screen at 390 px, a centred dialog on a desktop. Used by Find my trips and Clear this device. */
+.scrim{position:fixed;inset:0;z-index:50;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center;animation:fade .2s both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.sheet{position:relative;width:100%;height:100%;overflow:auto;background:linear-gradient(180deg,var(--surface),var(--bg2));padding:18px 20px 28px;animation:rise .3s both;overscroll-behavior:contain}
+.sheet::before{content:"";position:absolute;inset:0 24px auto;height:3px;border-radius:0 0 6px 6px;background:linear-gradient(90deg,var(--a),var(--b),var(--d))}
+@media (min-width:640px){
+ .scrim{align-items:center;padding:24px}
+ .sheet{height:auto;max-height:calc(100vh - 48px);max-width:520px;border-radius:var(--r);border:1px solid var(--line2);box-shadow:var(--shadow),0 30px 80px rgba(0,0,0,.6);padding:26px 28px 28px}
+}
+.sheet .bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.sheet .k{color:var(--d);font-weight:800;font-size:.76rem;letter-spacing:.16em;text-transform:uppercase}
+:root[data-theme=light] .sheet .k{color:var(--a)}
+:lang(he) .sheet .k{letter-spacing:0;font-size:.9rem}
+.x{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--line2);background:var(--surface);cursor:pointer;font-size:1.3rem;line-height:1;display:grid;place-items:center}
+.x:hover{background:var(--a-soft);border-color:var(--a)}
+.sheet h2{font-size:clamp(1.7rem,7vw,2.2rem);line-height:1.1;margin:6px 0 10px;outline:none}
+.sheet p{margin:0 0 14px;color:var(--ink2)}
+.sheet .field{margin:18px 0 6px}
+.sheet label.lbl{display:block;font-weight:800;margin-bottom:8px}
+.sheet input[type=email]{width:100%;min-height:54px;border:1.5px solid var(--line2);background:var(--bg);border-radius:var(--rm);padding:11px 16px;transition:border-color .15s,box-shadow .15s}
+:root[data-theme=light] .sheet input[type=email]{background:#fff}
+.sheet input:focus{border-color:var(--focus);box-shadow:0 0 0 4px var(--glow);outline:none}
+.sheet input[aria-invalid=true]{border-color:var(--b)}
+.sheet input[disabled]{opacity:.7}
+.err{font-size:.9rem;color:var(--b);font-weight:800;margin:6px 0 0}
+:root[data-theme=light] .err{color:#a3144f}
+.sheet .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}
+.sheet .actions .btn.primary{flex:1 1 220px}
+.honest{margin-top:18px}
+.prog{height:14px;border-radius:var(--pill);background:var(--surface2);border:1px solid var(--line2);overflow:hidden;margin:16px 0}
+.prog i{display:block;height:100%;width:55%;background:linear-gradient(90deg,#2fd2b5,#f6c36d 55%,#ff5d8f);border-radius:var(--pill);box-shadow:0 0 18px var(--glow);animation:pulse 1.6s ease-in-out infinite}
+@keyframes pulse{50%{opacity:.6;width:75%}}
+.dot{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#2fd2b5,#3aa8e8);display:grid;place-items:center;font-size:1.5rem;color:#08201c;box-shadow:0 0 28px var(--c);animation:pop .5s;margin:8px 0 6px}
+.dot::before{content:"\2713";font-weight:900}
+.dot.bad{background:linear-gradient(135deg,var(--b),var(--d));box-shadow:0 0 28px var(--b)}
+.dot.bad::before{content:"!"}
+.sent-to{display:inline-block;direction:ltr;unicode-bidi:isolate;font-family:var(--fm);font-size:.92rem;border:1px solid var(--line2);border-radius:var(--rm);padding:6px 12px;background:var(--surface2);color:var(--ink);word-break:break-all}

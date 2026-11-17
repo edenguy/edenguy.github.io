@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Plan to Journal (mockup)</title>
+<meta name="color-scheme" content="light dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Manrope:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="mock.css">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="sheet.css">
+</head>
+<body>
+<div class="mockbar">
+  <details>
+    <summary id="mockt">Mockup controls</summary>
+    <div class="row" id="states" role="group" aria-label="State"></div>
+    <div class="row" role="group" aria-label="Language"><button type="button" data-lang="en" aria-pressed="true">English</button><button type="button" data-lang="he" aria-pressed="false">עברית</button></div>
+    <div class="row" role="group" aria-label="Theme"><button type="button" data-theme-set="light" aria-pressed="false">Light</button><button type="button" data-theme-set="dark" aria-pressed="true">Dark</button></div>
+    <div class="row" role="group" aria-label="Environment"><button type="button" data-env="sb" aria-pressed="true">sb</button><button type="button" data-env="dev" aria-pressed="false">dev</button><button type="button" data-env="none" aria-pressed="false">production</button></div>
+  </details>
+</div>
+<div class="topbar" id="top">
+  <span class="brand" id="brand"><i aria-hidden="true"></i>Plan to Journal</span>
+  <span class="pills">
+    <span class="pill beta" id="beta">Beta</span>
+    <span class="pill env sb" id="envpill">sb</span>
+    <button type="button" class="pill sugg" data-act="sugg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg><span id="suggt">Suggestions</span></button>
+    <button type="button" class="tbtn" id="tbtn">Light</button>
+    <button type="button" class="tbtn" id="lbtn">עברית</button>
+  </span>
+</div>
+<main id="app"></main>
+<div id="layer"></div>
+<div id="toast"></div>
+<script src="mock-i18n.js"></script>
+<script src="data.js"></script>
+<script src="view.js"></script>
+<script src="mock.js"></script>
+</body>
+</html>
